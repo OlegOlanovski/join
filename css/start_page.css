@@ -151,6 +151,30 @@ body.loaded .login-form {
 .login-form .button-group button:hover {
   opacity: 0.9;
 }
+/*INPUT GROUP*/
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.input-group input {
+  width: 100%;
+  height: 42px;
+  padding: 10px 36px 10px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.input-group .input-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
 
 /*FOOTER*/
 footer {
