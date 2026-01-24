@@ -27,11 +27,10 @@
                 <section class="form-header">
                     <h2>Login</h2>
                 </section>
-
-                <input type="mail" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
+                <input class=""  id="mail" type="mail" placeholder="Email" autocomplete="email">
+                <input class="" id="password" type="password" placeholder="Password" autocomplete="off" >
                 <div class="button-group">
-                    <button type="submit" class="login-btn">Log In</button>
+                    <button onclick="validateLoginForm(); return false;" class="login-btn">Log In</button>
                     <button type="button" class="guest-btn">Guest Log In</button>
                 </div>
             </form>
@@ -47,6 +46,7 @@
 
 
         <script src="./javascript/animation.js"></script>
+        <script src="./javascript/script.js"></script>
     </body>
 
 </html>

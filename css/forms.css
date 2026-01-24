@@ -91,3 +91,11 @@ input[type=password] {
     gap: 15px;
     margin-bottom: 15px;
 }
+
+.isValidate{
+    border: 1px solid greenyellow !important;
+}
+
+.isInvaled{
+    border: 1px solid rgb(255, 47, 47) !important;
+}
