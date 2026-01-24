@@ -19,20 +19,10 @@ body {
 
 header .logo_page {
   height: 80px;
- 
+
   display: flex;
   justify-content: flex-end;
   align-items: center;
-}
-
-.sing_up_page .logo_signup_page {
-  height: 80px;
- 
-  display: flex;
-  justify-content: flex-start !important;
-  align-items: center;
-  position: relative;
-  z-index: 5;
 }
 
 header .button-section {
