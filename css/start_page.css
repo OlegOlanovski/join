@@ -1,5 +1,3 @@
-
-
 /*LOGO ANIMATION*/
 .logo {
   position: fixed;
@@ -13,6 +11,7 @@
 
 .logo_page {
   width: 260px;
+  height: auto;
   transition: width 1.2s ease-in-out;
 }
 
@@ -88,7 +87,6 @@ body.loaded .login-form {
   width: 58px;
   margin-top: 5px;
   margin-left: 4px;
-
 }
 
 .login-form input {
