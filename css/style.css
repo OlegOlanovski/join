@@ -43,11 +43,6 @@ main {
   width: 100%;
 }
 
-.footer-links {
-  text-align: center;
-  width: 50%;
-}
-
 button {
   height: 35px;
   width: 95px;
@@ -57,4 +52,11 @@ button {
   color: white;
   background-color: rgb(42, 54, 71);
   border-radius: 8px;
+  cursor: pointer;
+}
+
+.links {
+  text-decoration: none;
+  color: #2a3647;
+  font-size: 16px;
 }

@@ -16,3 +16,21 @@
     position: relative;
     z-index: 5;
 }
+
+.info-password {
+    display: none;
+    color: tomato;
+}
+
+.info-confirm-password {
+    display: none;
+    color: tomato;
+}
+
+.disebles-singup-button {
+    background-color: gainsboro;
+}
+
+.accept-police{
+    display: none;
+}
