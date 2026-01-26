@@ -7,3 +7,7 @@ window.addEventListener("load", () => {
 function goToSignup() {
   window.location.href = "./subpages/regist.html";
 }
+
+function goToSummary() {
+  window.location.href = "./subpages/summary.html";
+}
