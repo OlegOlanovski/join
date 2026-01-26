@@ -15,4 +15,25 @@
     align-items: center;
     position: relative;
     z-index: 5;
+<<<<<<< HEAD
+=======
+}
+
+.info-password {
+    display: none;
+    color: tomato;
+}
+
+.info-confirm-password {
+    display: none;
+    color: tomato;
+}
+
+.disebles-singup-button {
+    background-color: gainsboro;
+}
+
+.accept-police{
+    display: none;
+>>>>>>> 4fc860bae99c7cba6ee88539c47a349eb2f70a3c
 }
