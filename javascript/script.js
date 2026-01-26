@@ -12,7 +12,7 @@ function validateLoginForm() {
 
 }
 
-function validateSingUpForm() {
+function validateFullname() {
   // Name prüfen
   switch (true) {
     case full_name.value !== "":
@@ -23,7 +23,9 @@ function validateSingUpForm() {
       full_name.classList.add("isInvaled");
       full_name.classList.remove("isValidate");
   }
+};
 
+function validateEmail() {
   // Email prüfen
   switch (true) {
     case email.value.includes("@") && email.value.length > 0:
@@ -34,7 +36,9 @@ function validateSingUpForm() {
       email.classList.add("isInvaled");
       email.classList.remove("isValidate");
   }
+};
 
+function validatePassword() {
   // Password prüfen
   switch (true) {
     case password.value.length > 5:
@@ -47,10 +51,14 @@ function validateSingUpForm() {
       password.classList.add("isInvaled");
       password.classList.remove("isValidate");
   }
+}
 
+function validateConfirmPassword() {
+  validatePassword(password, infoPassword);
   // Confirm Password prüfen
   switch (true) {
-    case password.value === confirmPassword.value && confirmPassword.value != "":
+    case password.value === confirmPassword.value &&
+      confirmPassword.value != "":
       confirmPassword.classList.add("isValidate");
       confirmPassword.classList.remove("isInvaled");
       infoPassword.style.display = "none";
@@ -62,7 +70,9 @@ function validateSingUpForm() {
       confirmPassword.classList.add("isInvaled");
       confirmPassword.classList.remove("isValidate");
   }
+}
 
+function validateSingUpForm() {
   // Formular Validierung - Alle Felder prüfen
   switch (true) {
     case isAccept.checked &&
