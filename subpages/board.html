@@ -1,13 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/board.css">
     <title>Board</title>
 </head>
 
 <body>
+    <div class="layout">
+
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="../assets/icons/logo-white.svg" alt="Join">
+            </div>
+
+            <nav class="menu">
+                <ul>
+                    <li><a href="./summary.html"><img src="../assets/icons/summary-gray.svg" alt="">Summary</a></li>
+                    <li><a href="./add_task.html"><img src="../assets/icons/addTask-gray.svg" alt="">Add Task</a></li>
+                    <li><a href="./board.html"><img src="../assets/icons/board-gray.svg" alt="">Board</a></li>
+                    <li><a href="./contact.html"><img src="../assets/icons/contacts-gray.svg" alt="">Contacts</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Legal notice</a>
+            </div>
+        </aside>
+
+        <div class="cantainer">
+            <div class="main">
+
+                <header class="header">
+                    <div class="header-title">Kanban Project Management Tool</div>
+                    <div class="header-right">
+                        <a class="header-help">?</a>
+                        <div class="header-user">SM</div>
+                    </div>
+                </header>
+
+                <section class="board-section">
+                    <board-header class="board-header">
+                        <h1 class="board-title">Board</h1>
+                        <nav aria-label="Board Navigation" class="board-nav">
+                            <div class="search-bar">
+                                <input type="text" placeholder="Find Task" aria-label="Search Tasks"
+                                    class="search-input">
+                                <div class="separator"></div>
+                                <img src="../assets/icons/search.svg" alt="Search" class="search-icon">
+
+                            </div>
+                            <button class="add-task-button">Add task +</button>
+                        </nav>
+                    </board-header>
+
+                </section>
+                <section class="board">
+
+                    <!-- TODO -->
+                    <div class="column" data-status="todo">
+                        <header class="column-header">
+                            <span>Todo</span>
+                            <img src="../assets/icons/plus button.svg" class="add-card-icon">
+                        </header>
+                        <div class="cards"></div>
+                        <div class="empty">No tasks To do</div>
+                    </div>
+
+                    <!-- IN PROGRESS -->
+                    <div class="column" data-status="progress">
+                        <header class="column-header">
+                            <span>In progress</span>
+                            <img src="../assets/icons/plus button.svg" class="add-card-icon">
+                        </header>
+                        <div class="cards"></div>
+                        <div class="empty">No tasks In progress</div>
+                    </div>
+
+                    <!-- AWAIT FEEDBACK -->
+                    <div class="column" data-status="feedback">
+                        <header class="column-header">
+                            <span>Await feedback</span>
+                            <img src="../assets/icons/plus button.svg" class="add-card-icon">
+                        </header>
+                        <div class="cards"></div>
+                        <div class="empty">No tasks Await feedback</div>
+                    </div>
+
+                    <!-- DONE -->
+                    <div class="column" data-status="done">
+                        <header class="column-header">Done</header>
+                        <div class="cards"></div>
+                        <div class="empty">No tasks Done</div>
+                    </div>
+
+                </section>
+
+
+
 
 </body>
 
