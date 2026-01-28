@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/summary.css">
+    <title>Summary-Guest</title>
+</head>
+
+<body>
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="../assets/icons/logo-white.svg" alt="Join">
+      </div>
+
+      <nav class="menu">
+        <ul>
+          <li><a href="./summary.html"><img src="../assets/icons/summary-gray.svg" alt="">Summary</a></li>
+          <li><a href="./add_task.html"><img src="../assets/icons/addTask-gray.svg" alt="">Add Task</a></li>
+          <li><a href="./board.html"><img src="../assets/icons/board-gray.svg" alt="">Board</a></li>
+          <li><a href="./contact.html"><img src="../assets/icons/contacts-gray.svg" alt="">Contacts</a></li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Legal notice</a>
+      </div>
+    </aside>
+
+    <div class="cantainer">
+      <div class="main">
+
+        <header class="header">
+            <div class="header-left">
+              
+              <span class="header-title">Kanban Project Management Tool</span>
+            </div>
+          
+            <div class="header-right">
+              <div class="header-help">?</div>
+              <div class="header-guest">G</div>
+
+            </div>
+          </header>
+
+        <div class="summary-section">
+          <div class="summary-headline">
+            <h1 class="summary-title">Join 360</h1>
+            <span class="summary-divider"></span>
+            <p class="summary-subtitle">Key Metrics at a Glance</p>
+          </div>
+        </div>
+
+        <div class="kpi-panel">
+
+          <div class="kpi-top">
+            <div class="kpi-card kpi-card--half">
+              <div class="kpi-icon">
+                <img src="../assets/icons/edit-white.svg" alt="">
+              </div>
+              <div class="kpi-info">
+                <div class="kpi-number">1</div>
+                <div class="kpi-label">To-do</div>
+              </div>
+            </div>
+
+            <div class="kpi-card kpi-card--half">
+              <div class="kpi-icon">
+                <img src="../assets/icons/check-white.svg" alt="">
+              </div>
+              <div class="kpi-info">
+                <div class="kpi-number">1</div>
+                <div class="kpi-label">Done</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kpi-card kpi-card--wide">
+
+            <div class="kpi-urgent-left">
+              <div class="kpi-urgent-icon">
+                <img src="../assets/icons/urgent-white.png" alt="">
+              </div>
+
+              <div class="kpi-info">
+                <div class="kpi-number">1</div>
+                <div class="kpi-label">Urgent</div>
+              </div>
+            </div>
+
+            <p class="good-morning" id="greeting-text"></p>
+
+            <div class="kpi-urgent-right">
+              <div class="kpi-date">January 24, 2026</div>
+              <div class="kpi-date-sub">Upcoming Deadline</div>
+            </div>
+            <p class="good-morning" id="greeting-text"></p>
+        
+        </div>
+
+          <div class="kpi-bottom">
+            <div class="kpi-card kpi-card--small">
+              <span class="kpi-number">5</span>
+              <span class="kpi-label">Tasks in Board</span>
+            </div>
+
+            <div class="kpi-card kpi-card--small">
+              <span class="kpi-number">2</span>
+              <span class="kpi-label">Tasks in Progress</span>
+            </div>
+
+            <div class="kpi-card kpi-card--small">
+              <span class="kpi-number">2</span>
+              <span class="kpi-label">Awaiting Feedback</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <script src="../javascript/summary.js"></script>
+
+</body>
+</html>
