@@ -217,8 +217,6 @@ body {
 .summary-section {
   padding-top: 328px;
   padding-left: 206px;
- 
-  
 }
 
 .summary-headline {
@@ -368,11 +366,12 @@ body {
   place-items: center;
 }
 
-.kpi-icon img,
+.kpi-icn img,
 .kpi-urgent-icon img {
   width: 24px;
   height: 24px;
   display: block;
+ 
 }
 
 .kpi-info {
@@ -429,6 +428,7 @@ body {
   background: #ffffff;
   border-radius: 30px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .kpi-card--half {
@@ -460,4 +460,45 @@ body {
   width: 2px;
   background: #d1d1d1;
   transform: translateX(-1px);
+}
+
+.kpi-card:hover {
+  background-color: #2A3647;
+}
+
+.kpi-card:hover .kpi-number {
+  color: white;
+}
+
+.kpi-card:hover .kpi-label {
+  color: #ffffff;
+}
+
+.kpi-card:hover .kpi-icon {
+  background-color: #ffffff;
+}
+
+.kpi-card:hover .kpi-icon img{
+  filter: brightness(0) saturate(100%) invert(16%) sepia(11%)
+          saturate(1600%) hue-rotate(182deg) brightness(92%) contrast(92%);
+}
+
+.kpi-card:hover .kpi-date {
+  color: #ffffff;
+}
+.kpi-card:hover .kpi-date-sub {
+  color: #ffff;
+}
+
+.good-morning {
+  position: absolute;
+  left: 590px;
+  top: 35%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 24px;
+  width: 560px;
+  color: #2A3647;
+  
+ 
 }
