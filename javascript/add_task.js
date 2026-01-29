@@ -1,8 +1,21 @@
 // ADD TASK → SAVE TO STORAGE
 
+let selectedPriority = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   const createBtn = document.getElementById("createTaskBtn");
   if (!createBtn) return;
+
+  // Priority buttons: read value on click
+  const priorityBtns = document.querySelectorAll(".priority-section li");
+  priorityBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      priorityBtns.forEach((b) => b.classList.remove("--selected"));
+      btn.classList.add("--selected");
+      selectedPriority = btn.textContent.trim();
+      console.log("Priority selected:", selectedPriority);
+    });
+  });
 
   createBtn.addEventListener("click", createTask);
 });
@@ -18,7 +31,10 @@ function createTask() {
     return;
   }
 
-  let priority = "medium";
+  const priority = selectedPriority || "";
+
+  // If you want a default priority, set it here, e.g.:
+  // const priority = selectedPriority || "Medium";
 
   const params = new URLSearchParams(window.location.search);
   const status = params.get("status") || "todo";
