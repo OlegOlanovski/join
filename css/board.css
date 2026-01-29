@@ -428,6 +428,20 @@ body {
   background: #462f8a;
 }
 
+.label.user {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px 16px;
+  border-radius: 8px;
+  margin-left: 0;
+  border: none;
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .card-actions {
   display: flex;
   gap: 8px;
