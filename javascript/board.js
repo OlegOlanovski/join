@@ -3,12 +3,14 @@ const STORAGE_KEY = "tasks";
 
 let openedTaskId = null;
 let isDragging = false;
+let pendingDeleteId = null;
 
 document.addEventListener("DOMContentLoaded", function () {
   initRedirects();
   renderBoardFromStorage();
   initDragAndDrop();
   initOverlayEvents();
+  initDeleteConfirm();
   updateEmptyStates();
 });
 
@@ -332,18 +334,94 @@ function closeTaskOverlay() {
   openedTaskId = null;
 }
 
-// ---------------- Delete / Edit ----------------
-function deleteTask(id) {
+// ---------------- Delete confirm ----------------
+function initDeleteConfirm() {
+  const els = getDeleteConfirmEls();
+  if (!els) return;
+  bindDeleteConfirmOk(els);
+  bindDeleteConfirmCancel(els);
+  bindDeleteConfirmBackdrop(els);
+  bindDeleteConfirmEsc(els);
+}
+
+function getDeleteConfirmEls() {
+  const backdrop = document.getElementById("deleteConfirmBackdrop");
+  const okBtn = document.getElementById("deleteConfirmOk");
+  const cancelBtn = document.getElementById("deleteConfirmCancel");
+  const textEl = document.getElementById("deleteConfirmText");
+  if (!backdrop || !okBtn || !cancelBtn || !textEl) {
+    console.warn("Delete confirm elements not found.");
+    return null;
+  }
+  return { backdrop: backdrop, okBtn: okBtn, cancelBtn: cancelBtn, textEl: textEl };
+}
+
+function bindDeleteConfirmOk(els) {
+  els.okBtn.addEventListener("click", function () {
+    handleDeleteConfirmOk();
+  });
+}
+
+function bindDeleteConfirmCancel(els) {
+  els.cancelBtn.addEventListener("click", function () {
+    handleDeleteConfirmCancel();
+  });
+}
+
+function bindDeleteConfirmBackdrop(els) {
+  els.backdrop.addEventListener("click", function (e) {
+    if (e.target === els.backdrop) closeDeleteConfirm();
+  });
+}
+
+function bindDeleteConfirmEsc(els) {
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !els.backdrop.hidden) closeDeleteConfirm();
+  });
+}
+
+function openDeleteConfirm(id) {
   const task = findTaskById(id);
   if (!task) return;
-  if (!confirmDelete(task)) return;
-  removeTaskById(id);
+  pendingDeleteId = String(id);
+  setDeleteConfirmText(task);
+  showDeleteConfirm();
+}
+
+function setDeleteConfirmText(task) {
+  const el = document.getElementById("deleteConfirmText");
+  if (!el) return;
+  el.textContent = 'Delete task "' + task.title + '"?';
+}
+
+function showDeleteConfirm() {
+  const backdrop = document.getElementById("deleteConfirmBackdrop");
+  if (!backdrop) return;
+  backdrop.hidden = false;
+}
+
+function closeDeleteConfirm() {
+  const backdrop = document.getElementById("deleteConfirmBackdrop");
+  if (!backdrop) return;
+  backdrop.hidden = true;
+  pendingDeleteId = null;
+}
+
+function handleDeleteConfirmOk() {
+  if (!pendingDeleteId) return closeDeleteConfirm();
+  removeTaskById(pendingDeleteId);
+  closeDeleteConfirm();
   closeTaskOverlay();
   renderBoardFromStorage();
 }
 
-function confirmDelete(task) {
-  return confirm('Delete task "' + task.title + '"?');
+function handleDeleteConfirmCancel() {
+  closeDeleteConfirm();
+}
+
+// ---------------- Delete / Edit ----------------
+function deleteTask(id) {
+  openDeleteConfirm(id);
 }
 
 function removeTaskById(id) {
