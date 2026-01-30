@@ -34,9 +34,6 @@ function createTask() {
 
   const priority = selectedPriority || "";
 
-  // If you want a default priority, set it here, e.g.:
-  // const priority = selectedPriority || "Medium";
-
   const subtasks = subtaskInput
     ? subtaskInput
         .split(/[;,]/)
