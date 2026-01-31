@@ -319,6 +319,7 @@ function setOverlayTexts(task) {
 
 function setOverlayPriority(task) {
   const prioEl = document.getElementById("taskOverlayPrio");
+  
   if (!prioEl) return;
   const pr = String(task.priority || task.prio || "medium").toLowerCase();
   prioEl.textContent = capitalize(pr);
@@ -341,7 +342,7 @@ function getAssignedList(task) {
   if (Array.isArray(task.assigned)) assignedArr = task.assigned;
   else if (task.assigned) assignedArr = [task.assigned];
   if (assignedArr.length) return assignedArr;
-  return ["Oleg Olanovski (You)", "Mike Pankow", "Habiba"];
+  return ["Oleg Olanovski (You)", "Maik Pankow", "Habiba"];
 }
 
 function createPersonRow(name, index) {
