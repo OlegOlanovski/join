@@ -22,13 +22,18 @@ function getTasksTotal() {
 
 function getTasksDone() {
   let done_tasks = document.getElementById("todos-done");
-  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   let Todos_Done = []
-  let status = tasks.status = "done";
-  if (status) {
-    Todos_Done.push(status);
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  
+  for (let i = 0; i < tasks.length; i++) {
+    const element = tasks[i];
+    let status = element.status;
+    
+    if (status == "done") {
+      Todos_Done.push(status);
+    }
+    done_tasks.innerText = Todos_Done.length;
   }
-  done_tasks.innerText = Todos_Done.length;
 }
 
 
