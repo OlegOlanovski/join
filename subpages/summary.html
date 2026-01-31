@@ -7,7 +7,7 @@
     <title>Summary-Guest</title>
 </head>
 
-<body>
+<body onload="init()">
   <div class="layout">
 
     <aside class="sidebar">
@@ -66,7 +66,7 @@
                 <img src="../assets/icons/edit-white.svg" alt="">
               </div>
               <div class="kpi-info">
-                <div class="kpi-number">1</div>
+                <div id="todos-total" class="kpi-number"></div>
                 <div class="kpi-label">To-do</div>
               </div>
             </div>
@@ -76,7 +76,7 @@
                 <img src="../assets/icons/check-white.svg" alt="">
               </div>
               <div class="kpi-info">
-                <div class="kpi-number">1</div>
+                <div id="todos-done" class="kpi-number"></div>
                 <div class="kpi-label">Done</div>
               </div>
             </div>
@@ -90,7 +90,7 @@
               </div>
 
               <div class="kpi-info">
-                <div class="kpi-number">1</div>
+                <div id="todos-urgent" class="kpi-number">1</div>
                 <div class="kpi-label">Urgent</div>
               </div>
             </div>
