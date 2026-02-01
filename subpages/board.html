@@ -69,17 +69,19 @@
                     <!-- TODO -->
                     <div class="column" data-status="todo">
                         <header class="column-header">
+                           
                             <span>Todo</span>
                             <img src="../assets/icons/plus-button.svg" class="add-card-icon" alt="Add task" />
                         </header>
                         <div class="cards"></div>
                         <div class="empty">No tasks To do</div>
+                  
                     </div>
 
                     <!-- IN PROGRESS -->
                     <div class="column" data-status="progress">
                         <header class="column-header">
-                            <span>In progress</span>
+                            <span>In Progress</span>
                             <img src="../assets/icons/plus-button.svg" class="add-card-icon" alt="Add task" />
                         </header>
                         <div class="cards"></div>
@@ -123,28 +125,68 @@
             </div>
 
 
-            <h2 class="task-overlay-title" id="taskOverlayTitle"></h2>
-            <p class="task-overlay-desc" id="taskOverlayDesc"></p>
+            <div class="task-overlay-view" id="taskOverlayView">
+                <h2 class="task-overlay-title" id="taskOverlayTitle"></h2>
+                <p class="task-overlay-desc" id="taskOverlayDesc"></p>
 
-            <div class="task-overlay-row">
-                <span class="task-overlay-label">Due date:</span>
-                <span id="taskOverlayDue"></span>
+                <div class="task-overlay-row">
+                    <span class="task-overlay-label">Due date:</span>
+                    <span id="taskOverlayDue"></span>
+                </div>
+
+                <div class="task-overlay-row">
+                    <span class="task-overlay-label">Priority:</span>
+                    <span class="task-overlay-prio" id="taskOverlayPrio"></span>
+                </div>
+
+                <div class="task-overlay-block">
+                    <div class="task-overlay-label">Assigned To:</div>
+                    <div class="task-overlay-assigned" id="taskOverlayAssigned"></div>
+                </div>
+
+                <div class="task-overlay-block">
+                    <div class="task-overlay-label">Subtasks</div>
+                    <div class="task-overlay-subtasks" id="taskOverlaySubtasks"></div>
+                </div>
             </div>
 
-            <div class="task-overlay-row">
-                <span class="task-overlay-label">Priority:</span>
-                <span class="task-overlay-prio" id="taskOverlayPrio"></span>
-            </div>
+            <form class="task-overlay-edit" id="taskOverlayEditForm" hidden>
+                <div class="task-edit-field">
+                    <label for="taskEditTitle">Title</label>
+                    <input id="taskEditTitle" name="title" type="text" />
+                </div>
 
-            <div class="task-overlay-block">
-                <div class="task-overlay-label">Assigned To:</div>
-                <div class="task-overlay-assigned" id="taskOverlayAssigned"></div>
-            </div>
+                <div class="task-edit-field">
+                    <label for="taskEditDesc">Description</label>
+                    <textarea id="taskEditDesc" name="description" rows="4"></textarea>
+                </div>
 
-            <div class="task-overlay-block">
-                <div class="task-overlay-label">Subtasks</div>
-                <div class="task-overlay-subtasks" id="taskOverlaySubtasks"></div>
-            </div>
+                <div class="task-edit-row">
+                    <div class="task-edit-field">
+                        <label for="taskEditDue">Due date</label>
+                        <input id="taskEditDue" name="dueDate" type="date" />
+                    </div>
+
+                    <div class="task-edit-field">
+                        <label for="taskEditPrio">Priority</label>
+                        <select id="taskEditPrio" name="priority">
+                            <option value="urgent">Urgent</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="task-edit-field">
+                    <label for="taskEditAssigned">Assigned </label>
+                    <input id="taskEditAssigned" name="assigned" type="text" />
+                </div>
+
+                <div class="task-edit-field">
+                    <label for="taskEditSubtasks">Subtasks </label>
+                    <textarea id="taskEditSubtasks" name="subtasks" rows="3"></textarea>
+                </div>
+            </form>
 
             <div class="task-overlay-actions">
                 <button class="task-overlay-action" id="taskOverlayDelete" type="button">
@@ -157,6 +199,14 @@
                 <button class="task-overlay-action" id="taskOverlayEdit" type="button">
                     <img src="../assets/icons/edit.svg" alt="Edit">
                     Edit
+                </button>
+
+                <button class="task-overlay-action" id="taskOverlayCancel" type="button" hidden>
+                    Cancel
+                </button>
+
+                <button class="task-overlay-action" id="taskOverlaySave" type="button" hidden>
+                    Save
                 </button>
             </div>
 
