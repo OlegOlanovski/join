@@ -77,26 +77,27 @@ function getAwaitFeedback() {
 }
 
 function getUrgrentTodo() {
-  let urgent_tasks = document.getElementById("todo-status-urgent");
-  let due_date = document.getElementById("due-date");
+  const urgent_tasks = document.getElementById("todo-status-urgent");
+  let urgent_tasks_months = document.getElementById("months");
+  let urgent_tasks_day = document.getElementById("day");
+  let urgent_tasks_year = document.getElementById("year");
   let Todos_urgent = [];
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December",];
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
   for (let i = 0; i < tasks.length; i++) {
     const urgent = tasks[i];
     let priority = urgent.priority;
     let dueDate = urgent.dueDate;
+    let newDueDate = new Date(dueDate);
 
     if (priority == "urgent") {
       Todos_urgent.push(priority);
-      due_date.innerText = dueDate;
+      urgent_tasks_months.innerText = months[newDueDate.getMonth()];
+      urgent_tasks_day.innerText = newDueDate.getDay();
+      urgent_tasks_year.innerText = newDueDate.getFullYear();
     }
     urgent_tasks.innerText = Todos_urgent.length;
   }
 }
-/* date format kommende neue Function*/
 
-// let newDueDate = new Date(dueDate);
-// console.log(newDueDate);
-// console.log(newDueDate.getDay());
-// console.log(newDueDate.getFullYear());
+
