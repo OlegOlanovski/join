@@ -7,6 +7,14 @@ body {
   background-color: #f4f4f4;
 }
 
+.content-wrepper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1440px;
+}
+
 .login_page {
   height: 80px;
   display: flex;
