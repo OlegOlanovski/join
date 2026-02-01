@@ -332,6 +332,7 @@ body {
 .card {
   width: 252px;
   max-width: 252px;
+  height: 250px;
   background: #ffffff;
   border-radius: 24px;
   padding: 16px;
@@ -339,6 +340,7 @@ body {
   cursor: grab;
   user-select: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: auto;
 }
 
 .card:hover {
