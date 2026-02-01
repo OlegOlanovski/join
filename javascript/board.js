@@ -109,11 +109,15 @@ function buildCardHtml(task) {
   const labelText = getLabelText(task);
   const labelClass = getLabelClass(task);
   let html = "";
+  html += '<div class="card-content">';
   html += '<div class="label ' + labelClass + '">' + labelText + "</div>";
   html += '<div class="title">' + escapeHtml(task.title || "") + "</div>";
   html += '<div class="desc">' + escapeHtml(task.description || "") + "</div>";
+  html += "</div>";
+  html += '<div class="card-bottom">';
   html += buildCardSubtaskProgressHtml(task);
   html += buildCardFooterHtml(task);
+  html += "</div>";
   return html;
 }
 

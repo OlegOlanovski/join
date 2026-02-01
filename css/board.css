@@ -340,7 +340,18 @@ body {
   cursor: grab;
   user-select: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-content {
+  flex: 1 1 auto;
   overflow: auto;
+  padding-right: 6px;
+}
+
+.card-bottom {
+  flex-shrink: 0;
 }
 
 .card:hover {
@@ -426,6 +437,7 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-top: 4px;
+  flex-shrink: 0;
 }
 
 .card-contacts {
