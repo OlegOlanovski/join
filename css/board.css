@@ -693,6 +693,29 @@ body {
 .task-overlay-subtask input {
   width: 18px;
   height: 18px;
+  appearance: none;
+  border: 2px solid #2a3647;
+  border-radius: 4px;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.task-overlay-subtask input:checked {
+  background: #2a3647;
+  border-color: #2a3647;
+}
+
+.task-overlay-subtask input:checked::after {
+  content: "";
+  width: 6px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-top: -1px;
 }
 
 /* Edit form */

@@ -437,7 +437,7 @@ function renderOverlaySubtasks(task) {
   const subs = Array.isArray(task.subtasks) ? task.subtasks : [];
   if (!subs.length) return showNoSubtasks(subtasksWrap);
   for (let i = 0; i < subs.length; i++) {
-    subtasksWrap.appendChild(createSubtaskRow(subs[i]));
+    subtasksWrap.appendChild(createSubtaskRow(subs[i], i, task.id));
   }
 }
 
@@ -445,19 +445,21 @@ function showNoSubtasks(wrap) {
   wrap.textContent = "No subtasks";
 }
 
-function createSubtaskRow(subtask) {
+function createSubtaskRow(subtask, index, taskId) {
   const row = document.createElement("div");
   row.className = "task-overlay-subtask";
-  row.appendChild(createSubtaskCheckbox(subtask));
+  row.appendChild(createSubtaskCheckbox(subtask, index, taskId));
   row.appendChild(createSubtaskLabel(subtask));
   return row;
 }
 
-function createSubtaskCheckbox(subtask) {
+function createSubtaskCheckbox(subtask, index, taskId) {
   const box = document.createElement("input");
   box.type = "checkbox";
   box.checked = !!subtask.done;
-  box.disabled = true;
+  box.addEventListener("change", function () {
+    updateSubtaskDone(taskId, index, box.checked);
+  });
   return box;
 }
 
@@ -465,6 +467,46 @@ function createSubtaskLabel(subtask) {
   const label = document.createElement("span");
   label.textContent = subtask.title || "";
   return label;
+}
+
+function updateSubtaskDone(taskId, subIndex, done) {
+  const tasks = getTasks();
+  const idx = findTaskIndexById(taskId, tasks);
+  if (idx < 0) return;
+  const task = tasks[idx];
+  if (!Array.isArray(task.subtasks) || !task.subtasks[subIndex]) return;
+  task.subtasks[subIndex].done = !!done;
+  saveTasks(tasks);
+  updateCardSubtaskProgress(task);
+}
+
+function updateCardSubtaskProgress(task) {
+  const card = document.querySelector('.card[data-id="' + task.id + '"]');
+  if (!card) return;
+  const subs = Array.isArray(task.subtasks) ? task.subtasks : [];
+  const total = subs.length;
+  const existing = card.querySelector(".card-progress");
+  if (!total) {
+    if (existing) existing.remove();
+    return;
+  }
+  const done = countDoneSubtasks(subs);
+  const percent = Math.round((done / total) * 100);
+  let progress = existing;
+  if (!progress) {
+    const bottom = card.querySelector(".card-bottom");
+    if (!bottom) return;
+    progress = document.createElement("div");
+    progress.className = "card-progress";
+    progress.innerHTML =
+      '<div class="card-progress-bar"><div class="card-progress-fill"></div></div>' +
+      '<div class="card-progress-text"></div>';
+    bottom.insertBefore(progress, bottom.firstChild);
+  }
+  const fill = progress.querySelector(".card-progress-fill");
+  const text = progress.querySelector(".card-progress-text");
+  if (fill) fill.style.width = percent + "%";
+  if (text) text.textContent = done + "/" + total;
 }
 
 function showOverlay() {
