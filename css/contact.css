@@ -631,20 +631,76 @@ input::placeholder {
   line-height: 1;
 }
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 9999;
 
-.modal {
-  transform: translateX(120px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   opacity: 0;
-  transition: transform 250ms ease-out, opacity 250ms ease-out;
+  pointer-events: none;
+  transition: opacity 220ms ease;
 }
 
-.modal.is-open {
+.modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  transform: translateX(120%);
+  opacity: 0;
+
+  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 220ms ease;
+  will-change: transform, opacity;
+}
+
+.modal-backdrop.is-open .modal {
   transform: translateX(0);
   opacity: 1;
 }
 
-.modal.is-closing {
-  transform: translateX(120px);
+.modal-backdrop.is-closing .modal {
+  transform: translateX(120%);
   opacity: 0;
-  transition: transform 200ms ease-in, opacity 200ms ease-in;
+}
+
+.modal-backdrop.is-closing {
+  opacity: 0;
+  pointer-events: none;
+}
+#addContactModal {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+
+#addContactModal .modal {
+  transform: translateX(140px);
+  opacity: 0;
+  transition: transform 300ms ease, opacity 300ms ease;
+}
+
+#addContactModal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#addContactModal.is-open .modal {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+#addContactModal.is-closing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#addContactModal.is-closing .modal {
+  transform: translateX(140px);
+  opacity: 0;
 }
