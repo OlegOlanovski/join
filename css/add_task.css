@@ -1,3 +1,8 @@
+.content-wrepper{
+  max-width: 1140px;
+  
+}
+
 .kpi-panel-task {
   display: flex;
   flex-direction: row;
@@ -349,7 +354,8 @@ label .label-star {
   }
 
   .kpi-panel-task-footer {
-    margin-bottom: 25px;
+    margin-bottom: 80px;
+    margin-top: 0px;
   }
 }
 
@@ -364,4 +370,16 @@ label .label-star {
     width: 100%;
     height: 46px;
   }
+
+  .kpi-panel-task-footer {
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 80px;
+    margin-top: 0px;
+
+  }
+  .create-task-button{
+    margin-top: 5px;
+  }
+  
 }
