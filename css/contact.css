@@ -632,3 +632,7 @@ input::placeholder {
   line-height: 1;
 }
 
+.modal-initials {
+  transform: translateX(100%);
+  transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+}
