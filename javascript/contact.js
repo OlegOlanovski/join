@@ -261,30 +261,7 @@ function handleClick(e) {
     }, { once:true });
   }
 
-  function closeModal(){
-    let m = getEl("addContactModal");
-    if (!m) return;
   
-    m.classList.remove("is-open");
-    m.classList.add("is-closing");
-  
-    let box = m.querySelector(".modal");
-    if (!box) return removeModalNow();
-  
-    let done = false;
-  
-    function finish(){
-      if (done) return;
-      done = true;
-      removeModalNow();
-    }
-  
-    box.addEventListener("transitionend", function(e){
-      if (e.propertyName === "transform") finish();
-    }, { once:true });
-  
-    setTimeout(finish, 500);
-  }
 
   let act = e.target.closest(".contact-action");
   if (act && act.dataset.action && act.dataset.id) {
