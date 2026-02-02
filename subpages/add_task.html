@@ -1,152 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/summary.css">
-    <link rel="stylesheet" href="../css/add_task.css">
-    <title>Add Task</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/summary.css">
+        <link rel="stylesheet" href="../css/add_task.css">
+        <title>Add Task</title>
+    </head>
 
-<body>
-    <div class="content-wrepper">
-    <div class="layout">
-
-
-        <aside class="sidebar">
-            <div class="logo">
-                <img src="../assets/icons/logo-white.svg" alt="Join">
-            </div>
-
-            <nav class="menu">
-                <ul>
-                    <li><a href="./summary.html"><img src="../assets/icons/summary-gray.svg" alt="">Summary</a></li>
-                    <li><a href="./add_task.html"><img src="../assets/icons/addTask-gray.svg" alt="">Add Task</a></li>
-                    <li><a href="./board.html"><img src="../assets/icons/board-gray.svg" alt="">Board</a></li>
-                    <li><a href="./contact.html"><img src="../assets/icons/contacts-gray.svg" alt="">Contacts</a></li>
-                </ul>
-            </nav>
-
-            <div class="sidebar-footer">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Legal notice</a>
-            </div>
-        </aside>
+    <body>
+        <div class="content-wrepper">
+            <div class="layout">
 
 
-        <div class="cantainer">
-            <div class="main">
-
-                <header class="header">
-                    <div class="header-title">Kanban Project Management Tool</div>
-                    <div class="header-right">
-                        <a class="header-help">?</a>
-                        <div class="header-user">SM</div>
-                    </div>
-                </header>
-
-                <div class="summary-section">
-                    <div class="summary-headline">
-                        <h1 class="summary-title">Add Task</h1>
-                    </div>
-                </div>
-
-                <div class="kpi-panel-task">
-
-
-                    <div class="form_1">
-                        <form class="form-details">
-                            <label for="titel">Title <span class="label-star">*</span></label>
-                            <input type="text" id="titel" placeholder="Enter a title">
-
-                            <label for="description">Description</label>
-                            <textarea id="description" placeholder="Enter a description"></textarea>
-
-                            <label for="date">Due date <span class="label-star">*</span></label>
-                            <input type="date" id="date">
-                        </form>
+                <aside class="sidebar">
+                    <div class="logo">
+                        <img src="../assets/icons/logo-white.svg" alt="Join">
                     </div>
 
-                    <span class="form-separator"></span>
+                    <nav class="menu">
+                        <ul>
+                            <li><a href="./summary.html"><img src="../assets/icons/summary-gray.svg" alt="">Summary</a>
+                            </li>
+                            <li><a href="./add_task.html"><img src="../assets/icons/addTask-gray.svg" alt="">Add
+                                    Task</a></li>
+                            <li><a href="./board.html"><img src="../assets/icons/board-gray.svg" alt="">Board</a></li>
+                            <li><a href="./contact.html"><img src="../assets/icons/contacts-gray.svg"
+                                        alt="">Contacts</a></li>
+                        </ul>
+                    </nav>
+
+                    <div class="sidebar-footer">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Legal notice</a>
+                    </div>
+                </aside>
 
 
-                    <div class="form_2">
-                        <form class="form-details">
+                <div class="cantainer">
+                    <div class="main">
 
-                            <label>Priority</label>
-                            <div class="priority-section">
-                                <li class="priority-btn urgent">
-                                    Urgent <img class="btn-icon" src="../assets/icons/Prio alta.svg">
-                                </li>
-                                <li class="priority-btn medium">
-                                    Medium <img class="btn-icon" src="../assets/icons/Prio media.svg">
-                                </li>
-                                <li class="priority-btn low">
-                                    Low <img class="btn-icon" src="../assets/icons/Prio baja.svg">
-                                </li>
+                        <header class="header">
+                            <div class="header-title">Kanban Project Management Tool</div>
+                            <div class="header-right">
+                                <a class="header-help">?</a>
+                                <div class="header-user">SM</div>
+                            </div>
+                        </header>
+
+                        <div class="summary-section">
+                            <div class="summary-headline">
+                                <h1 class="summary-title">Add Task</h1>
+                            </div>
+                        </div>
+
+                        <div class="kpi-panel-task">
+
+
+                            <div class="form_1">
+                                <form class="form-details">
+                                    <label for="titel">Title <span class="label-star">*</span></label>
+                                    <input type="text" id="titel" placeholder="Enter a title">
+
+                                    <label for="description">Description</label>
+                                    <textarea id="description" placeholder="Enter a description"></textarea>
+
+                                    <label for="date">Due date <span class="label-star">*</span></label>
+                                    <input type="date" id="date">
+                                </form>
                             </div>
 
-                            <label for="assigned">Assigned to</label>
-                            <select id="assigned">
-                                <option value="">Select contacts to assign</option>
-                            </select>
+                            <span class="form-separator"></span>
 
-                            <label for="category">Category <span class="label-star">*</span></label>
-                            <select id="category">
-                                <option value="">Select task category</option>
-                                <option value="user">User Story</option>
-                                <option value="tech">Technical Task</option>
-                            </select>
 
-                            <label for="subtasks">Subtasks</label>
-                            <div class="subtasks-input">
-                                <input type="text" id="subtasks" placeholder="Add new subtask">
-                                <button type="button" id="addSubtaskBtn" class="subtasks-add-btn" aria-label="Add subtask">
-                                    <img src="../assets/icons/check.svg" alt="">
+                            <div class="form_2">
+                                <form class="form-details">
+
+                                    <label>Priority</label>
+                                    <div class="priority-section">
+                                        <li class="priority-btn urgent">
+                                            Urgent <img class="btn-icon" src="../assets/icons/Prio alta.svg">
+                                        </li>
+                                        <li class="priority-btn medium">
+                                            Medium <img class="btn-icon" src="../assets/icons/Prio media.svg">
+                                        </li>
+                                        <li class="priority-btn low">
+                                            Low <img class="btn-icon" src="../assets/icons/Prio baja.svg">
+                                        </li>
+                                    </div>
+
+                                    <label for="assigned">Assigned to</label>
+                                    <div class="multi-select">
+                                        <div class="multi-select-input" id="assignedInput">
+                                            <span id="assignedText">Select contacts to assign</span>
+                                            <span class="dropdown-arrow" id="dropdownArrow">▼</span>
+                                        </div>
+                                    
+                                        <div class="multi-select-dropdown hidden" id="assignedDropdown"></div>
+                                    </div>
+
+                                    <!-- <select id="assigned">
+                                        <option value="">Select contacts to assign</option>
+                                    </select> -->
+
+                                    <label for="category">Category <span class="label-star">*</span></label>
+                                    <select id="category">
+                                        <option value="">Select task category</option>
+                                        <option value="user">User Story</option>
+                                        <option value="tech">Technical Task</option>
+                                    </select>
+
+                                    <label for="subtasks">Subtasks</label>
+                                    <div class="subtasks-input">
+                                        <input type="text" id="subtasks" placeholder="Add new subtask">
+                                        <button type="button" id="addSubtaskBtn" class="subtasks-add-btn"
+                                            aria-label="Add subtask">
+                                            <img src="../assets/icons/check.svg" alt="">
+                                        </button>
+                                    </div>
+                                    <ul id="subtasksList" class="subtasks-list"></ul>
+                                </form>
+                            </div>
+                        </div>
+
+
+                        <div class="kpi-panel-task-footer">
+                            <span>*This field is required</span>
+
+                            <div class="create-task-button">
+                                <button type="button" class="primary-btn --primary-btn-cancel">
+                                    Clear <img class="btn-icon" src="../assets/icons/iconoir_cancel.svg">
+                                </button>
+
+                                <button type="button" id="createTaskBtn" class="primary-btn">
+                                    Create Task <img class="btn-icon" src="../assets/icons/check.svg">
                                 </button>
                             </div>
-                            <ul id="subtasksList" class="subtasks-list"></ul>
-                        </form>
+                        </div>
+
                     </div>
                 </div>
 
-
-                <div class="kpi-panel-task-footer">
-                    <span>*This field is required</span>
-
-                    <div class="create-task-button">
-                        <button type="button" class="primary-btn --primary-btn-cancel">
-                            Clear <img class="btn-icon" src="../assets/icons/iconoir_cancel.svg">
-                        </button>
-
-                        <button type="button" id="createTaskBtn" class="primary-btn">
-                            Create Task <img class="btn-icon" src="../assets/icons/check.svg">
-                        </button>
+                <div class="modal-overlay" id="validationModal" aria-hidden="true">
+                    <div class="modal-card" role="dialog" aria-labelledby="validationTitle" aria-modal="true">
+                        <div class="modal-header">
+                            <span class="modal-title" id="validationTitle">Missing required fields</span>
+                            <button type="button" class="modal-close" id="validationClose" aria-label="Close">×</button>
+                        </div>
+                        <div class="modal-body">
+                            Please fill all required fields.
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="primary-btn modal-ok" id="validationOk">OK</button>
+                        </div>
                     </div>
                 </div>
 
+                <script src="../javascript/add_task.js" defer></script>
             </div>
         </div>
-
-        <div class="modal-overlay" id="validationModal" aria-hidden="true">
-            <div class="modal-card" role="dialog" aria-labelledby="validationTitle" aria-modal="true">
-                <div class="modal-header">
-                    <span class="modal-title" id="validationTitle">Missing required fields</span>
-                    <button type="button" class="modal-close" id="validationClose" aria-label="Close">×</button>
-                </div>
-                <div class="modal-body">
-                    Please fill all required fields.
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="primary-btn modal-ok" id="validationOk">OK</button>
-                </div>
-            </div>
-        </div>
-
-        <script src="../javascript/add_task.js" ></script>
-    </div>
-    </div>
-</body>
+    </body>
 
 </html>
