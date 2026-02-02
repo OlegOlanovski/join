@@ -63,43 +63,25 @@ function forceCloseModal() {
 
 function openModal(mode, contact) {
   forceCloseModal();
-
   let data = { id: "", name: "", email: "", phone: "", initials: "", colorClass: "" };
-  if (contact) {
-    data = {
-      id: contact.id,
-      name: contact.name,
-      email: contact.email,
-      phone: contact.phone || "",
-      initials: getInitials(contact.name),
-      colorClass: colorClassFor(contact.email || contact.name)
-    };
-  }
-
+  if (contact) data = { id: contact.id, name: contact.name, email: contact.email, phone: contact.phone || "", initials: getInitials(contact.name), colorClass: colorClassFor(contact.email || contact.name) };
   document.body.insertAdjacentHTML("beforeend", contactModalTemplate(mode, data));
-
-  let m = document.getElementById("addContactModal");
-  if (!m) return;
-
+  let m = document.getElementById("addContactModal"); if (!m) return;
   m.classList.remove("d-none");
-
-  requestAnimationFrame(() => {
-    m.querySelector(".modal")?.classList.add("open");
-  });
+  let box = m.querySelector(".modal");
+  if (box && box.animate) box.animate([{ transform: "translateX(120px)", opacity: 0 }, { transform: "translateX(0)", opacity: 1 }], { duration: 250, easing: "ease-out", fill: "forwards" });
 }
 
 function closeModal() {
   let m = document.getElementById("addContactModal");
   if (!m) return;
-
   let box = m.querySelector(".modal");
-  if (!box) return;
-
-  box.classList.remove("open");
-
-  setTimeout(() => {
-    forceCloseModal();
-  }, 600);
+  if (box && box.animate) {
+    let a = box.animate([{ transform: "translateX(0)", opacity: 1 }, { transform: "translateX(120px)", opacity: 0 }], { duration: 200, easing: "ease-in", fill: "forwards" });
+    a.onfinish = function () { forceCloseModal(); };
+    return;
+  }
+  forceCloseModal();
 }
 
 function renderContactsList() {
@@ -159,14 +141,8 @@ function handleClick(e) {
   }
   if (e.target.closest("#closeAddContact")) { closeModal(); return; }
   let sec = e.target.closest("#modalSecondaryBtn");
-  if (sec) {
-    let form = document.getElementById("addContactForm"), id = form ? form.dataset.editId : "";
-    if (sec.dataset.action === "cancel") closeModal();
-    if (sec.dataset.action === "delete" && id) { deleteContact(id); closeModal(); }
-    return;
-  }
-  let back = document.getElementById("addContactModal");
-  if (back && e.target === back) closeModal();
+  if (sec) { let form = document.getElementById("addContactForm"), id = form ? form.dataset.editId : ""; if (sec.dataset.action === "cancel") closeModal(); if (sec.dataset.action === "delete" && id) { deleteContact(id); closeModal(); } return; }
+  let back = document.getElementById("addContactModal"); if (back && e.target === back) closeModal();
 }
 
 function handleSubmit(e) {
