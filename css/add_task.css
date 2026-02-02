@@ -163,7 +163,7 @@ label {
   margin: 12px 0 4px;
 }
 
-.form-details > label:first-child {
+.form-details>label:first-child {
   margin-top: 0;
 }
 
@@ -227,8 +227,7 @@ option {
 }
 
 .priority-btn.medium .btn-icon {
-  filter: brightness(0) saturate(100%) invert(57%) sepia(88%) saturate(749%)
-    hue-rotate(1deg) brightness(103%) contrast(103%);
+  filter: brightness(0) saturate(100%) invert(57%) sepia(88%) saturate(749%) hue-rotate(1deg) brightness(103%) contrast(103%);
 }
 
 .priority-btn.--selected {
@@ -327,4 +326,42 @@ label .label-star {
 .modal-actions .modal-ok {
   height: 42px;
   width: 110px;
+}
+
+
+@media (max-width: 850px) {
+  .kpi-panel-task {
+    flex-direction: column;
+  }
+
+  .form_1 {
+    width: 100%;
+  }
+
+  .form-separator {
+    width: 100%;
+    height: 2px;
+    margin: 15px 0 15px 0;
+  }
+
+  .form_2 {
+    width: 100%;
+  }
+
+  .kpi-panel-task-footer {
+    margin-bottom: 25px;
+  }
+}
+
+@media (max-width: 350px) {
+  .priority-section {
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .priority-section li{
+    width: 100%;
+    height: 46px;
+  }
 }
