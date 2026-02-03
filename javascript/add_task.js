@@ -1,123 +1,84 @@
-// ADD TASK → SAVE TO STORAGE
+// ================== ADD TASK → SAVE TO STORAGE ==================
 
 let selectedPriority = null;
 let pendingSubtasks = [];
+const selectedContacts = new Set();
 
+// ------------------ INIT ------------------
 document.addEventListener("DOMContentLoaded", () => {
-  const createBtn = document.getElementById("createTaskBtn");
-  const clearBtn = document.querySelector(".primary-btn.--primary-btn-cancel");
-  if (!createBtn) return;
-  const subtaskInput = document.getElementById("subtasks");
-  const addSubtaskBtn = document.getElementById("addSubtaskBtn");
-  const subtaskList = document.getElementById("subtasksList");
-  const modal = document.getElementById("validationModal");
-  const modalOk = document.getElementById("validationOk");
-  const modalClose = document.getElementById("validationClose");
   populateAssignedContacts();
+  initPriorityButtons();
+  initSubtasks();
+  initAssignedDropdown();
+  initValidationModal();
 
-  // Priority buttons: read value on click
-  const priorityBtns = document.querySelectorAll(".priority-section .priority-btn");
-  priorityBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      priorityBtns.forEach((b) => b.classList.remove("--selected"));
-      btn.classList.add("--selected");
-      selectedPriority = btn.textContent.trim();
-      console.log("Priority selected:", selectedPriority);
-    });
-  });
-  const defaultBtn = document.querySelector(".priority-section .priority-btn.medium");
-  if (defaultBtn) {
-    defaultBtn.classList.add("--selected");
-    selectedPriority = defaultBtn.textContent.trim();
-  }
+  const root = getAddTaskRoot();
+  const createBtn = root.querySelector("#createTaskBtn");
+  const clearBtn = root.querySelector(".primary-btn.--primary-btn-cancel");
 
-  if (addSubtaskBtn && subtaskInput) {
-    addSubtaskBtn.addEventListener("click", addSubtasksFromInput);
-    subtaskInput.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        addSubtasksFromInput();
-      }
-    });
-  }
-
-  if (subtaskList) {
-    subtaskList.addEventListener("click", (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLElement)) return;
-      const removeBtn = target.closest(".subtasks-remove");
-      if (!removeBtn) return;
-      const index = Number(removeBtn.dataset.index);
-      if (Number.isNaN(index)) return;
-      pendingSubtasks.splice(index, 1);
-      renderSubtasks();
-    });
-  }
-
-  createBtn.addEventListener("click", createTask);
-  if (clearBtn) {
-    clearBtn.addEventListener("click", clearForm);
-  }
-
-  if (modalOk) {
-    modalOk.addEventListener("click", closeValidationModal);
-  }
-  if (modalClose) {
-    modalClose.addEventListener("click", closeValidationModal);
-  }
-  if (modal) {
-    modal.addEventListener("click", (event) => {
-      if (event.target === modal) closeValidationModal();
-    });
-  }
+  if (createBtn) createBtn.addEventListener("click", createTask);
+  if (clearBtn) clearBtn.addEventListener("click", clearForm);
 });
 
-function populateAssignedContacts() {
-  const assigned = document.getElementById("assigned");
-  if (!assigned) return;
-  const contacts = loadContactsFromStorage();
-  assigned.innerHTML = "";
-  const placeholder = document.createElement("option");
-  placeholder.value = "";
-  placeholder.textContent = "Select contacts to assign";
-  assigned.appendChild(placeholder);
-  for (let i = 0; i < contacts.length; i++) {
-    const c = contacts[i];
-    if (!c || !c.id || !c.name) continue;
-    const opt = document.createElement("option");
-    opt.value = String(c.id);
-    opt.textContent = c.name;
-    assigned.appendChild(opt);
-  }
+// ------------------ PRIORITY ------------------
+function initPriorityButtons() {
+  const buttons = getAddTaskRoot().querySelectorAll(".priority-section .priority-btn");
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      buttons.forEach((b) => b.classList.remove("--selected"));
+      btn.classList.add("--selected");
+      selectedPriority = btn.textContent.trim();
+    });
+  });
+
+  setDefaultPriority();
 }
 
-function loadContactsFromStorage() {
-  try {
-    const raw = localStorage.getItem("join_contacts_v1");
-    const list = raw ? JSON.parse(raw) : [];
-    return Array.isArray(list) ? list : [];
-  } catch {
-    return [];
+function setDefaultPriority() {
+  const root = getAddTaskRoot();
+  const defaultBtn = root.querySelector(".priority-btn.medium");
+  if (!defaultBtn) return;
+  root
+    .querySelectorAll(".priority-section .priority-btn")
+    .forEach((b) => b.classList.remove("--selected"));
+  defaultBtn.classList.add("--selected");
+  selectedPriority = defaultBtn.textContent.trim();
+}
+
+// ------------------ SUBTASKS ------------------
+function initSubtasks() {
+  const input = document.getElementById("subtasks");
+  const btn = document.getElementById("addSubtaskBtn");
+  const list = document.getElementById("subtasksList");
+
+  if (btn && input) {
+    btn.onclick = addSubtasksFromInput;
+    input.onkeydown = (e) => e.key === "Enter" && addSubtasksFromInput();
+  }
+
+  if (list) {
+    list.onclick = (e) => {
+      const remove = e.target.closest(".subtasks-remove");
+      if (!remove) return;
+      pendingSubtasks.splice(remove.dataset.index, 1);
+      renderSubtasks();
+    };
   }
 }
 
 function addSubtasksFromInput() {
   const input = document.getElementById("subtasks");
-  if (!input) return;
-  const rawValue = input.value.trim();
-  if (!rawValue) return;
+  if (!input || !input.value.trim()) return;
 
-  const titles = rawValue
+  input.value
     .split(/[,\n;]+/)
-    .map((value) => value.trim())
-    .filter(Boolean);
-
-  if (!titles.length) return;
-
-  titles.forEach((title) => {
-    if (pendingSubtasks.length >= 3) return;
-    pendingSubtasks.push({ title, done: false });
-  });
+    .map((t) => t.trim())
+    .forEach((title) => {
+      if (pendingSubtasks.length < 3) {
+        pendingSubtasks.push({ title, done: false });
+      }
+    });
 
   input.value = "";
   renderSubtasks();
@@ -126,65 +87,196 @@ function addSubtasksFromInput() {
 function renderSubtasks() {
   const list = document.getElementById("subtasksList");
   if (!list) return;
+
   list.innerHTML = "";
-
-  pendingSubtasks.forEach((subtask, index) => {
-    const item = document.createElement("li");
-    item.className = "subtasks-item";
-
-    const title = document.createElement("span");
-    title.className = "subtasks-title";
-    title.textContent = subtask.title;
-
-    const removeBtn = document.createElement("button");
-    removeBtn.type = "button";
-    removeBtn.className = "subtasks-remove";
-    removeBtn.dataset.index = String(index);
-    removeBtn.textContent = "x";
-
-    item.appendChild(title);
-    item.appendChild(removeBtn);
-    list.appendChild(item);
+  pendingSubtasks.forEach((s, i) => {
+    list.innerHTML += `
+      <li class="subtasks-item">
+        <span>${s.title}</span>
+        <button class="subtasks-remove" data-index="${i}">x</button>
+      </li>`;
   });
 }
 
+// ------------------ CONTACTS / MULTI SELECT ------------------
+function populateAssignedContacts() {
+  const dropdown = document.getElementById("assignedDropdown");
+  if (!dropdown) return;
+
+  dropdown.innerHTML = "";
+  loadContactsFromStorage().forEach((c) => {
+    if (!c?.id || !c?.name) return;
+
+    const row = document.createElement("div");
+    row.className = "contact-option";
+    row.innerHTML = `
+    <div class="contact-avatar">${getInitials(c.name)}</div>
+    <span>${c.name}</span>
+    <input type="checkbox" ${selectedContacts.has(c.id) ? "checked" : ""}>
+    `;
+
+    row.onclick = () => toggleContact(c.id);
+    dropdown.appendChild(row);
+  });
+}
+
+function toggleContact(id) {
+  selectedContacts.has(id)
+    ? selectedContacts.delete(id)
+    : selectedContacts.add(id);
+
+  populateAssignedContacts();
+  renderSelectedContacts();
+}
+
+function renderSelectedContacts() {
+  const text = document.getElementById("assignedText");
+
+  if (!selectedContacts.size) {
+    text.textContent = "Select contacts to assign";
+    return;
+  }
+
+  text.innerHTML = [...selectedContacts]
+    .map((id) => {
+      const c = loadContactsFromStorage().find((x) => x.id === id);
+      return `<span class="contact-avatar">${getInitials(c.name)}</span>`;
+    })
+    .join("");
+}
+
+function initAssignedDropdown() {
+  const input = document.getElementById("assignedInput");
+  const dropdown = document.getElementById("assignedDropdown");
+  const arrow = document.getElementById("dropdownArrow");
+  if (!input || !dropdown || !arrow) return;
+
+  input.onclick = () => {
+    dropdown.classList.toggle("hidden");
+    arrow.classList.toggle("open");
+  };
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".multi-select")) {
+      dropdown.classList.add("hidden");
+      arrow.classList.remove("open");
+    }
+  });
+}
+
+// ------------------ TASK CREATE ------------------
 function createTask() {
   const title = document.getElementById("titel").value.trim();
   const description = document.getElementById("description").value.trim();
   const dueDate = document.getElementById("date").value;
   const category = document.getElementById("category").value;
-  const assignedValue = document.getElementById("assigned").value;
 
   if (!title || !dueDate || !category) {
     openValidationModal();
     return;
   }
 
-  const priority = selectedPriority || "";
-
-  addSubtasksFromInput();
-  const subtasks = pendingSubtasks.slice();
-
-  const params = new URLSearchParams(window.location.search);
-  const status = params.get("status") || "todo";
-
-  const newTask = {
+  const task = {
     id: Date.now().toString(),
     title,
     description,
     dueDate,
     category,
-    priority,
-    status,
-    subtasks,
-    assigned: assignedValue || "",
+    priority: selectedPriority,
+    status: getAddTaskStatus(),
+    subtasks: [...pendingSubtasks],
+    assigned: [...selectedContacts],
   };
 
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  tasks.push(newTask);
+  tasks.push(task);
   localStorage.setItem("tasks", JSON.stringify(tasks));
 
-  window.location.href = "./board.html";
+  const overlay = document.getElementById("addTaskOverlayBackdrop");
+  if (overlay) {
+    if (typeof closeAddTaskOverlay === "function") closeAddTaskOverlay();
+    if (typeof renderBoardFromStorage === "function") renderBoardFromStorage();
+    if (typeof updateEmptyStates === "function") updateEmptyStates();
+    return;
+  }
+
+  location.href = "./board.html";
+}
+
+// ------------------ STORAGE ------------------
+function loadContactsFromStorage() {
+  try {
+    return JSON.parse(localStorage.getItem("join_contacts_v1")) || [];
+  } catch {
+    return [];
+  }
+}
+
+// ------------------ HELPERS ------------------
+function getInitials(name) {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
+}
+
+// ------------------ CLEAR ------------------
+function clearForm() {
+  const root = getAddTaskRoot();
+  const title = document.getElementById("titel");
+  const description = document.getElementById("description");
+  const dueDate = document.getElementById("date");
+  const category = document.getElementById("category");
+  const assigned = document.getElementById("assigned");
+  const subtaskInput = document.getElementById("subtasks");
+  const priorityBtns = root.querySelectorAll(".priority-section li");
+  if (title) title.value = "";
+  if (description) description.value = "";
+  if (dueDate) dueDate.value = "";
+  if (category) category.value = "";
+  if (assigned) assigned.value = "";
+  if (subtaskInput) subtaskInput.value = "";
+  if (selectedContacts) selectedContacts.clear();
+  pendingSubtasks = [];
+  renderSubtasks();
+  priorityBtns.forEach((btn) => btn.classList.remove("--selected"));
+  selectedPriority = null;
+  populateAssignedContacts();
+  renderSelectedContacts();
+  setDefaultPriority();
+}
+
+function resetAddTaskForm() {
+  clearForm();
+}
+
+function getAddTaskRoot() {
+  return document.getElementById("addTaskRoot") || document;
+}
+
+// ------------------ ADD TASK CONTEXT ------------------
+function getAddTaskStatus() {
+  const overlay = document.getElementById("addTaskOverlayBackdrop");
+  if (overlay && overlay.dataset && overlay.dataset.status) {
+    return overlay.dataset.status;
+  }
+  return new URLSearchParams(location.search).get("status") || "todo";
+}
+
+// ------------------ VALIDATION MODAL ------------------
+function initValidationModal() {
+  const modal = document.getElementById("validationModal");
+  const closeBtn = document.getElementById("validationClose");
+  const okBtn = document.getElementById("validationOk");
+  if (!modal) return;
+
+  if (closeBtn) closeBtn.addEventListener("click", closeValidationModal);
+  if (okBtn) okBtn.addEventListener("click", closeValidationModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeValidationModal();
+  });
 }
 
 function openValidationModal() {
@@ -199,27 +291,4 @@ function closeValidationModal() {
   if (!modal) return;
   modal.classList.remove("is-open");
   modal.setAttribute("aria-hidden", "true");
-}
-
-function clearForm() {
-  const title = document.getElementById("titel");
-  const description = document.getElementById("description");
-  const dueDate = document.getElementById("date");
-  const category = document.getElementById("category");
-  const assigned = document.getElementById("assigned");
-  const subtaskInput = document.getElementById("subtasks");
-  const priorityBtns = document.querySelectorAll(".priority-section li");
-
-  if (title) title.value = "";
-  if (description) description.value = "";
-  if (dueDate) dueDate.value = "";
-  if (category) category.value = "";
-  if (assigned) assigned.value = "";
-  if (subtaskInput) subtaskInput.value = "";
-
-  pendingSubtasks = [];
-  renderSubtasks();
-
-  priorityBtns.forEach((btn) => btn.classList.remove("--selected"));
-  selectedPriority = null;
 }
