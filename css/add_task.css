@@ -96,7 +96,7 @@
 
 
 .content-wrepper{
-  max-width: 1140px;
+  max-width: 1920px;
   
 }
 
@@ -105,6 +105,8 @@
   flex-direction: row;
   gap: 5px;
   padding: 35px;
+  width: 100%;
+  justify-content: center;
 }
 
 .form_1 {
