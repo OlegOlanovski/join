@@ -12,6 +12,7 @@ let overlaySelectedPriority = "medium";
 
 document.addEventListener("DOMContentLoaded", function () {
   initRedirects();
+  initAddTaskOverlay();
   renderBoardFromStorage();
   initDragAndDrop();
   initOverlayEvents();
@@ -49,7 +50,47 @@ function getColumnStatus(icon) {
 }
 
 function goToAddTask(status) {
-  window.location.href = ADD_TASK_PAGE + "?status=" + encodeURIComponent(status);
+  openAddTaskOverlay(status);
+}
+
+// ---------------- Add task overlay ----------------
+function initAddTaskOverlay() {
+  const backdrop = document.getElementById("addTaskOverlayBackdrop");
+  if (!backdrop) return;
+
+  const closeBtn = document.getElementById("addTaskOverlayClose");
+  if (closeBtn) closeBtn.addEventListener("click", closeAddTaskOverlay);
+
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop) closeAddTaskOverlay();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (!backdrop.hasAttribute("hidden")) closeAddTaskOverlay();
+  });
+}
+
+function openAddTaskOverlay(status) {
+  const backdrop = document.getElementById("addTaskOverlayBackdrop");
+  if (!backdrop) return;
+  backdrop.dataset.status = status || "todo";
+  backdrop.hidden = false;
+  document.body.classList.add("no-scroll");
+
+  if (typeof resetAddTaskForm === "function") resetAddTaskForm();
+  else if (typeof clearForm === "function") clearForm();
+
+  const titleInput = document.getElementById("titel");
+  if (titleInput) titleInput.focus();
+}
+
+function closeAddTaskOverlay() {
+  const backdrop = document.getElementById("addTaskOverlayBackdrop");
+  if (!backdrop) return;
+  backdrop.hidden = true;
+  document.body.classList.remove("no-scroll");
+  if (typeof clearForm === "function") clearForm();
 }
 
 // ---------------- Storage ----------------

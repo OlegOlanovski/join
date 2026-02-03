@@ -10,9 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initPriorityButtons();
   initSubtasks();
   initAssignedDropdown();
+  initValidationModal();
 
-  const createBtn = document.getElementById("createTaskBtn");
-  const clearBtn = document.querySelector(".primary-btn.--primary-btn-cancel");
+  const root = getAddTaskRoot();
+  const createBtn = root.querySelector("#createTaskBtn");
+  const clearBtn = root.querySelector(".primary-btn.--primary-btn-cancel");
 
   if (createBtn) createBtn.addEventListener("click", createTask);
   if (clearBtn) clearBtn.addEventListener("click", clearForm);
@@ -20,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ------------------ PRIORITY ------------------
 function initPriorityButtons() {
-  const buttons = document.querySelectorAll(".priority-section .priority-btn");
+  const buttons = getAddTaskRoot().querySelectorAll(".priority-section .priority-btn");
 
   buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -30,11 +32,18 @@ function initPriorityButtons() {
     });
   });
 
-  const defaultBtn = document.querySelector(".priority-btn.medium");
-  if (defaultBtn) {
-    defaultBtn.classList.add("--selected");
-    selectedPriority = defaultBtn.textContent.trim();
-  }
+  setDefaultPriority();
+}
+
+function setDefaultPriority() {
+  const root = getAddTaskRoot();
+  const defaultBtn = root.querySelector(".priority-btn.medium");
+  if (!defaultBtn) return;
+  root
+    .querySelectorAll(".priority-section .priority-btn")
+    .forEach((b) => b.classList.remove("--selected"));
+  defaultBtn.classList.add("--selected");
+  selectedPriority = defaultBtn.textContent.trim();
 }
 
 // ------------------ SUBTASKS ------------------
@@ -140,6 +149,7 @@ function initAssignedDropdown() {
   const input = document.getElementById("assignedInput");
   const dropdown = document.getElementById("assignedDropdown");
   const arrow = document.getElementById("dropdownArrow");
+  if (!input || !dropdown || !arrow) return;
 
   input.onclick = () => {
     dropdown.classList.toggle("hidden");
@@ -173,7 +183,7 @@ function createTask() {
     dueDate,
     category,
     priority: selectedPriority,
-    status: new URLSearchParams(location.search).get("status") || "todo",
+    status: getAddTaskStatus(),
     subtasks: [...pendingSubtasks],
     assigned: [...selectedContacts],
   };
@@ -181,6 +191,14 @@ function createTask() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   tasks.push(task);
   localStorage.setItem("tasks", JSON.stringify(tasks));
+
+  const overlay = document.getElementById("addTaskOverlayBackdrop");
+  if (overlay) {
+    if (typeof closeAddTaskOverlay === "function") closeAddTaskOverlay();
+    if (typeof renderBoardFromStorage === "function") renderBoardFromStorage();
+    if (typeof updateEmptyStates === "function") updateEmptyStates();
+    return;
+  }
 
   location.href = "./board.html";
 }
@@ -205,22 +223,72 @@ function getInitials(name) {
 
 // ------------------ CLEAR ------------------
 function clearForm() {
+  const root = getAddTaskRoot();
   const title = document.getElementById("titel");
   const description = document.getElementById("description");
   const dueDate = document.getElementById("date");
   const category = document.getElementById("category");
   const assigned = document.getElementById("assigned");
   const subtaskInput = document.getElementById("subtasks");
-  const priorityBtns = document.querySelectorAll(".priority-section li");
+  const priorityBtns = root.querySelectorAll(".priority-section li");
   if (title) title.value = "";
   if (description) description.value = "";
   if (dueDate) dueDate.value = "";
   if (category) category.value = "";
   if (assigned) assigned.value = "";
   if (subtaskInput) subtaskInput.value = "";
-  if (selectedContacts) selectedContacts.clear(); 
+  if (selectedContacts) selectedContacts.clear();
   pendingSubtasks = [];
   renderSubtasks();
   priorityBtns.forEach((btn) => btn.classList.remove("--selected"));
   selectedPriority = null;
+  populateAssignedContacts();
+  renderSelectedContacts();
+  setDefaultPriority();
+}
+
+function resetAddTaskForm() {
+  clearForm();
+}
+
+function getAddTaskRoot() {
+  return document.getElementById("addTaskRoot") || document;
+}
+
+// ------------------ ADD TASK CONTEXT ------------------
+function getAddTaskStatus() {
+  const overlay = document.getElementById("addTaskOverlayBackdrop");
+  if (overlay && overlay.dataset && overlay.dataset.status) {
+    return overlay.dataset.status;
+  }
+  return new URLSearchParams(location.search).get("status") || "todo";
+}
+
+// ------------------ VALIDATION MODAL ------------------
+function initValidationModal() {
+  const modal = document.getElementById("validationModal");
+  const closeBtn = document.getElementById("validationClose");
+  const okBtn = document.getElementById("validationOk");
+  if (!modal) return;
+
+  if (closeBtn) closeBtn.addEventListener("click", closeValidationModal);
+  if (okBtn) okBtn.addEventListener("click", closeValidationModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeValidationModal();
+  });
+}
+
+function openValidationModal() {
+  const modal = document.getElementById("validationModal");
+  if (!modal) return;
+  modal.classList.add("is-open");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closeValidationModal() {
+  const modal = document.getElementById("validationModal");
+  if (!modal) return;
+  modal.classList.remove("is-open");
+  modal.setAttribute("aria-hidden", "true");
 }
