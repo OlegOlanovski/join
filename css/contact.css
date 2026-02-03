@@ -563,28 +563,23 @@ input::placeholder {
 #addContactModal.is-closing .modal {
   transform: translateX(140%);
   opacity: 0;
-  transition-duration: 1400ms, 1400ms; 
+  transition-duration: 4000ms, 4000ms; 
 }
 
 #addContactModal.is-closing {
   opacity: 0;
   pointer-events: none;
-  transition-duration: 1400ms;
+  transition-duration: 2000ms;
 }
 
 
-/* Backdrop – nur Fade */
+
+/* ===== Modal Slide Animation – FINAL ===== */
+
 .modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.25);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 300ms ease;
-  z-index: 9999;
+  transition: opacity 2s ease;
 }
 
 .modal-backdrop.is-open {
@@ -592,24 +587,26 @@ input::placeholder {
   pointer-events: auto;
 }
 
-/* Modal – Slide von rechts */
+.modal-backdrop.is-closing {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .modal {
-  transform: translateX(140%);
+  transform: translateX(120%);
   opacity: 0;
   transition:
-    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 260ms ease;
+    transform 6s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 4s ease;
   will-change: transform, opacity;
 }
 
-/* Öffnen */
 .modal-backdrop.is-open .modal {
   transform: translateX(0);
   opacity: 1;
 }
 
-/* Schließen – langsam zurück nach rechts */
 .modal-backdrop.is-closing .modal {
-  transform: translateX(0);
-  opacity: 1;
+  transform: translateX(120%);
+  opacity: 0;
 }
