@@ -293,9 +293,9 @@ body {
 .avatar-color-10 { background:#C3FF2B; }
 .avatar-color-11 { background:#FFE62B; }
 
+
 /* ============ MODAL ============ */
 
-/* Backdrop */
 #addContactModal {
   position: fixed;
   inset: 0;
@@ -303,16 +303,35 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: none;
+}
 
+/* Backdrop getrennt – beeinflusst NICHT die Modal-Farbe */
+#addContactModal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background: rgba(0, 0, 0, 0.35);
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 650ms ease;
+  transition: opacity 3000ms ease;
 }
 
 #addContactModal.is-open {
-  opacity: 1;
   pointer-events: auto;
+}
+
+#addContactModal.is-open::before {
+  opacity: 1;
+  transition-duration: 1800ms; /* KOMMEN etwas schneller */
+}
+
+#addContactModal.is-closing {
+  pointer-events: none;
+}
+
+#addContactModal.is-closing::before {
+  opacity: 0;
+  transition-duration: 3000ms; /* GEHEN bleibt langsam */
 }
 
 /* Modal Box */
@@ -322,28 +341,24 @@ body {
   display: flex;
   background: transparent;
 
-  transform: translate3d(130%, 18px, 0) scale(0.92);
-  opacity: 0;
+  position: relative;
+  z-index: 1;
 
-  will-change: transform, opacity;
-  transition:
-    transform 650ms cubic-bezier(.2,.85,.2,1),
-    opacity 650ms ease;
+  transform: translate3d(130%, 18px, 0) scale(0.97);
+  will-change: transform;
+  transition: transform 3000ms cubic-bezier(.2,.85,.2,1);
 }
 
+/* KOMMEN – etwas schneller */
 #addContactModal.is-open .modal {
-  transform: translate3d(0, 0, 0) scale(0.92);
-  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(0.97);
+  transition-duration: 900ms;
 }
 
+/* GEHEN – bleibt langsam */
 #addContactModal.is-closing .modal {
-  transform: translate3d(130%, 18px, 0) scale(0.92);
-  opacity: 0;
-}
-
-#addContactModal.is-closing {
-  opacity: 0;
-  pointer-events: none;
+  transform: translate3d(130%, 18px, 0) scale(0.97);
+  transition-duration: 1000ms;
 }
 
 /* Left / Right */
@@ -386,7 +401,7 @@ body {
   border-radius: 0 30px 30px 0;
 }
 
-/* Close Button (Figma-like) */
+/* Close Button */
 .modal-close {
   position: absolute;
   top: 18px;
@@ -395,7 +410,7 @@ body {
   height: 32px;
   border-radius: 50%;
   border: 1px solid rgba(0,0,0,0.08);
-  background: #ffffff;
+  background-color: #ffffff;
   color: #2A3647;
   font-size: 20px;
   line-height: 1;
@@ -532,81 +547,4 @@ input::placeholder {
 .btn-cancel:hover img {
   filter: invert(49%) sepia(77%) saturate(517%)
           hue-rotate(165deg) brightness(95%) contrast(90%);
-}
-
-
-
-#addContactModal {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1200ms ease;
-}
-
-#addContactModal.is-open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-#addContactModal .modal {
-  transform: translateX(140%);
-  opacity: 0;
-  transition:
-    transform 900ms cubic-bezier(.2,.85,.2,1),
-    opacity 900ms ease;
-}
-
-#addContactModal.is-open .modal {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-#addContactModal.is-closing .modal {
-  transform: translateX(140%);
-  opacity: 0;
-  transition-duration: 4000ms, 4000ms; 
-}
-
-#addContactModal.is-closing {
-  opacity: 0;
-  pointer-events: none;
-  transition-duration: 2000ms;
-}
-
-
-
-/* ===== Modal Slide Animation – FINAL ===== */
-
-.modal-backdrop {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 2s ease;
-}
-
-.modal-backdrop.is-open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.modal-backdrop.is-closing {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.modal {
-  transform: translateX(120%);
-  opacity: 0;
-  transition:
-    transform 6s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 4s ease;
-  will-change: transform, opacity;
-}
-
-.modal-backdrop.is-open .modal {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.modal-backdrop.is-closing .modal {
-  transform: translateX(120%);
-  opacity: 0;
 }
