@@ -1,8 +1,9 @@
+/* templates.js */
 function contactListItemTemplate(c, isActive) {
   return `
   <div class="contact-item ${isActive ? "active" : ""}" data-id="${c.id}">
     <div class="avatar ${c.colorClass}">${c.initials}</div>
-    <div>
+    <div class="contact-text">
       <div class="contact-name">${c.name}</div>
       <div class="contact-mail">${c.email}</div>
     </div>
@@ -25,25 +26,27 @@ function contactDetailsTemplate(c) {
   return `
   <div class="contact-detail-header">
     <div class="avatar big ${c.colorClass}">${c.initials}</div>
-    <div>
-      <h2>${c.name}</h2>
+    <div class="contact-detail-headtext">
+      <h2 class="contact-detail-name">${c.name}</h2>
       ${contactActionsTemplate(c)}
     </div>
   </div>
   <div class="contact-info">
     <h3>Contact Information</h3>
-    <p><strong>Email</strong><br>${c.email}</p>
-    <p><strong>Phone</strong><br>${c.phone || "-"}</p>
+    <p><strong>Email</strong><br><a class="contact-link" href="mailto:${c.email}">${c.email}</a></p>
+    <p><strong>Phone</strong><br><span>${c.phone || "-"}</span></p>
   </div>`;
 }
 
 function modalLeftTemplate(mode) {
   return `
-  <div class="modal-left">
-    <img src="../assets/icons/logo-white.svg" class="modal-logo">
-    <h2>${mode === "edit" ? "Edit contact" : "Add contact"}</h2>
-    <div class="modal-line"></div>
-  </div>`;
+    <div class="modal-left">
+      <img src="../assets/icons/logo-white.svg" class="modal-logo">
+      <h2 class="modal-title">${mode === "edit" ? "Edit contact" : "Add contact"}</h2>
+      ${mode === "create" ? `<p class="modal-subtitle">Tasks are better with a team!</p>` : ""}
+      <div class="modal-line"></div>
+    </div>
+  `;
 }
 
 function modalAvatarTemplate(mode, data) {
@@ -67,9 +70,18 @@ function modalActionsTemplate(mode) {
 function modalFormTemplate(mode, data) {
   return `
   <form id="addContactForm" data-mode="${mode}" data-edit-id="${data.id || ""}">
-    <div class="input-wrapper"><input id="contactName" type="text" placeholder="Name" required value="${data.name || ""}"><img src="../assets/icons/person.png" class="input-icon"></div>
-    <div class="input-wrapper"><input id="contactEmail" type="email" placeholder="Email" required value="${data.email || ""}"><img src="../assets/icons/mail.png" class="input-icon"></div>
-    <div class="input-wrapper"><input id="contactPhone" type="text" placeholder="Phone" value="${data.phone || ""}"><img src="../assets/icons/call.svg" class="input-icon"></div>
+    <div class="input-wrapper">
+      <input id="contactName" type="text" placeholder="Name" required value="${data.name || ""}">
+      <img src="../assets/icons/person.png" class="input-icon">
+    </div>
+    <div class="input-wrapper">
+      <input id="contactEmail" type="email" placeholder="Email" required value="${data.email || ""}">
+      <img src="../assets/icons/mail.png" class="input-icon">
+    </div>
+    <div class="input-wrapper">
+      <input id="contactPhone" type="text" placeholder="Phone" value="${data.phone || ""}">
+      <img src="../assets/icons/call.svg" class="input-icon">
+    </div>
     ${modalActionsTemplate(mode)}
   </form>`;
 }

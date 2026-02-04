@@ -8,7 +8,7 @@ function normalize(str) {
 }
 
 function generateId() {
-  if (crypto && crypto.randomUUID) return crypto.randomUUID();
+  if (typeof crypto !== "undefined" && crypto.randomUUID) return crypto.randomUUID();
   return String(Date.now()) + "_" + Math.random().toString(16).slice(2);
 }
 
@@ -48,6 +48,15 @@ function loadContacts() {
   } catch {
     contacts = [];
   }
+
+  let changed = false;
+  for (let i = 0; i < contacts.length; i++) {
+    if (!contacts[i].colorClass) {
+      contacts[i].colorClass = colorClassFor(contacts[i].id || (contacts[i].email || contacts[i].name || ""));
+      changed = true;
+    }
+  }
+  if (changed) saveContacts();
 }
 
 function saveContacts() {
@@ -73,8 +82,37 @@ function buildModalData(mode, contact) {
   d.email = contact.email || "";
   d.phone = contact.phone || "";
   d.initials = getInitials(contact.name);
-  d.colorClass = colorClassFor(contact.email || contact.name);
+  d.colorClass = contact.colorClass || colorClassFor(contact.id || (contact.email || contact.name || ""));
   return d;
+}
+
+function applyModalHeader(data) {
+  let m = getEl("addContactModal");
+  if (!m) return;
+
+  let avatar =
+    m.querySelector("#modalAvatar") ||
+    m.querySelector("#editAvatar") ||
+    m.querySelector(".modal .contact-avatar") ||
+    m.querySelector(".modal .avatar");
+
+  let nameEl =
+    m.querySelector("#modalAvatarName") ||
+    m.querySelector("#editAvatarName") ||
+    m.querySelector(".modal .contact-name") ||
+    m.querySelector(".modal .avatar-name");
+
+  if (avatar) {
+    avatar.textContent = data.initials || getInitials(data.name);
+
+    Array.from(avatar.classList).forEach(function (cls) {
+      if (cls.indexOf("avatar-color-") === 0) avatar.classList.remove(cls);
+    });
+
+    if (data.colorClass) avatar.classList.add(data.colorClass);
+  }
+
+  if (nameEl) nameEl.textContent = data.name || "";
 }
 
 function openModal(mode, contact) {
@@ -83,6 +121,9 @@ function openModal(mode, contact) {
   document.body.insertAdjacentHTML("beforeend", contactModalTemplate(mode, data));
   let m = getEl("addContactModal");
   if (!m) return;
+
+  applyModalHeader(data);
+
   m.classList.remove("d-none");
   m.classList.remove("is-closing");
   requestAnimationFrame(function () {
@@ -134,7 +175,7 @@ function renderContactsList() {
         name: c.name,
         email: c.email,
         initials: getInitials(c.name),
-        colorClass: colorClassFor(c.email || c.name)
+        colorClass: c.colorClass || colorClassFor(c.id || (c.email || c.name || ""))
       },
       c.id === selectedId
     );
@@ -162,7 +203,7 @@ function renderDetails() {
     email: c.email,
     phone: c.phone || "-",
     initials: getInitials(c.name),
-    colorClass: colorClassFor(c.email || c.name)
+    colorClass: c.colorClass || colorClassFor(c.id || (c.email || c.name || ""))
   });
 }
 
@@ -177,7 +218,16 @@ function createFromForm() {
 
   if (!name || !email) return;
 
-  let nc = { id: generateId(), name: name, email: email, phone: phone };
+  let id = generateId();
+
+  let nc = {
+    id: id,
+    name: name,
+    email: email,
+    phone: phone,
+    colorClass: colorClassFor(id)
+  };
+
   contacts.push(nc);
   selectedId = nc.id;
 
@@ -243,25 +293,6 @@ function handleClick(e) {
     renderDetails();
     return;
   }
-
-  
-  function closeModal(){
-    let m = getEl("addContactModal");
-    if (!m) return;
-  
-    m.classList.remove("is-open");
-    m.classList.add("is-closing");
-  
-    let box = m.querySelector(".modal");
-    if (!box) return removeModalNow();
-  
-    box.addEventListener("transitionend", function(ev){
-      if (ev.propertyName !== "transform") return;
-      removeModalNow();
-    }, { once:true });
-  }
-
-  
 
   let act = e.target.closest(".contact-action");
   if (act && act.dataset.action && act.dataset.id) {
