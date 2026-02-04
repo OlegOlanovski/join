@@ -15,10 +15,11 @@
             <img class="logo_page" src="./assets/icons/logo.svg" alt="Logo">
         </figure>
 
-        <section class="button-section">
+        <section class="button-section button-section--desktop">
             <a class="links" href="./subpages/regist.html">Not a Join User?</a>
             <button type="button" class="signup" onclick="goToSignup()">Sign up</button>
         </section>
+       
     </header>
     <main>
         <form class="login-form">
@@ -39,12 +40,18 @@
                 <button onclick="goToSummary()" type="button" class="guest-btn">Guest Log In</button>
             </div>
         </form>
+        <section class="button-section button-section--mobile">
+            <a class="links" href="./subpages/regist.html">Not a Join User?</a>
+            <button type="button" class="signup" onclick="goToSignup()">Sign up</button>
+        </section>
     </main>
     <footer>
+       
         <section class="footer-content">
             <a class="links" href="#">Privacy Policy</a>
             <a class="links" href="#">Legal notice</a>
         </section>
+      
     </footer>
 </div>
     <script src="./javascript/animation.js"></script>

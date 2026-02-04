@@ -12,7 +12,7 @@ body {
   justify-content: center;
   flex-direction: column;
   margin: 0 auto;
-  max-width: 1440px;
+  max-width: 1920px;
 }
 
 .login_page {
@@ -43,12 +43,16 @@ main {
   height: 100vh;
 }
 
+footer {
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .footer-content {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 80px;
-  width: 100%;
+  gap: 40px;
 }
 
 button {

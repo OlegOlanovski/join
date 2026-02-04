@@ -8,10 +8,12 @@ let isEditingOverlay = false;
 let overlaySelectedContacts = new Set();
 let overlayPendingSubtasks = [];
 let overlaySelectedPriority = "medium";
+let activeSearchQuery = "";
 
 document.addEventListener("DOMContentLoaded", function () {
   initRedirects();
   initAddTaskOverlay();
+  initSearch();
   renderBoardFromStorage();
   initDragAndDrop();
   initOverlayEvents();
@@ -50,6 +52,39 @@ function getColumnStatus(icon) {
 
 function goToAddTask(status) {
   openAddTaskOverlay(status);
+}
+
+// ---------------- Search ----------------
+function initSearch() {
+  const input = document.querySelector(".search-input");
+  if (!input) return;
+  const icon = document.querySelector(".search-icon");
+
+  input.addEventListener("input", function () {
+    applySearchQuery(input.value);
+  });
+
+  input.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    input.value = "";
+    applySearchQuery("");
+  });
+
+  if (icon) {
+    icon.addEventListener("click", function () {
+      input.focus();
+      applySearchQuery(input.value);
+    });
+  }
+}
+
+function applySearchQuery(value) {
+  activeSearchQuery = normalizeSearchQuery(value);
+  renderBoardFromStorage();
+}
+
+function normalizeSearchQuery(value) {
+  return String(value || "").trim().toLowerCase();
 }
 
 // ---------------- Add task overlay ----------------
@@ -147,7 +182,7 @@ function resolveAssignedList(task) {
 // ---------------- Render board ----------------
 function renderBoardFromStorage() {
   clearAllCards();
-  renderAllTasks();
+  renderAllTasks(getFilteredTasks());
   updateEmptyStates();
 }
 
@@ -158,11 +193,47 @@ function clearAllCards() {
   }
 }
 
-function renderAllTasks() {
-  const tasks = getTasks();
-  for (let i = 0; i < tasks.length; i++) {
-    renderTaskCard(tasks[i]);
+function renderAllTasks(tasks) {
+  const list = Array.isArray(tasks) ? tasks : getTasks();
+  for (let i = 0; i < list.length; i++) {
+    renderTaskCard(list[i]);
   }
+}
+
+function getFilteredTasks() {
+  const tasks = getTasks();
+  if (!activeSearchQuery) return tasks;
+  const filtered = [];
+  for (let i = 0; i < tasks.length; i++) {
+    if (taskMatchesQuery(tasks[i], activeSearchQuery)) filtered.push(tasks[i]);
+  }
+  return filtered;
+}
+
+function taskMatchesQuery(task, query) {
+  const hay = buildTaskSearchText(task);
+  return hay.includes(query);
+}
+
+function buildTaskSearchText(task) {
+  const assigned = resolveAssignedList(task);
+  const subs = Array.isArray(task.subtasks) ? task.subtasks : [];
+  const subtaskTitles = [];
+  for (let i = 0; i < subs.length; i++) {
+    if (subs[i] && subs[i].title) subtaskTitles.push(subs[i].title);
+  }
+  const values = [
+    task.title,
+    task.description,
+    getLabelText(task),
+    task.category,
+    task.status,
+    task.priority || task.prio,
+    task.dueDate || task.due,
+    assigned.join(" "),
+    subtaskTitles.join(" "),
+  ];
+  return normalizeSearchQuery(values.join(" "));
 }
 
 function renderTaskCard(task) {

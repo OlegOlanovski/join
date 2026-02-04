@@ -18,7 +18,7 @@ body {
   justify-content: center;
   flex-direction: column;
   margin: 0 auto;
-  max-width: 1440px;
+  max-width: 1920px;
 }
 /*HEADER*/
 header {
@@ -33,10 +33,10 @@ header {
 
 /*LOGO ANIMATION*/
 .logo {
-  position: absolute;
-  top: -50%;
+  position: fixed;
+  top: 50%;
   left: 50%;
-  transform: translate(-20%, 80%) scale(1);
+  transform: translate(-50%, -50%) scale(1);
   transition: all 1.2s ease-in-out;
   z-index: 10;
 }
@@ -48,7 +48,7 @@ header {
 
 /*AFTER LOAD*/
 body.loaded .logo {
-  position: absolute;
+  position: fixed;
   top: 20px;
   left: 24px;
   transform: translate(0, 0);
@@ -62,6 +62,10 @@ body.loaded .logo_page {
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+.button-section--mobile {
+  display: none;
 }
 
 .links {
@@ -226,7 +230,7 @@ footer {
 /* responsive */
 @media (max-width: 600px) {
   .logo_page {
-    width: 180px;
+    width: 64px;
   }
 
   body.loaded .logo {
@@ -235,11 +239,26 @@ footer {
     transform: scale(0.8);
   }
 
-  .button-section {
+  .button-section--desktop {
     display: none;
   }
 
   .login-form {
     width: 90%;
+  }
+
+  main {
+    flex-direction: column;
+    gap: 24px;
+    justify-content: flex-start;
+    padding-top: 138px;
+  }
+
+  .button-section--mobile {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 }
