@@ -1,4 +1,7 @@
-/* templates.js */
+function letterGroupTemplate(letter) {
+  return `<div class="letter-group">${letter}</div>`;
+}
+
 function contactListItemTemplate(c, isActive) {
   return `
   <div class="contact-item ${isActive ? "active" : ""}" data-id="${c.id}">
@@ -24,6 +27,24 @@ function contactActionsTemplate(c) {
 
 function contactDetailsTemplate(c) {
   return `
+  <div class="contact-detail-topbar">
+    <button class="mobile-back-btn" id="mobileBackBtn" type="button">
+      <img src="../assets/icons/pfeil-links-blue.png" alt="Back">
+    </button>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" type="button">
+      <img src="../assets/icons/three-dots.png" alt="Menu">
+    </button>
+  </div>
+
+  <div class="mobile-actions-menu" id="mobileActionsMenu">
+    <button class="contact-action edit" data-action="edit" data-id="${c.id}" type="button">
+      <img src="../assets/icons/edit.svg"><span>Edit</span>
+    </button>
+    <button class="contact-action delete" data-action="delete" data-id="${c.id}" type="button">
+      <img src="../assets/icons/delete.svg"><span>Delete</span>
+    </button>
+  </div>
+
   <div class="contact-detail-header">
     <div class="avatar big ${c.colorClass}">${c.initials}</div>
     <div class="contact-detail-headtext">

@@ -8,7 +8,7 @@ function normalize(str) {
 }
 
 function generateId() {
-  if (typeof crypto !== "undefined" && crypto.randomUUID) return crypto.randomUUID();
+  if (crypto && crypto.randomUUID) return crypto.randomUUID();
   return String(Date.now()) + "_" + Math.random().toString(16).slice(2);
 }
 
@@ -21,6 +21,15 @@ function hashString(str) {
 
 function colorClassFor(seed) {
   return "avatar-color-" + (hashString(seed) % 12);
+}
+
+function pickUniqueColorClass(seed, usedSet) {
+  let start = hashString(seed) % 12;
+  for (let k = 0; k < 12; k++) {
+    let cls = "avatar-color-" + ((start + k) % 12);
+    if (!usedSet.has(cls)) return cls;
+  }
+  return "avatar-color-" + start;
 }
 
 function getInitials(fullName) {
@@ -49,13 +58,21 @@ function loadContacts() {
     contacts = [];
   }
 
+  let used = new Set();
   let changed = false;
+
   for (let i = 0; i < contacts.length; i++) {
-    if (!contacts[i].colorClass) {
-      contacts[i].colorClass = colorClassFor(contacts[i].id || (contacts[i].email || contacts[i].name || ""));
+    let c = contacts[i];
+    let seed = c.id || (c.email || c.name || "");
+
+    if (!c.colorClass || used.has(c.colorClass)) {
+      c.colorClass = pickUniqueColorClass(seed, used);
       changed = true;
     }
+
+    used.add(c.colorClass);
   }
+
   if (changed) saveContacts();
 }
 
@@ -67,6 +84,37 @@ function saveContacts() {
 
 function getEl(id) {
   return document.getElementById(id);
+}
+
+function isMobile() {
+  return window.matchMedia && window.matchMedia("(max-width: 320px)").matches;
+}
+
+function showMobileDetails() {
+  let l = getEl("contactsList");
+  let d = getEl("contactDetails");
+  if (l) l.classList.add("d-none");
+  if (d) d.classList.remove("d-none");
+}
+
+function showMobileList() {
+  let l = getEl("contactsList");
+  let d = getEl("contactDetails");
+  if (d) d.classList.add("d-none");
+  if (l) l.classList.remove("d-none");
+  let menu = getEl("mobileActionsMenu");
+  if (menu) menu.classList.remove("is-open");
+}
+
+function toggleMobileMenu() {
+  let menu = getEl("mobileActionsMenu");
+  if (!menu) return;
+  menu.classList.toggle("is-open");
+}
+
+function closeMobileMenu() {
+  let menu = getEl("mobileActionsMenu");
+  if (menu) menu.classList.remove("is-open");
 }
 
 function removeModalNow() {
@@ -86,33 +134,48 @@ function buildModalData(mode, contact) {
   return d;
 }
 
-function applyModalHeader(data) {
+function applyModalAvatar(data) {
   let m = getEl("addContactModal");
   if (!m) return;
+
+  let initials = (data.initials || "").trim();
+  let colorClass = (data.colorClass || "").trim();
+  if (!initials || !colorClass) return;
 
   let avatar =
     m.querySelector("#modalAvatar") ||
     m.querySelector("#editAvatar") ||
     m.querySelector(".modal .contact-avatar") ||
-    m.querySelector(".modal .avatar");
+    m.querySelector(".modal .avatar") ||
+    m.querySelector(".modal .avatar-circle") ||
+    m.querySelector(".modal .profile-badge");
 
-  let nameEl =
-    m.querySelector("#modalAvatarName") ||
-    m.querySelector("#editAvatarName") ||
-    m.querySelector(".modal .contact-name") ||
-    m.querySelector(".modal .avatar-name");
-
-  if (avatar) {
-    avatar.textContent = data.initials || getInitials(data.name);
-
-    Array.from(avatar.classList).forEach(function (cls) {
-      if (cls.indexOf("avatar-color-") === 0) avatar.classList.remove(cls);
+  if (!avatar) {
+    let candidates = Array.from(m.querySelectorAll("div,span,p")).filter(function (el) {
+      return (el.textContent || "").trim() === initials;
     });
-
-    if (data.colorClass) avatar.classList.add(data.colorClass);
+    avatar = candidates[0] || null;
   }
 
-  if (nameEl) nameEl.textContent = data.name || "";
+  if (!avatar) return;
+
+  avatar.textContent = initials;
+
+  Array.from(avatar.classList).forEach(function (cls) {
+    if (cls.indexOf("avatar-color-") === 0) avatar.classList.remove(cls);
+  });
+  avatar.classList.add(colorClass);
+
+  let probe = document.createElement("div");
+  probe.className = colorClass;
+  probe.style.position = "absolute";
+  probe.style.left = "-9999px";
+  probe.style.top = "-9999px";
+  document.body.appendChild(probe);
+  let bg = getComputedStyle(probe).backgroundColor || "";
+  probe.remove();
+
+  if (bg) avatar.style.backgroundColor = bg;
 }
 
 function openModal(mode, contact) {
@@ -122,12 +185,15 @@ function openModal(mode, contact) {
   let m = getEl("addContactModal");
   if (!m) return;
 
-  applyModalHeader(data);
+  applyModalAvatar(data);
 
   m.classList.remove("d-none");
   m.classList.remove("is-closing");
   requestAnimationFrame(function () {
     m.classList.add("is-open");
+    requestAnimationFrame(function () {
+      applyModalAvatar(data);
+    });
   });
 }
 
@@ -205,6 +271,9 @@ function renderDetails() {
     initials: getInitials(c.name),
     colorClass: c.colorClass || colorClassFor(c.id || (c.email || c.name || ""))
   });
+
+  closeMobileMenu();
+  if (isMobile()) showMobileDetails();
 }
 
 function createFromForm() {
@@ -218,14 +287,15 @@ function createFromForm() {
 
   if (!name || !email) return;
 
-  let id = generateId();
+  let used = new Set(contacts.map(function (c) { return c.colorClass; }).filter(Boolean));
 
+  let id = generateId();
   let nc = {
     id: id,
     name: name,
     email: email,
     phone: phone,
-    colorClass: colorClassFor(id)
+    colorClass: pickUniqueColorClass(id, used)
   };
 
   contacts.push(nc);
@@ -270,6 +340,7 @@ function deleteContact(id) {
   saveContacts();
   renderContactsList();
   renderDetails();
+  if (isMobile()) showMobileList();
 }
 
 function handleSecondary(btn) {
@@ -286,6 +357,25 @@ function handleSecondary(btn) {
 function handleClick(e) {
   if (e.target.closest("#openAddContact")) return openModal("create", null);
 
+  if (e.target.closest("#mobileBackBtn")) {
+    if (isMobile()) showMobileList();
+    return;
+  }
+
+  if (e.target.closest("#mobileMenuBtn")) {
+    if (isMobile()) toggleMobileMenu();
+    return;
+  }
+
+  if (isMobile()) {
+    let menu = getEl("mobileActionsMenu");
+    if (menu && menu.classList.contains("is-open")) {
+      let insideMenu = e.target.closest("#mobileActionsMenu");
+      let onMenuBtn = e.target.closest("#mobileMenuBtn");
+      if (!insideMenu && !onMenuBtn) closeMobileMenu();
+    }
+  }
+
   let item = e.target.closest(".contact-item");
   if (item && item.dataset.id) {
     selectedId = item.dataset.id;
@@ -294,13 +384,33 @@ function handleClick(e) {
     return;
   }
 
+  function closeModal(){
+    let m = getEl("addContactModal");
+    if (!m) return;
+
+    m.classList.remove("is-open");
+    m.classList.add("is-closing");
+
+    let box = m.querySelector(".modal");
+    if (!box) return removeModalNow();
+
+    box.addEventListener("transitionend", function(ev){
+      if (ev.propertyName !== "transform") return;
+      removeModalNow();
+    }, { once:true });
+  }
+
   let act = e.target.closest(".contact-action");
   if (act && act.dataset.action && act.dataset.id) {
     let id = act.dataset.id;
     let a = act.dataset.action;
 
-    if (a === "delete") return deleteContact(id);
+    if (a === "delete") {
+      closeMobileMenu();
+      return deleteContact(id);
+    }
     if (a === "edit") {
+      closeMobileMenu();
       let c = contacts.find(function (x) {
         return x.id === id;
       });
@@ -338,6 +448,8 @@ function init() {
 
   renderContactsList();
   renderDetails();
+
+  if (isMobile()) showMobileList();
 
   document.addEventListener("click", handleClick);
   document.addEventListener("submit", handleSubmit);
