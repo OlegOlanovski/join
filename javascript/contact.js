@@ -156,11 +156,7 @@ function applyModalAvatar(data) {
     });
     avatar = candidates[0] || null;
   }
-
-  if (!avatar) return;
-
-  avatar.textContent = initials;
-
+  
   Array.from(avatar.classList).forEach(function (cls) {
     if (cls.indexOf("avatar-color-") === 0) avatar.classList.remove(cls);
   });

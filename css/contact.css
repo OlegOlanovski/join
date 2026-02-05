@@ -455,10 +455,32 @@ body {
 }
 
 
+#addContactModal[data-mode="edit"] .modal-subtitle {
+  display: none;
+}
+
+.modal-left .modal-subtitle{
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin: 8px 0 0 !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  line-height: 1.2 !important;
+  font-weight: 400 !important;
+}
+
+
+.modal-left p{
+  display: block;
+}
+
+
 .modal-initials {
   font-size: 47px !important;
   font-weight: 700;
   color: #ffffff;
+  line-height: 1;
   
 }
 
@@ -604,7 +626,6 @@ input::placeholder {
 }
 
 
-
 @media (max-width: 900px) {
   .contacts-more-btn {
     display: flex !important;
@@ -623,5 +644,71 @@ input::placeholder {
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     z-index: 2000;
+  }
+}
+
+
+
+.mobile-fab{
+  display:none;
+  position:fixed;
+  right:16px;
+  bottom:92px;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  border:none;
+  background:#2A3647;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 6px 18px rgba(0,0,0,0.18);
+  z-index:9999;
+}
+
+.mobile-fab img{
+  width:24px;
+  height:24px;
+  filter:brightness(0) invert(1);
+  display:block;
+}
+
+.mobile-fab-more span{
+  color:#ffffff;
+  font-size:22px;
+  line-height:1;
+}
+
+@media (max-width:900px){
+  .contacts-add-btn{
+    display:none;
+  }
+
+  .contacts-main{
+    display:none;
+  }
+
+  .contacts-page.show-details .contacts-sidebar{
+    display:none;
+  }
+
+  .contacts-page.show-details .contacts-main{
+    display:block;
+  }
+
+  .contacts-sidebar{
+    padding-bottom:110px;
+  }
+
+  .mobile-fab-add{
+    display:flex;
+  }
+
+  .contacts-page.show-details .mobile-fab-add{
+    display:none;
+  }
+
+  .contacts-page.show-details .mobile-fab-more{
+    display:flex;
   }
 }
