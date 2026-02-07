@@ -190,8 +190,6 @@
       line-height: 120%;
       color: #000000;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       max-width: 900px;
       margin: 0;
     }
