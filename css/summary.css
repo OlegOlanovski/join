@@ -169,8 +169,8 @@ body {
   display: flex;
   align-items: center;
   justify-content:flex-start;
-  padding: 20px 0px 20px 25px;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px 40px 20px 116px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
 }
 
 .header-title {

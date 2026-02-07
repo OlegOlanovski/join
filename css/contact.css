@@ -1,31 +1,7 @@
 
 .header {
-  height: 96px;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 20px 40px 20px 116px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  border-bottom: 1px solid #e3e7ee;
-  position: relative;
-  z-index: 1000;
-}
-
-.header-title {
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 120%;
-  color: #000000;
-  position: relative;
-  right: 60px;
-}
-
-
-.main {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  z-index: 10;
 }
 
 .contacts-page {
