@@ -248,7 +248,6 @@ body {
   background-color: #ccc;
 }
 
-
 .summary-section {
   margin-left: 100px;
   padding-top: 100px;
@@ -538,8 +537,6 @@ body {
     height: 54px;
   }
 }
-
-
 
 @media (max-width: 1024px) {
   .summary-section {
@@ -1190,7 +1187,6 @@ body {
   }
  
 }
-
 
 @media (max-width: 480px) {
   .header-logo {

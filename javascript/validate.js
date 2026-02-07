@@ -7,6 +7,7 @@ let infoConfirmPassword = document.getElementById("info-password");
 let isAccept = document.getElementById("accept-id");
 let isAcceptPolice = document.getElementById("accept-police");
 let singupButton = document.getElementById("singup-button");
+let iconImgMail = document.getElementById("email-icon");
 let iconImg = document.getElementById("lock-icon");
 /**
  * Input  Name prüfen
@@ -41,11 +42,21 @@ function validateEmail() {
   const isValid = validateEmailRegEx(email);
   if (isValid) {
     email.classList.add("isValidate");
-    email.classList.remove("isInvaled");
-  } else {
-    email.classList.add("isInvaled");
-    email.classList.remove("isValidate");
-  }
+    if (!iconImgMail) {
+      let newIcon = document.createElement("img");
+      newIcon.classList.add("isInvaledMail");
+      newIcon.src = "../assets/icons/check-gray.svg";
+      email.appendChild(newIcon);
+      
+    } else {
+      iconImgMail.src = "../assets/icons/check-gray.svg";
+      email.classList.remove("isInvaled");
+      
+    }
+    } else {
+      email.classList.add("isInvaled");
+      email.classList.remove("isValidate");
+    }
 }
 /**
  * Password prüfen
