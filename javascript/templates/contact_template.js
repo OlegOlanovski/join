@@ -79,12 +79,12 @@ function contactModalTemplate(mode, data) {
             </div>
 
             <div class="input-wrapper">
-              <input id="contactEmail" type="email" placeholder="Email" required value="${data.email || ""}">
+              <input id="contactEmail" type="email" placeholder="Email"  required value="${data.email || ""}">
               <img src="../assets/icons/mail.png" class="input-icon" alt="">
             </div>
 
             <div class="input-wrapper">
-              <input id="contactPhone" type="text" placeholder="Phone" value="${data.phone || ""}">
+              <input id="contactPhone" type="tel" placeholder="Phone" pattern="[0-9]{5}[0-9]{7}" value="${data.phone || ""}">
               <img src="../assets/icons/call.svg" class="input-icon" alt="">
             </div>
 

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg" sizes="32x32" href="/assets/icons/logo.svg">
     <link rel="stylesheet" href="../css/board.css" />
     <title>Board</title>
 </head>
@@ -38,76 +39,90 @@
 
                 <!-- HEADER -->
                 <header class="header">
-                    <div class="header-title">Kanban Project Management Tool</div>
-                    <div class="header-right">
-                        <a class="header-help">?</a>
-                        <div class="header-user">SM</div>
+                    <div class="content-wrepper-header">
+                        <div class="header-title">Kanban Project Management Tool</div>
+                        <div class="header-right">
+                            <a class="header-help">?</a>
+                            <div class="header-user-area">
+                                <button class="header-user" id="headerUserBtn" type="button" aria-expanded="false"
+                                    aria-controls="userMenu" aria-label="Open user menu">
+                                    G
+                                </button>
+                                <div class="user-menu" id="userMenu" role="menu" aria-hidden="true">
+                                    <a class="user-menu-item" href="./legal_notice.html" role="menuitem">Legal Notice</a>
+                                    <a class="user-menu-item" href="./privacy_policy.html" role="menuitem">Privacy Policy</a>
+                                    <a class="user-menu-item" href="../index.html" role="menuitem">Log out</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </header>
 
-                <!-- BOARD HEADER -->
-                <section class="board-section">
-                    <div class="board-header">
-                        <h1 class="board-title">Board</h1>
+                <div class="content-wrepper">
+                    <!-- BOARD HEADER -->
+                    <section class="board-section">
+                        <div class="board-header">
+                            <h1 class="board-title">Board</h1>
 
-                        <nav aria-label="Board Navigation" class="board-nav">
-                            <div class="search-bar">
-                                <input type="text" placeholder="Find Task" aria-label="Search Tasks"
-                                    class="search-input" />
-                                <div class="separator"></div>
-                                <img src="../assets/icons/search.svg" alt="Search" class="search-icon" />
-                            </div>
+                            <nav aria-label="Board Navigation" class="board-nav">
+                                <div class="search-bar">
+                                    <input type="text" placeholder="Find Task" aria-label="Search Tasks"
+                                        class="search-input" />
+                                    <div class="separator"></div>
+                                    <img src="../assets/icons/search.svg" alt="Search" class="search-icon" />
+                                </div>
 
-                            <button class="add-task-button" type="button">Add task +</button>
-                        </nav>
-                    </div>
-                </section>
+                                <button class="add-task-button" type="button">Add task +</button>
+                            </nav>
+                        </div>
+                    </section>
 
-                <!-- BOARD COLUMNS -->
-                <section class="board">
+                    <!-- BOARD COLUMNS -->
+                    <section class="board">
 
-                    <!-- TODO -->
-                    <div class="column" data-status="todo">
-                        <header class="column-header">
-                           
-                            <span>Todo</span>
-                            <img src="../assets/icons/plus-button.svg" class="add-card-icon" alt="Add task" />
-                        </header>
-                        <div class="cards"></div>
-                        <div class="empty">No tasks To do</div>
-                  
-                    </div>
+                        <!-- TODO -->
+                        <div class="column" data-status="todo">
+                            <header class="column-header">
 
-                    <!-- IN PROGRESS -->
-                    <div class="column" data-status="progress">
-                        <header class="column-header">
-                            <span>In Progress</span>
-                            <img src="../assets/icons/plus-button.svg" class="add-card-icon" alt="Add task" />
-                        </header>
-                        <div class="cards"></div>
-                        <div class="empty">No tasks In progress</div>
-                    </div>
+                                <span>Todo</span>
+                                <img src="../assets/icons/plus-button.svg" class="add-card-icon" alt="Add task" />
+                            </header>
+                            <div class="cards"></div>
+                            <div class="empty">No tasks To do</div>
 
-                    <!-- AWAIT FEEDBACK -->
-                    <div class="column" data-status="feedback">
-                        <header class="column-header">
-                            <span>Await feedback</span>
-                            <img src="../assets/icons/plus-button.svg" class="add-card-icon" alt="Add task" />
-                        </header>
-                        <div class="cards"></div>
-                        <div class="empty">No tasks Await feedback</div>
-                    </div>
+                        </div>
 
-                    <!-- DONE -->
-                    <div class="column" data-status="done">
-                        <header class="column-header">
-                            <span>Done</span>
-                        </header>
-                        <div class="cards"></div>
-                        <div class="empty">No tasks Done</div>
-                    </div>
+                        <!-- IN PROGRESS -->
+                        <div class="column" data-status="progress">
+                            <header class="column-header">
+                                <span>In Progress</span>
+                                <img src="../assets/icons/plus-button.svg" class="add-card-icon" alt="Add task" />
+                            </header>
+                            <div class="cards"></div>
+                            <div class="empty">No tasks In progress</div>
+                        </div>
 
-                </section>
+                        <!-- AWAIT FEEDBACK -->
+                        <div class="column" data-status="feedback">
+                            <header class="column-header">
+                                <span>Await feedback</span>
+                                <img src="../assets/icons/plus-button.svg" class="add-card-icon" alt="Add task" />
+                            </header>
+                            <div class="cards"></div>
+                            <div class="empty">No tasks Await feedback</div>
+                        </div>
+
+                        <!-- DONE -->
+                        <div class="column" data-status="done">
+                            <header class="column-header">
+                                <span>Done</span>
+                            </header>
+                            <div class="cards"></div>
+                            <div class="empty">No tasks Done</div>
+                        </div>
+
+                    </section>
+                </div>
             </div>
         </div>
     </div>

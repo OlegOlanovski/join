@@ -89,7 +89,8 @@
   /* ---------Sidebar section end----------------- */
   /* ---------header section start----------------- */
   .header {
-    padding-left: 24px;
+    padding: 24px 40px 20px 25px;
+    height: 80px;
   }
 
   .header-title {

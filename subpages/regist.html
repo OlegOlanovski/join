@@ -4,6 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/svg" sizes="32x32" href="/assets/icons/logo.svg">
         <link rel="stylesheet" href="../css/forms.css">
         <link rel="stylesheet" href="../css/singup.css">
         <link rel="stylesheet" href="../css/style.css">
@@ -39,9 +40,9 @@
                     <input onchange="validateFullname()" id="name" type="text" name="namen" placeholder="Name">
                     <input onchange="validateEmail()" class="" id="mail" type="mail" name="mail" placeholder="Email">
                     <input onchange="validatePassword()" class="" id="password" type="password" name="singup-password" id="singup-password" placeholder="Password" autocomplete="off">
-                    <span class="info-password" id="info-password">Das Password muss mindestens 6 zeichen lang sein. </span>
+                    <span class="info-password" id="info-password">Check your email and password. Please try again.</span>
                     <input onchange="validateConfirmPassword()" class="" id="confirm-password" type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" autocomplete="off">
-                    <span class="info-confirm-password" id="info-password">Das Password muss mindestens 6 zeichen lang sein. </span>
+                    <span class="info-confirm-password" id="info-password">Your passwords don't match. Please try again. </span>
                     <section class="form-footer">
                     <div class="form-check-content">
                         <input onchange="validateSingUpForm()" type="checkbox" name="accept" id="accept-id">
