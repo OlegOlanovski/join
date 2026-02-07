@@ -884,7 +884,7 @@ body {
   .header-logo {
     display: block !important;
     height: 50px;
-    width: auto;
+    width: 50px;
     max-width: 120px;
     object-fit: contain;
     flex-shrink: 0;
