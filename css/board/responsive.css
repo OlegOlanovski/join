@@ -90,6 +90,7 @@
   /* ---------header section start----------------- */
   .header {
     padding-left: 24px;
+    height: 80px;
   }
 
   .header-title {

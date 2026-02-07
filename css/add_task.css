@@ -318,7 +318,7 @@ label .label-star {
 
 @media (max-width: 900px) {
   .header {
-    height: 96px;
+    height: 80px;
     background: #ffffff;
     display: flex;
     align-items: center;
