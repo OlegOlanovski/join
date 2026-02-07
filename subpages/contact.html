@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../css/summary.css">
+
   <link rel="stylesheet" href="../css/contact.css" />
-  <link rel="stylesheet" href="../css/contact_responsiv.css">
+  <link rel="stylesheet" href="../css/contact_responsiv.css" />
+  <link rel="stylesheet" href="../css/header.css" />
+
   <title>Contact</title>
 </head>
 
 <body>
   <div class="layout">
-
     <aside class="sidebar">
       <div class="logo">
         <img src="../assets/icons/logo-white.svg" alt="Join" />
@@ -22,7 +23,7 @@
           <li><a href="./summary.html"><img src="../assets/icons/summary-gray.svg" alt="">Summary</a></li>
           <li><a href="./add_task.html"><img src="../assets/icons/addTask-gray.svg" alt="">Add Task</a></li>
           <li><a href="./board.html"><img src="../assets/icons/board-gray.svg" alt="">Board</a></li>
-          <li><a href="./contact.html"><img src="../assets/icons/contacts-gray.svg" alt="">Contacts</a></li>
+          <li><a class="active" href="./contact.html"><img src="../assets/icons/contacts-gray.svg" alt="">Contacts</a></li>
         </ul>
       </nav>
 
@@ -34,16 +35,17 @@
 
     <div class="cantainer">
       <div class="main">
-
         <header class="header">
-          <div class="header-left">
-            <img src="../assets/icons/logo.svg" class="header-logo" alt="" />
-            <span class="header-title">Kanban Project Management Tool</span>
-          </div>
+          <div class="content-wrepper-header">
+            <div class="header-left">
+              <img src="../assets/icons/logo.svg" class="header-logo" alt="Join Logo">
+              <span class="header-title">Kanban Project Management Tool</span>
+            </div>
 
-          <div class="header-right">
-            <div class="header-help">?</div>
-            <div class="header-guest">SM</div>
+            <div class="header-right">
+              <div class="header-help">?</div>
+              <div class="header-guest">SM</div>
+            </div>
           </div>
         </header>
 
@@ -62,22 +64,17 @@
               <h1>Contacts</h1>
               <div class="header-line"></div>
               <span>Better with a team</span>
-              
 
-              
               <button class="contacts-back-btn" id="contactsBackBtn" type="button" aria-label="Back">
                 <img src="../assets/icons/pfeil-links-blue.png" alt="Back">
               </button>
             </div>
 
-            
             <div class="contact-details" id="contactDetails"></div>
 
-           
             <button class="contacts-more-btn d-none" id="contactsMoreBtn" type="button" aria-label="More">
               <span class="dots">⋮</span>
             </button>
-
 
             <div class="contacts-more-menu d-none" id="contactsMoreMenu">
               <button class="contacts-more-item" id="contactsMoreEdit" type="button">
@@ -87,11 +84,8 @@
                 <img src="../assets/icons/delete.svg" alt=""> Delete
               </button>
             </div>
-
-
           </main>
         </div>
-
       </div>
     </div>
   </div>
@@ -102,8 +96,7 @@
         <img src="../assets/icons/logo-white.svg" class="modal-logo" alt="">
         <h2>Add contact</h2>
         <p>Tasks are better with a team!</p>
-        <div class="modal-line">
-        </div>
+        <div class="modal-line"></div>
       </div>
 
       <div class="modal-right">
