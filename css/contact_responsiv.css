@@ -1,63 +1,118 @@
-/* Scroll-Fix ohne Designänderung */
-* {
-  box-sizing: border-box;
-}
-
 @media (max-width: 1024px) {
- 
-  .contacts-page,
-  .contacts-sidebar, 
-  .contacts-main,
-  .contacts-header,
-  .contact-details {
-    width: 100%;
-  }
 
+  .contacts-page {
+    min-height: calc(100vh - 96px);
+  }
 
   .contacts-sidebar {
-    width: 100%;
-    padding: 8px 8px;
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    height: auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    position: relative;
-    z-index: 10;
-    align-items: stretch;
+    width: 320px;
+    padding: 12px;
   }
 
+  
+    .contacts-add-btn {
+      height: 40px;
+      padding-left: 6px;
+      padding-right: 6px;
+      font-size: 16px;
+      line-height: 30px;
+      border-radius: 6px;
+      gap: 8px;
+      white-space: nowrap;
+    }
+  
+    .contacts-add-icon {
+      width: 20px;
+      height: 20px;
+    }
+  
+    .header-line {
+      height: 32px;
+    }
+  
 
-  /* ✅ FIXED */
-  .modal {
-    width: 100%;
-    max-width: 780px;
-    height: 340px;
-    position: relative;
-    margin: 0 auto;
-    left: 0;
+  .letter-group {
+    padding: 8px 12px 6px;
+    font-size: 13px;
+  }
+
+  .contact-item {
+    padding: 6px 8px;
+    gap: 10px;
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
   }
 
   .contacts-main {
-    flex: 1;
-    background: #f6f7f8;
-    padding: 32px;
+    padding: 24px;
   }
 
   .contacts-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-top: 60px;
-    position: relative;
-    right: 5px;
+    margin-top: 32px;
+    gap: 12px;
+    right: 0;
   }
 
   .contacts-header h1 {
-    font-size: 30px;
-    margin: 0;
+    font-size: 32px;
   }
+
+  .contacts-header span {
+    font-size: 16px;
+  }
+
+  .header-line {
+    height: 32px;
+  }
+
+  .contact-details {
+    margin-top: 24px;
+    padding: 24px 28px;
+    right: 0;
+    top: 0;
+  }
+
+  .contact-detail-header {
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .avatar.big {
+    width: 88px;
+    height: 88px;
+    font-size: 34px;
+  }
+
+  .contact-detail-header h2 {
+    font-size: 28px;
+  }
+
+  .contact-info h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .contact-info p {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .modal {
+    position: relative;
+    left: 35px;
+    width: 100%;
+    max-width: 790px;
+    height: 400px;
+    
+   
+  }
+
 }
+
 
 @media (max-width: 768px) {
   .contacts-page {
@@ -271,7 +326,8 @@
     width: 100%;
     max-width: 420px;
     height: auto;
-    margin: 0 auto;
+    margin: 0;
+    left: auto;
     right: auto;
     display: flex;
     flex-direction: column;
