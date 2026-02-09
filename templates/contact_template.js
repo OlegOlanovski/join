@@ -71,79 +71,76 @@ function contactDetailsTemplate(c) {
   `;
 }
 
-/* ================= MODAL ================= */
-
 function modalLeftTemplate(mode) {
-  const isCreate = String(mode).trim() === "create";
-  const isEdit = String(mode).trim() === "edit";
+  const m = String(mode || "").trim().toLowerCase();
+  const isEdit = m === "edit";
 
   return `
     <div class="modal-left">
-      <img src="../assets/icons/logo-white.svg" class="modal-logo">
-
-      <h2 class="modal-title">
-        ${isEdit ? "Edit contact" : "Add contact"}
-      </h2>
-
-      ${
-        isCreate
-          ? `<p class="modal-subtitle">Tasks are better with a team!</p>`
-          : ``
-      }
-
+      <button class="modal-close" id="closeAddContact" type="button" aria-label="Close">×</button>
+      <img src="../assets/icons/logo-white.svg" class="modal-logo" alt="">
+      <h2 class="modal-title">${isEdit ? "Edit contact" : "Add contact"}</h2>
+      <p class="modal-subtitle">Tasks are better with a team!</p>
       <div class="modal-line"></div>
     </div>
   `;
 }
 
 function modalAvatarTemplate(mode, data) {
-  if (mode === "edit") {
+  const m = String(mode || "").trim().toLowerCase();
+  if (m === "edit") {
     return `
-      <div class="modal-person ${data.colorClass}">
-        <span class="modal-initials">${data.initials}</span>
+      <div class="modal-person ${data.colorClass || ""}">
+        <span class="modal-initials">${data.initials || ""}</span>
       </div>
     `;
   }
 
   return `
     <div class="modal-person">
-      <img src="../assets/icons/person.png">
+      <img src="../assets/icons/person.png" alt="">
     </div>
   `;
 }
 
 function modalActionsTemplate(mode) {
+  const m = String(mode || "").trim().toLowerCase();
+  const isEdit = m === "edit";
+
   return `
     <div class="modal-actions">
       <button type="button"
               class="btn-cancel"
               id="modalSecondaryBtn"
-              data-action="${mode === "edit" ? "delete" : "cancel"}">
-        ${mode === "edit" ? "Delete" : "Cancel"}
-        <img src="../assets/icons/${mode === "edit" ? "delete.svg" : "iconoir_cancel.svg"}">
+              data-action="${isEdit ? "delete" : "cancel"}">
+        ${isEdit ? "Delete" : "Cancel"}
+        <img src="../assets/icons/${isEdit ? "delete.svg" : "iconoir_cancel.svg"}" alt="">
       </button>
 
       <button type="submit" class="btn-create">
-        ${mode === "edit" ? "Save" : "Create contact"}
-        <img src="../assets/icons/check-white.svg">
+        ${isEdit ? "Save" : "Create contact"}
+        <img src="../assets/icons/check-white.svg" alt="">
       </button>
     </div>
   `;
 }
 
 function modalFormTemplate(mode, data) {
+  const m = String(mode || "").trim().toLowerCase();
+  const editId = data && data.id ? data.id : "";
+
   return `
     <form id="addContactForm"
-          data-mode="${mode}"
-          data-edit-id="${data.id || ""}">
+          data-mode="${m}"
+          data-edit-id="${editId}">
       
       <div class="input-wrapper">
         <input id="contactName"
                type="text"
                placeholder="Name"
                required
-               value="${data.name || ""}">
-        <img src="../assets/icons/person.png" class="input-icon">
+               value="${(data && data.name) ? data.name : ""}">
+        <img src="../assets/icons/person.png" class="input-icon" alt="">
       </div>
 
       <div class="input-wrapper">
@@ -151,19 +148,19 @@ function modalFormTemplate(mode, data) {
                type="email"
                placeholder="Email"
                required
-               value="${data.email || ""}">
-        <img src="../assets/icons/mail.png" class="input-icon">
+               value="${(data && data.email) ? data.email : ""}">
+        <img src="../assets/icons/mail.png" class="input-icon" alt="">
       </div>
 
       <div class="input-wrapper">
         <input id="contactPhone"
                type="text"
                placeholder="Phone"
-               value="${data.phone || ""}">
-        <img src="../assets/icons/call.svg" class="input-icon">
+               value="${(data && data.phone) ? data.phone : ""}">
+        <img src="../assets/icons/call.svg" class="input-icon" alt="">
       </div>
 
-      ${modalActionsTemplate(mode)}
+      ${modalActionsTemplate(m)}
     </form>
   `;
 }
@@ -171,9 +168,17 @@ function modalFormTemplate(mode, data) {
 function modalRightTemplate(mode, data) {
   return `
     <div class="modal-right">
-      <button class="modal-close" id="closeAddContact" type="button">×</button>
-      ${modalAvatarTemplate(mode, data)}
-      ${modalFormTemplate(mode, data)}
+      ${modalAvatarTemplate(mode, data || {})}
+      ${modalFormTemplate(mode, data || {})}
+    </div>
+  `;
+}
+
+function contactModalInnerTemplate(mode, data) {
+  return `
+    <div class="modal">
+      ${modalLeftTemplate(mode)}
+      ${modalRightTemplate(mode, data || {})}
     </div>
   `;
 }
@@ -181,10 +186,7 @@ function modalRightTemplate(mode, data) {
 function contactModalTemplate(mode, data) {
   return `
     <div class="modal-backdrop d-none" id="addContactModal">
-      <div class="modal">
-        ${modalLeftTemplate(mode)}
-        ${modalRightTemplate(mode, data)}
-      </div>
+      ${contactModalInnerTemplate(mode, data || {})}
     </div>
   `;
 }

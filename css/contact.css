@@ -662,3 +662,18 @@ input::placeholder {
     z-index: 2000;
   }
 }
+
+/* Modal Header (dark) – Text sichtbar machen wie in Figma */
+.modal-left {
+  background: #2A3647; /* oder deine Header-Farbe */
+  color: #ffffff;
+}
+
+.modal-left h2,
+.modal-left p {
+  color: #ffffff !important;
+}
+
+.modal-left p {
+  opacity: 0.9; /* wie Figma */
+}
