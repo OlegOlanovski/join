@@ -6,15 +6,10 @@
   <link rel="icon" type="image/svg" sizes="32x32" href="/assets/icons/logo.svg">
   <link rel="stylesheet" href="../css/contact.css" />
   <link rel="stylesheet" href="../css/contact_responsiv.css" />
-<<<<<<< HEAD
   <link rel="stylesheet" href="../css/header.css" />
-=======
-  <link rel="stylesheet" href="../css/summary.css" />
 
->>>>>>> 0e775aeaca02ab89627034e5b674e60a738fc78d
   <title>Contact</title>
 </head>
-
 <body>
   <div class="layout">
     <aside class="sidebar">
@@ -48,17 +43,7 @@
 
             <div class="header-right">
               <div class="header-help">?</div>
-              <div class="header-user-area">
-                <button class="header-user" id="headerUserBtn" type="button" aria-expanded="false" aria-controls="userMenu"
-                  aria-label="Open user menu">
-                  G
-                </button>
-                <div class="user-menu" id="userMenu" role="menu" aria-hidden="true">
-                  <a class="user-menu-item" href="./legal_notice.html" role="menuitem">Legal Notice</a>
-                  <a class="user-menu-item" href="./privacy_policy.html" role="menuitem">Privacy Policy</a>
-                  <a class="user-menu-item" href="../index.html" role="menuitem">Log out</a>
-                </div>
-              </div>
+              <div class="header-guest">SM</div>
             </div>
           </div>
         </header>
@@ -86,7 +71,6 @@
 
             <div class="contact-details" id="contactDetails"></div>
 
-            <!-- ✅ DIE 3 PUNKTE SIND WIEDER DRIN -->
             <button class="contacts-more-btn d-none" id="contactsMoreBtn" type="button" aria-label="More">
               <span class="dots">⋮</span>
             </button>
@@ -105,21 +89,20 @@
     </div>
   </div>
 
-  <!-- ✅ ADD CONTACT MODAL -->
   <div class="modal-backdrop d-none" id="addContactModal">
     <div class="modal">
-
       <div class="modal-left">
-        <!-- ✅ X gehört IN DEN DUNKLEN HEADER -->
-        <button class="modal-close" id="closeAddContact" type="button" aria-label="Close">×</button>
-
         <img src="../assets/icons/logo-white.svg" class="modal-logo" alt="">
         <h2>Add contact</h2>
         <p>Tasks are better with a team!</p>
-        <div class="modal-line"></div>
+        <div class="modal-line">
+
+        </div>
       </div>
 
       <div class="modal-right">
+        <button class="modal-close" id="closeAddContact" type="button">×</button>
+
         <div class="modal-person">
           <img src="../assets/icons/person.png" alt="">
         </div>
@@ -153,12 +136,10 @@
           </div>
         </form>
       </div>
-
     </div>
   </div>
-  
-  <script src="../javascript/user-menu.js"></script>
-  <script src="../javascript/templates/contact_template.js" defer></script>
+
+  <script src="../templates/contact_template.js"></script>
   <script src="../javascript/contact.js"></script>
   <script src="../javascript/mobile.js"></script>
 </body>

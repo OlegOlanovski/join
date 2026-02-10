@@ -1,30 +1,31 @@
-* {
-  
+.layout .contacts-page,
+.layout .contacts-page * {
   box-sizing: border-box;
 }
-
 
 html, body {
   height: 100%;
   margin: 0;
-  scroll-behavior: none;
-  scrollbar-gutter: stable;
   background: #f6f7f8;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.layout .contacts-page button {
+  font-family: inherit;
 }
 
 .layout {
   display: flex;
   min-height: 100vh;
   max-width: 1440px;
+  margin: 0 auto;
 }
 
-.cantainer, .cantainer {
+.cantainer {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 0;
-
 }
 
 .main {
@@ -34,51 +35,51 @@ html, body {
   min-height: 0;
 }
 
-
 .contacts-page {
   flex: 1;
   width: 100%;
   display: flex;
   align-items: stretch;
-  height: 100%;
-  
+  min-height: calc(100vh - 96px);
 }
 
 .contacts-sidebar {
-  max-width: 360px;
-  width: 100%;
+  width: 456px;
+  max-width: 456px;
+  min-width: 456px;
   padding: 32px 28px;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  background: #ffffff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   position: relative;
   z-index: 10;
-  align-items: stretch;
-  
 }
 
-.contacts-main {
-  flex: 1;
-  min-height: 0;
+.contacts-sidebar .contacts-add-btn {
+  width: 100% !important;
+  height: 48px !important;
+  background: #2a3647 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 6px 16px !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  cursor: pointer !important;
+  margin-bottom: 24px !important;
+  text-align: center !important;
+  box-shadow: none !important;
 }
 
-.contacts-add-btn {
-  width: 100%;
-  height: 40px;
-  background: #2a3647;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 16px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  cursor: pointer;
-  margin-bottom: 24px;
-  text-align: center;
+
+.contacts-sidebar .contacts-add-btn:hover {
+  background: #29abe2 !important;
 }
 
 .contacts-add-icon {
@@ -86,7 +87,6 @@ html, body {
   height: 24px;
   display: block;
   flex: 0 0 auto;
-  background: transparent;
   filter: brightness(0) invert(1);
 }
 
@@ -95,88 +95,62 @@ html, body {
   flex-direction: column;
   gap: 12px;
   flex: 1;
-  
+  height: 58px;
+  padding-right: 6px;
 }
 
-.letter-group{
+.letter-group {
   padding: 12px 24px 6px;
-  font-size: 14px;
-  font-weight: 500;
-  color: black !important;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000 !important;
   border-bottom: 1px solid #d1d1d1;
+  margin-left: 24px;
+  margin-right: 24px;
+ 
 }
-
-.letter-group .letter{
-  position: relative;
-  top: -6px;
-}
-
 .contact-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px;
-  border-radius: 8px;
+  padding: 10px 10px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: background 120ms ease;
+  background: transparent;
+  padding-left: 24px;
+  padding-right: 24px;
+  
 }
+
+
+.contact-item.is-active,
+.contact-item.active {
+  background: transparent;
+  
+}
+
 
 .contact-item:hover {
   background: #f5f5f5;
 }
 
+
 .contact-name {
   font-weight: 500;
+  margin-left: 20px;
 }
 
 .contact-mail {
   font-size: 16px;
   color: #007cee;
+  margin-left: 20px;
+   
 }
 
 
-.contacts-main {
-  flex: 1;
-  background: #f6f7f8;
-  padding: 48px;
-}
-
-.contacts-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 60px;
-  position: relative;
-  right: 5px;
-}
-
-.contacts-header h1 {
-  font-size: 48px;
-  margin: 0;
-  
-}
-
-.header-line {
-  width: 2px;
-  height: 48px;
-  background: #29abe2;
-}
-
-.contacts-header span {
-  font-size: 20px;
-  color: #555;
-}
-
-.contact-details {
-  margin-top: 40px;
-  padding: 32px 40px;
-  position: relative;
-  right: 45px;
-  top: -50px;
-}
-
-
-.d-none {
-  display: none !important;
+.contact-item .avatar {
+  margin-left: 15px;
 }
 
 .avatar {
@@ -190,6 +164,48 @@ html, body {
   font-weight: 600;
   color: #ffffff;
   flex: 0 0 auto;
+}
+
+.contacts-main {
+  flex: 1;
+  min-height: 0;
+  background: #f6f7f8;
+  padding: 48px;
+  overflow: auto;
+}
+
+.contacts-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 60px;
+  position: relative;
+  right: 15px;
+}
+
+.contacts-header h1 {
+  font-size: 48px;
+  margin: 0;
+}
+
+.header-line {
+  width: 3px;
+  height: 48px;
+  background: #29abe2;
+}
+
+.contacts-header span {
+  font-size: 16px;
+  color: #555;
+  
+}
+
+.contact-details {
+  margin-top: 40px;
+  padding: 32px 40px;
+  position: relative;
+  right: 45px;
+  top: -50px;
 }
 
 .avatar.big {
@@ -217,7 +233,7 @@ html, body {
   font-size: 36px;
   font-weight: 700;
   line-height: 1.1;
-  color: black;
+  color: #000;
 }
 
 .contact-actions {
@@ -235,11 +251,10 @@ html, body {
   gap: 6px;
   border: 0;
   background: transparent;
-  padding: 0;
   cursor: pointer;
   font-size: 14px;
   font-weight: 400;
-  color: #2A3647;
+  color: #2a3647;
   padding: 0 0 4px;
 }
 
@@ -250,14 +265,14 @@ html, body {
 }
 
 .contact-action:hover {
-  color: #29ABE2;
+  color: #29abe2;
   transform: translateX(1px);
 }
 
 .contact-action:hover img {
   transform: translateY(1px);
   filter: invert(49%) sepia(77%) saturate(517%)
-          hue-rotate(165deg) brightness(95%) contrast(90%);
+    hue-rotate(165deg) brightness(95%) contrast(90%);
 }
 
 .contact-info {
@@ -267,13 +282,13 @@ html, body {
 .contact-info h3 {
   margin: 0 0 18px 0;
   font-size: 18px;
-  color: black;
+  color: #000;
 }
 
 .contact-info p {
   margin: 0 0 18px 0;
   font-size: 16px;
-  color: black;
+  color: #000;
   line-height: 1.35;
 }
 
@@ -281,17 +296,20 @@ html, body {
   display: block;
   margin-bottom: 6px;
   font-size: 16px;
-  color: black;
+  color: #000;
 }
 
 .contact-info p:nth-of-type(1) {
-  color: #007CEE;
+  color: #007cee;
 }
 
 .contact-info p:nth-of-type(1) strong {
-  color: black;
+  color: #000;
 }
 
+.d-none {
+  display: none !important;
+}
 
 .avatar-color-0 { background:#FF7A00; }
 .avatar-color-1 { background:#FF5EB3; }
@@ -305,7 +323,6 @@ html, body {
 .avatar-color-9 { background:#0038FF; }
 .avatar-color-10 { background:#C3FF2B; }
 .avatar-color-11 { background:#FFE62B; }
-
 
 #addContactModal {
   position: fixed;
@@ -323,7 +340,7 @@ html, body {
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
   opacity: 0;
-  transition: opacity 3000ms ease;
+  transition: opacity 250ms ease;
 }
 
 #addContactModal.is-open {
@@ -332,7 +349,6 @@ html, body {
 
 #addContactModal.is-open::before {
   opacity: 1;
-  transition-duration: 1800ms; 
 }
 
 #addContactModal.is-closing {
@@ -341,10 +357,7 @@ html, body {
 
 #addContactModal.is-closing::before {
   opacity: 0;
-  transition-duration: 3000ms; 
 }
-
-
 .modal {
   width: 940px;
   height: 440px;
@@ -430,7 +443,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-
+  z-index: 9999;
   transition: background-color 0.2s ease;
 }
 
@@ -462,19 +475,21 @@ html, body {
 }
 
 
-#addContactModal[data-mode="edit"] .modal-subtitle {
-  display: none;
+#addContactModal[data-mode="edit"] .modal-subtitle,
+#addContactModal[date-mode="edit"] .modal-line
+{
+  display: none !important;
 }
 
 .modal-left .modal-subtitle{
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  margin: 8px 0 0 !important;
-  color: #ffffff !important;
-  font-size: 18px !important;
-  line-height: 1.2 !important;
-  font-weight: 400 !important;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  margin: 8px 0 0;
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 400;
 }
 
 
@@ -509,7 +524,7 @@ html, body {
   width: 100%;
   height: 30px;
   border: 1px solid #d1d1d1;
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 0 36px 0 12px;
   font-size: 16px;
   background: white;
@@ -640,19 +655,56 @@ input::placeholder {
 }
 
 
+.mobile-back-btn,
+.mobile-menu-btn,
+#mobileActionsMenu,
+#contactsMoreBtn,
+.contact-more-btn {
+  display: none;
+}
 
 
 @media (max-width: 900px) {
-  .contacts-more-btn {
-    display: flex !important;
+  .sidebar {
+    display: flex;
+  }
+
+  .layout {
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .contacts-page {
+    display: block;
+  }
+
+  .contacts-sidebar {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    box-shadow: none;
+    padding: 16px;
+  }
+
+  .contacts-main {
+    padding: 16px;
+  }
+
+  #contactsBackBtn {
+    display: inline-flex;
+    margin-left: auto;
+  }
+
+  #contactsMoreBtn {
+    display: flex;
     position: fixed;
     right: 20px;
     bottom: 90px;
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    background: #29ABE2;
-    color: white;
+    background: #29abe2;
+    color: #fff;
     border: none;
     font-size: 22px;
     align-items: center;
@@ -663,17 +715,43 @@ input::placeholder {
   }
 }
 
-/* Modal Header (dark) – Text sichtbar machen wie in Figma */
-.modal-left {
-  background: #2A3647; /* oder deine Header-Farbe */
-  color: #ffffff;
-}
+@media (max-width: 700px) {
+  .modal {
+    width: calc(100px - 24px);
+    height: auto;
+    flex-direction: column;
+  }
 
-.modal-left h2,
-.modal-left p {
-  color: #ffffff !important;
-}
+  .modal-left {
+    width: 100%;
+    border-radius: 30px 30px 0 0;
+    padding: 28px;
+  }
 
-.modal-left p {
-  opacity: 0.9; /* wie Figma */
+  .modal-right {
+    width: 100%;
+    border-radius: 0 0 30px 30px;
+    padding: 22px;
+  }
+
+  .modal-person {
+    position: static;
+    margin: 14px auto 0;
+    box-shadow: none;
+  }
+
+  #addContactForm {
+    margin: 18px 0 0;
+    max-width: none;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .btn-cancel,
+  .btn-create {
+    width: 100%;
+    justify-content: center;
+  }
 }
