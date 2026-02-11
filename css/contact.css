@@ -49,9 +49,9 @@ html, body {
 }
 
 .contacts-sidebar {
-  width: 456px;
-  max-width: 456px;
-  min-width: 456px;
+  width: 420px;
+  max-width: 420px;
+  min-width: 420px;
   padding: 32px 28px;
   display: flex;
   flex-direction: column;
@@ -673,10 +673,3 @@ flex: 1;
 .contacts-more-item {
   display: none;
 }
-
-
-
-
-
-
-
