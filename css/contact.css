@@ -34,9 +34,8 @@
 }
 
 .contacts-sidebar {
-  width: 420px;
-  max-width: 420px;
-  min-width: 420px;
+  
+  max-width: 456px;
   padding: 32px 28px;
   display: flex;
   flex-direction: column;
@@ -49,7 +48,6 @@
 
 .contacts-sidebar .contacts-add-btn {
   width: 100% !important;
-  height: 48px !important;
   background: #2a3647 !important;
   color: #ffffff !important;
   border: none !important;
@@ -66,6 +64,27 @@
   text-align: center !important;
   box-shadow: none !important;
 }
+
+.contacts-add-btn{
+  width: 90% !important;
+  height: 48px !important;
+  background: #2a3647 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 1px !important;
+  padding: 6px 16px !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  cursor: pointer !important;
+  margin-bottom: 24px !important;
+  text-align: center !important;
+  box-shadow: none !important;
+}
+
 
 
 .contacts-sidebar .contacts-add-btn:hover {
