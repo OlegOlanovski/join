@@ -110,6 +110,7 @@ async function populateAssignedContacts() {
   dropdown.innerHTML = "";
   const contactsData = await loadContactsFromStorage();
   const list = Array.isArray(contactsData) ? contactsData : Object.values(contactsData || {});
+console.log(list);
 
   list.forEach((c) => {
     if (!c?.id || !c?.name) return;
@@ -128,9 +129,7 @@ async function populateAssignedContacts() {
 }
 
 function toggleContact(id) {
-  selectedContacts.has(id)
-    ? selectedContacts.delete(id)
-    : selectedContacts.add(id);
+  selectedContacts.has(id) ? selectedContacts.delete(id) : selectedContacts.add(id);
 
   populateAssignedContacts();
    renderSelectedContacts();
@@ -206,10 +205,10 @@ async function createTask() {
     assigned: [...selectedContacts],
   };
 
-  // Try to persist to remote DB, but don't block local UI if it fails
+  // Try to persist to remote DB as an upsert to tasks/{id}.json
   try {
-    const response = await fetch(dbTask + ".json", {
-      method: "POST",
+    const response = await fetch(dbTask + `tasks/${id}.json`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(task),
     });
@@ -220,7 +219,7 @@ async function createTask() {
 
   // Load tasks from remote DB (DB is the single source of truth)
   try {
-    const resp = await fetch(dbTask + ".json");
+    const resp = await fetch(dbTask + "tasks.json");
     const data = await resp.json();
     let tasks = [];
 
@@ -271,7 +270,7 @@ async function createTask() {
 async function loadContactsFromStorage() {
   try {
     const dbTask = "https://join-da53b-default-rtdb.firebaseio.com/";
-    const response = await fetch(dbTask + ".json");
+    const response = await fetch(dbTask + "contacts.json");
     const data = await response.json();
 
     // Firebase RTDB returns an object (key -> value). Convert to array for easier handling.
