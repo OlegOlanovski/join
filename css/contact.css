@@ -1,4 +1,4 @@
-*, *::before, *::after {
+/* *, *::before, *::after {
   box-sizing: border-box;
 }
 
@@ -16,7 +16,7 @@ body {
   display: flex;
   min-height: 100vh;
   height: auto;
-}
+} */
 
 .cantainer {
   flex: 1;
@@ -575,7 +575,7 @@ input::placeholder {
   display: none;
 }
 
-@media (max-width: 1024px) {
+/* @media (max-width: 1024px) {
   .contacts-sidebar {
     width: 380px;
     max-width: 380px;
@@ -1153,9 +1153,9 @@ input::placeholder {
   .btn-create {
     max-width: 220px;
   }
-}
+} */
 
-html, body {
+/* html, body {
   height: 100%;
 }
 
@@ -1174,9 +1174,9 @@ body {
 .main {
   flex: 1;
   min-height: 0;
-}
+} */
 
-@media (min-width: 901px) {
+/* @media (min-width: 901px) {
   .contacts-page {
     flex: 1;
     min-height: 0;
@@ -1203,4 +1203,4 @@ body {
     height: auto;
     min-height: 100dvh;
   }
-}
+} */
