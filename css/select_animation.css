@@ -1,14 +1,12 @@
-/* select 1 */
-
+/* Select 1 */
 .multi-select {
     position: relative;
     width: 100%;
-   
 }
 
 .multi-select-input {
     border: 1px solid #ccc;
-        border-radius: 8px;
+    border-radius: 8px;
     padding: 8px;
     cursor: pointer;
     min-height: 40px;
@@ -30,7 +28,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     padding: 8px 10px;
     cursor: pointer;
     min-height: 40px;
@@ -41,17 +38,11 @@
     transition: transform 0.3s ease;
 }
 
-.dropdown-arrow.open {
-    transform: rotate(180deg);
-}
+.dropdown-arrow.open {transform: rotate(180deg);}
 
-.hidden {
-    display: none;
-}
-
+.hidden {display: none;}
 
 /* Select 2 - and label */
-
 .select-wrapper {
     position: relative;
     width: auto;
@@ -70,9 +61,7 @@
     pointer-events: none;
 }
 
-.select-wrapper.open #selectIcon {
-    transform: translateY(-50%) rotate(180deg);
-}
+.select-wrapper.open #selectIcon {transform: translateY(-50%) rotate(180deg);}
 
 select {
     box-sizing: border-box;
@@ -94,13 +83,9 @@ label {
     margin: 12px 0 4px;
 }
 
-select:hover {
-    border-color: #999;
-}
+select:hover {border-color: #999;}
 
-.multi-select-input:hover{
-    border-color: #999;
-}
+.multi-select-input:hover{border-color: #999;}
 
 option {
     color: #666;

@@ -6,7 +6,6 @@
   justify-content: space-around;
 }
 
-
 .contact-option {
   display: flex;
   align-items: center;
@@ -16,9 +15,7 @@
   cursor: pointer;
 }
 
-.contact-option:hover {
-  background: #f2f2f2;
-}
+.contact-option:hover {background: #f2f2f2;}
 
 .contact-avatar {
   width: 32px;
@@ -31,7 +28,6 @@
   align-items: center;
   justify-content: center;
 }
-
 
 .contact-option {
   display: flex;
@@ -46,9 +42,6 @@
   height: 21px;
   width: 21px;
 }
-
-/* new select field */
-
 
 .content-wrepper {
   max-width: 1920px;
@@ -108,15 +101,9 @@
   padding: 0 10px;
 }
 
-.subtasks-input {
-  position: relative;
-  width: 100%;
-}
+.subtasks-input {position: relative;width: 100%;}
 
-.subtasks-input input {
-  width: 100%;
-  padding-right: 44px;
-}
+.subtasks-input input {width: 100%;padding-right: 44px;}
 
 .subtasks-add-btn {
   position: absolute;
@@ -214,13 +201,9 @@
   height: 200px;
   grid-template-columns: auto auto;
   grid-column: 2;
-
 }
 
-
-.form-details>label:first-child {
-  margin-top: 0;
-}
+.form-details>label:first-child {margin-top: 0;}
 
 .create-task-button {
   display: flex;
@@ -229,18 +212,11 @@
   margin-left: auto;
 }
 
-.kpi-panel-task-footer .primary-btn:hover {
-  background-color: #29abe2;
-  border-color: #29abe2;
-}
+.kpi-panel-task-footer .primary-btn:hover {background-color: #29abe2;border-color: #29abe2;}
 
-.kpi-panel-task-footer .primary-btn.--primary-btn-cancel:hover {
-  color: #ffffff;
-}
+.kpi-panel-task-footer .primary-btn.--primary-btn-cancel:hover {color: #ffffff;}
 
-.kpi-panel-task-footer .primary-btn.--primary-btn-cancel:hover .btn-icon {
-  filter: brightness(0) invert(1);
-}
+.kpi-panel-task-footer .primary-btn.--primary-btn-cancel:hover .btn-icon {filter: brightness(0) invert(1);}
 
 label .label-star {
   color: red;
@@ -306,8 +282,9 @@ label .label-star {
   height: 42px;
   width: 110px;
 }
+
 @media (max-width: 1024px) {
-.form-details {
+  .form-details {
     display: flex;
     flex-direction: column;
     height: auto;
@@ -335,9 +312,7 @@ label .label-star {
     margin-left: 0px;
   }
 
-  .header-help {
-    display: none;
-  }
+  .header-help {display: none;}
 
   .add-task-button {
     background-image: url("../assets/icons/addPlus-white.svg");
@@ -386,7 +361,6 @@ label .label-star {
     z-index: 998;
     margin: 0;
     padding: 12px 20px;
-
   }
 }
 
@@ -402,17 +376,16 @@ label .label-star {
     height: 46px;
   }
 
-    .kpi-panel-task-footer {
-      display: grid;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      height: auto;
-      grid-template-columns: auto;
-    }
+  .kpi-panel-task-footer {
+    display: grid;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: auto;
+    grid-template-columns: auto;
+  }
 
   .create-task-button {
     margin-top: 5px;
   }
-
 }
