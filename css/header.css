@@ -1,4 +1,4 @@
-* {
+/* * {
   box-sizing: border-box;
 }
 
@@ -18,7 +18,7 @@ body {
   width: 100%;
   max-width: none;
   margin: 0;
-}
+} */
 
 /* ======================
    SIDEBAR
