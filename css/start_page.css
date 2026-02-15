@@ -92,6 +92,18 @@ main {
   justify-content: center;
   align-items: center;
 }
+ 
+.login-message {
+  position: absolute;
+  top: 270px;
+  left: 50%;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  transform: translateX(-50%);
+  font-size: 18px;
+  color: tomato;
+}
 
 /*LOGIN FORM*/
 .login-form {
