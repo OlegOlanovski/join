@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // --- populate header initials (works for both the header-user button and legacy .header-guest)
   (function populateHeaderInitials() {
     function cookieToObj() {
       return document.cookie.split(";").reduce((acc, cookie) => {
@@ -19,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       try { return JSON.parse(c.loggedInUser); }
       catch (e) {
-        // legacy or malformed cookie (e.g. "[object Object]") — return raw string as 'namen' so we can sanitize
         return { namen: String(c.loggedInUser || '') };
       }
     }
@@ -27,9 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function cleanDisplayName(val) {
       if (!val) return null;
       let s = String(val).trim();
-      // reject obvious malformed values like "[object Object]" or JSON fragments
       if (/^\[object\b/i.test(s) || /^\{/.test(s) || /\bobject\b/i.test(s)) return null;
-      // if looks like an email, derive readable name from local-part
       if (/^[^@\s]+@[^@\s]+$/.test(s)) {
         const lp = s.split('@')[0].replace(/[._\-]+/g, ' ');
         s = lp.split(/\s+/).map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
@@ -51,10 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const rawName = user && (user.namen || user.name || user.fullName || user.mail || user.email) || null;
     const displayName = cleanDisplayName(rawName) || (user && user.mail ? cleanDisplayName(user.mail) : null);
     const initials = displayName ? getInitials(displayName) : 'G';
-
-    // debug: helps identify malformed stored user in console
-    try { } catch (e) {}
-
     const btnLegacy = document.querySelector('.header-guest');
     if (btnLegacy) {
       btnLegacy.textContent = initials;

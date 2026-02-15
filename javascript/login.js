@@ -21,11 +21,9 @@ async function logIn() {
   if (!users.length) return alert("No users found in database. Please register first.");
   const foundUser = users.find(u => (u.mail||"") === (email.value||"") && (u.passwort||"") === (password.value||""));
   if (foundUser) {
-    // persist user info (sessionStorage + cookie as JSON) so other pages can read the name
     try { sessionStorage.setItem('loggedInUser', JSON.stringify(foundUser)); } catch (e) { /* ignore */ }
-    // ensure guest flag removed (avoid showing 'G')
     try { sessionStorage.removeItem('guest'); } catch (e) { /* ignore */ }
-    const payload = encodeURIComponent(JSON.stringify(foundUser));
+    const payload = encodeURIComponent(JSON.stringify(foundUser.mail));
     document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
     try { console.debug('login: stored loggedInUser ->', foundUser); } catch (e) {}
     window.location.href = "./subpages/summary.html";
@@ -35,7 +33,6 @@ async function logIn() {
 
 
 function logout() {
-  // clear cookie and any stored user flags (sessionStorage/localStorage)
   const clearCookie = (name) => { document.cookie = `${name}=; path=/; max-age=0`; };
   clearCookie('loggedInUser');
   clearCookie('session');
