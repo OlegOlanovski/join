@@ -21,10 +21,11 @@ async function logIn() {
   if (!users.length) return alert("No users found in database. Please register first.");
   const foundUser = users.find(u => (u.mail||"") === (email.value||"") && (u.passwort||"") === (password.value||""));
   if (foundUser) {
-    // persist user info (sessionStorage + cookie as JSON) so other pages can read the name
     try { sessionStorage.setItem('loggedInUser', JSON.stringify(foundUser)); } catch (e) { /* ignore */ }
-    const payload = encodeURIComponent(JSON.stringify(foundUser));
+    try { sessionStorage.removeItem('guest'); } catch (e) { /* ignore */ }
+    const payload = encodeURIComponent(JSON.stringify(foundUser.mail));
     document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
+    try { console.debug('login: stored loggedInUser ->', foundUser); } catch (e) {}
     window.location.href = "./subpages/summary.html";
   }
   else alert("Check your email and password. Please try again");
@@ -32,8 +33,17 @@ async function logIn() {
 
 
 function logout() {
-  document.cookie = `loggedInUser=; path=/; max-age=0`;
+  const clearCookie = (name) => { document.cookie = `${name}=; path=/; max-age=0`; };
+  clearCookie('loggedInUser');
+  clearCookie('session');
+  clearCookie('sessionId');
+  clearCookie('accessToken');
+  clearCookie('auth');
+  clearCookie('token');
   try { sessionStorage.removeItem('guest'); } catch (e) {}
+  try { sessionStorage.removeItem('loggedInUser'); } catch (e) {}
+  try { localStorage.removeItem('loggedInUser'); } catch (e) {}
+  try { console.debug('logout: cleared loggedInUser, session cookies and guest flags'); } catch (e) {}
   window.location.href = "../index.html";
 } 
 

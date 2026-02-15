@@ -12,5 +12,6 @@ async function regData() {
       passwort: password.value,
     }),
   });
+  window.location.href = "../index.html";
   return await conect.json();
 }
