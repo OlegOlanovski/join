@@ -27,8 +27,9 @@ async function logIn() {
 
 function logout() {
   document.cookie = `loggedInUser=; path=/; max-age=0`;
+  try { sessionStorage.removeItem('guest'); } catch (e) {}
   window.location.href = "../index.html";
-}
+} 
 
 
 function getCokkieCheck() {
