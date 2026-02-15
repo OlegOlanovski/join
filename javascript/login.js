@@ -20,7 +20,13 @@ async function logIn() {
   const users = loginData ? Object.values(loginData) : [];
   if (!users.length) return alert("No users found in database. Please register first.");
   const foundUser = users.find(u => (u.mail||"") === (email.value||"") && (u.passwort||"") === (password.value||""));
-  if (foundUser) { document.cookie = `loggedInUser=${encodeURIComponent(foundUser)}; path=/; max-age=3600`; window.location.href = "./subpages/summary.html"; }
+  if (foundUser) {
+    // persist user info (sessionStorage + cookie as JSON) so other pages can read the name
+    try { sessionStorage.setItem('loggedInUser', JSON.stringify(foundUser)); } catch (e) { /* ignore */ }
+    const payload = encodeURIComponent(JSON.stringify(foundUser));
+    document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
+    window.location.href = "./subpages/summary.html";
+  }
   else alert("Check your email and password. Please try again");
 }
 
@@ -39,7 +45,6 @@ function getCokkieCheck() {
     return acc;
   }, {});
   if (!cookies.loggedInUser) {
-    // Redirect to login and include a query param so the login page can display a message
     const dest = "../index.html?notice=" + encodeURIComponent("pleaseLogin");
     window.location.href = dest;
     return null;
