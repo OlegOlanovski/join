@@ -9,6 +9,7 @@ function goToSignup() {
 }
 
 function goToSummary() {
+  try { sessionStorage.setItem("guest", "1"); } catch (e) {}
   window.location.href = "./subpages/summary_guest.html";
 }
 

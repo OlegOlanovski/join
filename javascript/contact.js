@@ -126,6 +126,12 @@ async function fetchDBNode(nodeName) {
 }
 
 async function loadContacts() {
+  // Guest mode: use in-memory cached/demo contacts and skip remote fetch
+  if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('guest') === '1') {
+    contacts = (window.idbStorage && typeof window.idbStorage.getContactsSync === 'function') ? window.idbStorage.getContactsSync() : [];
+    return;
+  }
+
   let data = null;
   try {
     data = await fetchDBNode("contacts");
@@ -179,9 +185,17 @@ async function loadContacts() {
   }
 
   if (changed) await saveContacts();
-} 
+}  
 
 async function saveContacts() {
+  // Guest mode: persist only in-memory cache (avoid remote writes)
+  if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('guest') === '1') {
+    if (window.idbStorage && typeof window.idbStorage.saveContacts === 'function') {
+      try { await window.idbStorage.saveContacts(contacts); } catch (err) { console.warn('saveContacts (guest): failed to save to IDB', err); }
+    }
+    return;
+  }
+
   try {
     // Build map of contacts keyed by id and persist to Firebase
     const map = {};
@@ -214,7 +228,7 @@ async function saveContacts() {
   } catch (e) {
     console.error("Failed to save contacts remotely", e);
   }
-}
+} 
 
 function getEl(id) {
   return document.getElementById(id);
