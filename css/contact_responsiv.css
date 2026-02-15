@@ -330,8 +330,20 @@
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-    z-index: 100001;
+    z-index: 99999;
     pointer-events: auto;
+  }
+
+  #mobileMenuBtn:hover {
+    background: #29ABE2;
+  }
+
+  body:not(.show-contact-details) #mobileMenuBtn {
+    display: none;
+  }
+
+  body.show-contact-details #mobileMenuBtn {
+    display: flex;
   }
 
   #mobileActionsMenu {
@@ -344,23 +356,14 @@
     border-radius: 14px;
     padding: 8px;
     box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16);
-    z-index: 100002;
+    z-index: 100000;
     min-width: 160px;
     max-width: calc(100vw - 36px);
     pointer-events: auto;
   }
 
-  #mobileActionsMenu.is-open {
+  body.show-contact-details #mobileActionsMenu.is-open {
     display: flex;
-  }
-
-  body:not(.show-contact-details) #mobileMenuBtn,
-  body:not(.show-contact-details) #mobileActionsMenu {
-    display: none;
-  }
-
-  body.show-contact-details .contacts-sidebar .contacts-add-btn {
-    display: none;
   }
 
   .contacts-more-item {
@@ -384,6 +387,10 @@
   .contacts-more-item:hover {
     background: #f6f7f8;
     color: #29abe2;
+  }
+
+  body.show-contact-details .contacts-sidebar .contacts-add-btn {
+    display: none;
   }
 
   .content-header {
@@ -538,50 +545,4 @@
   .contacts-scroll {
     max-height: calc(100vh - 200px);
   }
-}
-
-
-@media (max-width: 680px) {
-
-  #mobileMenuBtn {
-    display: flex;
-    position: fixed;
-    right: 20px;
-    bottom: 120px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: #2a3647;
-    color: #ffffff;
-    border: none;
-    font-size: 22px;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-    z-index: 99999;
-  }
-
-  #mobileActionsMenu {
-    display: none;
-    flex-direction: column;
-    position: fixed;
-    right: 18px;
-    bottom: 155px;
-    background: #fff;
-    border-radius: 14px;
-    padding: 8px;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16);
-    z-index: 100000;
-    min-width: 160px;
-  }
-
-  #mobileActionsMenu.is-open {
-    display: flex;
-  }
-
-  body:not(.show-contact-details) #mobileMenuBtn {
-    display: none;
-  }
-
 }
