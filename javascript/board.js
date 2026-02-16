@@ -238,6 +238,7 @@ async function fetchDBNode(nodeName) {
   return null;
 }
 
+
 async function syncTasksFromDB() {
   try {
     const data = await fetchDBNode("tasks");
@@ -245,8 +246,6 @@ async function syncTasksFromDB() {
     if (!data) tasks = [];
     else if (Array.isArray(data)) tasks = data.filter(Boolean);
     else tasks = Object.entries(data).map(([k, v]) => ({ ...(v || {}), id: v && v.id ? v.id : k }));
-    console.log("Synced tasks from DB:", tasks.length);
-    // Persist canonical tasks to IndexedDB (cache updated by wrapper)
     await saveTasks(tasks);
     return tasks;
   } catch (e) {
@@ -254,7 +253,8 @@ async function syncTasksFromDB() {
     throw e;
   }
 }
-// Sync contacts from Firebase RTDB into local IndexedDB cache
+
+
 async function syncContactsFromDB() {
   try {
     const data = await fetchDBNode("contacts");
@@ -264,16 +264,12 @@ async function syncContactsFromDB() {
     else if (Array.isArray(data)) contacts = data.filter(Boolean);
     else contacts = Object.entries(data).map(([k, v]) => ({ ...(v || {}), id: v && v.id ? v.id : k }));
 
-    console.log("Synced contacts from DB:", contacts.length);
-
-    // Persist to IDB so other modules (board, overlays) can access them via idbStorage
     if (window.idbStorage && typeof window.idbStorage.saveContacts === "function") {
       try {
         await window.idbStorage.saveContacts(contacts);
-        // Verify saved content
         try {
           const local = window.idbStorage.getContactsSync ? window.idbStorage.getContactsSync() : null;
-          console.info("syncContactsFromDB: saved to IDB. Remote count:", contacts.length, "Local IDB count:", local ? local.length : "n/a");
+          return local || contacts;
         } catch (readErr) {
           console.warn("syncContactsFromDB: saved to IDB but failed to read back:", readErr);
         }
