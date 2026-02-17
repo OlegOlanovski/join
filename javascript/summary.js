@@ -51,42 +51,21 @@ async function syncTasksFromDB() {
     if (!data) tasks = [];
     else if (Array.isArray(data)) tasks = data.filter(Boolean);
     else tasks = Object.entries(data).map(([k, v]) => ({ ...(v || {}), id: v && v.id ? v.id : k }));
-
     if (window.idbStorage && typeof window.idbStorage.saveTasks === "function") {
-      try {
-        await window.idbStorage.saveTasks(tasks);
-        try {
-          const local = window.idbStorage.getTasksSync ? window.idbStorage.getTasksSync() : null;
-          console.info("syncTasksFromDB: saved to IDB. Remote count:", tasks.length, "Local IDB count:", local ? local.length : "n/a");
-        } catch (readErr) {
-          console.warn("syncTasksFromDB: saved to IDB but failed to read back:", readErr);
-        }
-      } catch (err) {
-        console.warn("Failed to save tasks to IDB:", err);
-      }
+      try {await window.idbStorage.saveTasks(tasks);
+        try {const local = window.idbStorage.getTasksSync ? window.idbStorage.getTasksSync() : null;} catch (readErr) {console.warn("syncTasksFromDB: saved to IDB but failed to read back:", readErr);}
+      } catch (err) {console.warn("Failed to save tasks to IDB:", err);}
     }
-
     return tasks;
-  } catch (e) {
-    console.warn("Failed to sync tasks from DB", e);
-    throw e;
-  }
+  } catch (e) {console.warn("Failed to sync tasks from DB", e); throw e;}
 }
 
 async function init() {
   await (window.idbStorage && window.idbStorage.ready ? window.idbStorage.ready : Promise.resolve());
   if (!(typeof sessionStorage !== 'undefined' && sessionStorage.getItem('guest') === '1')) {
     try { await syncTasksFromDB(); } catch (e) { console.warn("Initial tasks sync failed, continuing with local cache", e); }
-  } else {
-    console.info('Guest mode: using demo/local tasks');
-  }
-  greetingText();
-  getTasksTotal();
-  getTasksDone();
-  getTasksProgress();
-  getAwaitFeedback();
-  getUrgrentTodo();
-  getCokkieCheck();
+  } else {console.info('Guest mode: using demo/local tasks');}
+  greetingText(); getTasksTotal(); getTasksDone();getTasksProgress();getAwaitFeedback();getUrgrentTodo();getCokkieCheck();
 }
 
 function greetingText() {
