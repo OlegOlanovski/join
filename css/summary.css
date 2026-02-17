@@ -87,7 +87,7 @@ body {
 }
 
 .menu a:hover {
-  background-color: #091931;
+  background-color: #384b6692;
   color: white;
 }
 
@@ -96,22 +96,14 @@ body {
   color: white;
 }
 
-.menu a.active::before,
-.menu a.active::after {
+.menu a.active::before {
   content: "";
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 6px;
-  background-color: #29ABE2;
-}
-
-.menu a.active::before {
-  left: -3px;
-}
-
-.menu a.active::after {
-  right: -3px;
+  left: 0;
+  width: 4px;
+  background-color: #091931;
 }
 
 .menu img {
@@ -122,7 +114,11 @@ body {
   transition: filter 0.3s ease;
 }
 
-.menu img:hover {
+.menu a:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.menu a.active img {
   filter: brightness(0) invert(1);
 }
 
