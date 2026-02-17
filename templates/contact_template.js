@@ -1,11 +1,17 @@
 function letterGroupTemplate(letter) {
-  return `<div class="letter-group">${letter}</div>`;
+  return `
+    <div class="letter-group">
+      ${letter}
+    </div>
+  `;
 }
 
 function contactListItemTemplate(c, isActive) {
   return `
     <div class="contact-item ${isActive ? "active" : ""}" data-id="${c.id}">
-      <div class="avatar ${c.colorClass}">${c.initials}</div>
+      <div class="avatar ${c.colorClass}">
+        ${c.initials}
+      </div>
       <div class="contact-text">
         <div class="contact-name">${c.name}</div>
         <div class="contact-mail">${c.email}</div>
@@ -18,11 +24,11 @@ function contactActionsTemplate(c) {
   return `
     <div class="contact-actions">
       <button class="contact-action edit" data-action="edit" data-id="${c.id}">
-        <img src="../assets/icons/edit.svg">
+        <img src="../assets/icons/edit.svg" alt="">
         <span>Edit</span>
       </button>
       <button class="contact-action delete" data-action="delete" data-id="${c.id}">
-        <img src="../assets/icons/delete.svg">
+        <img src="../assets/icons/delete.svg" alt="">
         <span>Delete</span>
       </button>
     </div>
@@ -32,14 +38,16 @@ function contactActionsTemplate(c) {
 function contactDetailsTemplate(c) {
   return `
     <div class="contact-detail-topbar">
-      <button class="mobile-back-btn" id="mobileBackBtn" type="button" aria-label="Back">
-        <img src="../assets/icons/pfeil-links-blue.png" alt="Back">
+      <button class="mobile-back-btn" id="mobileBackBtn" type="button">
+        <img src="../assets/icons/pfeil-links-blue.png" alt="">
       </button>
       <div class="contact-detail-topbar-spacer"></div>
     </div>
 
     <div class="contact-detail-header">
-      <div class="avatar big ${c.colorClass}">${c.initials}</div>
+      <div class="avatar big ${c.colorClass}">
+        ${c.initials}
+      </div>
       <div class="contact-detail-headtext">
         <h2 class="contact-detail-name">${c.name}</h2>
         ${contactActionsTemplate(c)}
@@ -66,7 +74,7 @@ function modalLeftTemplate(mode) {
 
   return `
     <div class="modal-left">
-      <button class="modal-close" id="closeAddContact" type="button" aria-label="Close">×</button>
+      <button class="modal-close" id="closeAddContact" type="button">×</button>
       <img src="../assets/icons/logo-white.svg" class="modal-logo" alt="">
       <h2 class="modal-title">${isEdit ? "Edit contact" : "Add contact"}</h2>
       <p class="modal-subtitle">Tasks are better with a team!</p>
@@ -77,6 +85,7 @@ function modalLeftTemplate(mode) {
 
 function modalAvatarTemplate(mode, data) {
   const m = String(mode || "").trim().toLowerCase();
+
   if (m === "edit") {
     return `
       <div class="modal-person ${data.colorClass || ""}">
@@ -128,7 +137,7 @@ function modalFormTemplate(mode, data) {
                type="text"
                placeholder="Name"
                required
-               value="${(data && data.name) ? data.name : ""}">
+               value="${data?.name || ""}">
         <img src="../assets/icons/person.png" class="input-icon" alt="">
       </div>
 
@@ -137,7 +146,7 @@ function modalFormTemplate(mode, data) {
                type="email"
                placeholder="Email"
                required
-               value="${(data && data.email) ? data.email : ""}">
+               value="${data?.email || ""}">
         <img src="../assets/icons/mail.png" class="input-icon" alt="">
       </div>
 
@@ -145,7 +154,7 @@ function modalFormTemplate(mode, data) {
         <input id="contactPhone"
                type="text"
                placeholder="Phone"
-               value="${(data && data.phone) ? data.phone : ""}">
+               value="${data?.phone || ""}">
         <img src="../assets/icons/call.svg" class="input-icon" alt="">
       </div>
 

@@ -8,7 +8,7 @@ async function init() {
   removeModalNow();
   await loadContacts();
 
-  if (!selectedId && contacts.length) selectedId = contacts[0].id;
+  selectedId = null;
 
   renderContactsList();
   renderDetails();
@@ -22,9 +22,7 @@ async function init() {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-  await (window.idbStorage && window.idbStorage.ready
-    ? window.idbStorage.ready
-    : Promise.resolve());
+  await (window.idbStorage && window.idbStorage.ready ? window.idbStorage.ready : Promise.resolve());
   await init();
 });
 
@@ -116,9 +114,11 @@ async function fetchDBNode(nodeName) {
 }
 
 async function loadContacts() {
-  // Guest mode: use in-memory cached/demo contacts and skip remote fetch
-  if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('guest') === '1') {
-    contacts = (window.idbStorage && typeof window.idbStorage.getContactsSync === 'function') ? window.idbStorage.getContactsSync() : [];
+  if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("guest") === "1") {
+    contacts =
+      window.idbStorage && typeof window.idbStorage.getContactsSync === "function"
+        ? window.idbStorage.getContactsSync()
+        : [];
     return;
   }
 
@@ -146,15 +146,7 @@ async function loadContacts() {
   if (window.idbStorage && typeof window.idbStorage.saveContacts === "function") {
     try {
       await window.idbStorage.saveContacts(contacts);
-      try {
-        const local = window.idbStorage.getContactsSync ? window.idbStorage.getContactsSync() : null;
-        console.info("loadContacts: fetched from remote, saved to IDB. Remote count:", contacts.length, "Local IDB count:", local ? local.length : "n/a");
-      } catch (readErr) {
-        console.warn("loadContacts: saved to IDB but failed to read back:", readErr);
-      }
-    } catch (err) {
-      console.warn("Failed to save contacts to IDB:", err);
-    }
+    } catch (err) {}
   }
 
   let used = new Set();
@@ -173,14 +165,14 @@ async function loadContacts() {
   }
 
   if (changed) await saveContacts();
-
 }
 
 async function saveContacts() {
-  // Guest mode: persist only in-memory cache (avoid remote writes)
-  if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('guest') === '1') {
-    if (window.idbStorage && typeof window.idbStorage.saveContacts === 'function') {
-      try { await window.idbStorage.saveContacts(contacts); } catch (err) { console.warn('saveContacts (guest): failed to save to IDB', err); }
+  if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("guest") === "1") {
+    if (window.idbStorage && typeof window.idbStorage.saveContacts === "function") {
+      try {
+        await window.idbStorage.saveContacts(contacts);
+      } catch (err) {}
     }
     return;
   }
@@ -202,20 +194,10 @@ async function saveContacts() {
     if (window.idbStorage && typeof window.idbStorage.saveContacts === "function") {
       try {
         await window.idbStorage.saveContacts(contacts);
-        try {
-          const local = window.idbStorage.getContactsSync ? window.idbStorage.getContactsSync() : null;
-          console.info("saveContacts: remote saved, IDB updated. Remote count:", contacts.length, "Local IDB count:", local ? local.length : "n/a");
-        } catch (readErr) {
-          console.warn("saveContacts: saved to IDB but failed to read back:", readErr);
-        }
-      } catch (err) {
-        console.warn("Failed to save contacts to IDB:", err);
-      }
+      } catch (err) {}
     }
-  } catch (e) {
-    console.error("Failed to save contacts remotely", e);
-  }
-} 
+  } catch (e) {}
+}
 
 function getEl(id) {
   return document.getElementById(id);
@@ -260,6 +242,8 @@ function applyModalAvatar(data) {
     });
     avatar = candidates[0] || null;
   }
+
+  if (!avatar) return;
 
   Array.from(avatar.classList).forEach(function (cls) {
     if (cls.indexOf("avatar-color-") === 0) avatar.classList.remove(cls);
@@ -317,7 +301,32 @@ function closeModal() {
   }
 
   box.addEventListener("transitionend", finish, { once: true });
-  setTimeout(finish, 300);
+  setTimeout(finish, 3600);
+}
+
+function showContactSuccessBox(text) {
+  const msg = String(text || "Contact successfully created");
+
+  let box = document.getElementById("contactSuccessBox");
+  if (box) box.remove();
+
+  box = document.createElement("div");
+  box.id = "contactSuccessBox";
+  box.className = "contact-successbox";
+  box.textContent = msg;
+
+  document.body.appendChild(box);
+
+  requestAnimationFrame(function () {
+    box.classList.add("is-open");
+  });
+
+  setTimeout(function () {
+    box.classList.remove("is-open");
+    setTimeout(function () {
+      box.remove();
+    }, 350);
+  }, 2200);
 }
 
 function renderContactsList() {
@@ -334,7 +343,7 @@ function renderContactsList() {
 
     if (g && g !== current) {
       current = g;
-      html += `<div class="letter-group">${current}</div>`;
+      html += letterGroupTemplate(current);
     }
 
     html += contactListItemTemplate(
@@ -356,12 +365,19 @@ function renderDetails() {
   let d = getEl("contactDetails");
   if (!d) return;
 
+  if (!selectedId) {
+    d.innerHTML = "";
+    window.closeMobileMenu && window.closeMobileMenu();
+    return;
+  }
+
   let c = contacts.find(function (x) {
     return x.id === selectedId;
   });
 
   if (!c) {
     d.innerHTML = "";
+    window.closeMobileMenu && window.closeMobileMenu();
     return;
   }
 
@@ -389,7 +405,9 @@ function createFromForm() {
 
   if (!name || !email) return;
 
-  let used = new Set(contacts.map(function (c) { return c.colorClass; }).filter(Boolean));
+  let used = new Set(contacts.map(function (c) {
+    return c.colorClass;
+  }).filter(Boolean));
 
   let id = generateId();
   let nc = {
@@ -406,6 +424,9 @@ function createFromForm() {
   saveContacts();
   renderContactsList();
   renderDetails();
+
+  closeModal();
+  showContactSuccessBox("Contact successfully created");
 }
 
 function saveEdit(editId) {
@@ -430,6 +451,9 @@ function saveEdit(editId) {
   saveContacts();
   renderContactsList();
   renderDetails();
+
+  closeModal();
+  showContactSuccessBox("Contact successfully edited");
 }
 
 function deleteContact(id) {
@@ -437,13 +461,15 @@ function deleteContact(id) {
     return c.id !== id;
   });
 
-  selectedId = contacts.length ? contacts[0].id : null;
+  selectedId = null;
 
   saveContacts();
   renderContactsList();
   renderDetails();
 
   if (window.isMobile && window.isMobile()) window.showMobileList && window.showMobileList();
+
+  showContactSuccessBox("Contact successfully deleted");
 }
 
 function handleSecondary(btn) {
@@ -478,22 +504,6 @@ function handleClick(e) {
     renderContactsList();
     renderDetails();
     return;
-  }
-
-  function closeModal() {
-    let m = getEl("addContactModal");
-    if (!m) return;
-
-    m.classList.remove("is-open");
-    m.classList.add("is-closing");
-
-    let box = m.querySelector(".modal");
-    if (!box) return removeModalNow();
-
-    box.addEventListener("transitionend", function (ev) {
-      if (ev.propertyName !== "transform") return;
-      removeModalNow();
-    }, { once: true });
   }
 
   let act = e.target.closest(".contact-action");
@@ -532,6 +542,4 @@ function handleSubmit(e) {
 
   if (mode === "create") createFromForm();
   if (mode === "edit" && editId) saveEdit(editId);
-
-  closeModal();
 }

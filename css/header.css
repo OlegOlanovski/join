@@ -263,6 +263,7 @@ html, body {
   min-width: 190px;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16);
   z-index: 100000;
+ 
 }
 
 .userMenuItem {
@@ -378,5 +379,3 @@ html, body {
   .menu a { padding: 8px 6px; gap: 4px; }
   .menu img { width: 20px; height: 20px; }
 }
-
-
