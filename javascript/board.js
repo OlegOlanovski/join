@@ -153,9 +153,9 @@ function closeAddTaskOverlay() {
 // ---------------- Storage ----------------
 function getTasks() {
   try {
-    return (window.idbStorage && typeof window.idbStorage.getTasksSync === "function")
-      ? window.idbStorage.getTasksSync()
-      : [];
+    
+    return (window.idbStorage && typeof window.idbStorage.getTasksSync === "function") ? window.idbStorage.getTasksSync() : [];
+    
   } catch (e) {
     console.error("Storage access error:", e);
     return [];
@@ -173,12 +173,10 @@ async function saveTasks(tasks) {
     console.warn("idbStorage not available - tasks not persisted");
   }
 
-  // Best-effort: sync canonical tasks to remote DB so other clients and fresh page loads see updates
   if (!(typeof sessionStorage !== 'undefined' && sessionStorage.getItem('guest') === '1')) {
     (async function () {
       try {
         const url = (window.DB_TASK_URL || "https://join-da53b-default-rtdb.firebaseio.com/") + "tasks.json";
-        // Convert tasks array into a map keyed by id to avoid array vs object inconsistencies
         const map = {};
         for (const t of (tasks || [])) {
           const id = (t && t.id) ? String(t.id) : ("tmp_" + Date.now() + "_" + Math.random().toString(16).slice(2));
@@ -189,6 +187,7 @@ async function saveTasks(tasks) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(map),
         });
+        renderBoardFromStorage();
       } catch (err) {
         console.warn("Failed to sync tasks to remote DB:", err);
       }
