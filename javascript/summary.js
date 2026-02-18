@@ -55,20 +55,24 @@ async function syncTasksFromDB() {
 async function init() {
   await (window.idbStorage && window.idbStorage.ready ? window.idbStorage.ready : Promise.resolve());
   try { await syncTasksFromDB(); } catch (e) { console.warn("Initial tasks sync failed, continuing with local cache", e); }
-  greetingText(); getTasksTotal(); getTasksDone();getTasksProgress();getAwaitFeedback();getUrgrentTodo();getCokkieCheck();
+  getCokkieCheck(); greetingText(); getTasksTotal(); getTasksDone(); getTasksProgress(); getAwaitFeedback(); getUrgrentTodo();
 }
-
 
 function greetingText() {
-  const greeting = document.getElementById("greeting-text");
-  const hour = new Date().getHours();
-
-  if (hour < 12) {greeting.textContent = "Good morning!";
-  } else if (hour < 18) {greeting.textContent = "Good afternoon!";
-  } else {greeting.textContent = "Good evening!";}
+  const el = document.getElementById("greeting-text"); if (!el) return;
+  const h = new Date().getHours();
+  const base = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+  try {
+    const cookieMatch = document.cookie.split(";").map(c => c.trim()).find(c => c.startsWith("loggedInUser="));
+    if (cookieMatch) {
+      const cookieValue = cookieMatch.split("=")[1];
+      name = JSON.parse(decodeURIComponent(cookieValue));
+    } else if (sessionStorage.getItem("loggedInUser")) {
+      name = JSON.parse(sessionStorage.getItem("loggedInUser"));
+    }
+    el.textContent = `${base}, ${name}!`;
+  } catch (e) { el.textContent = base + "!"; }
 }
-
-
 function getTasksTotal() {
   const tasks = (window.idbStorage && typeof window.idbStorage.getTasksSync === "function") ? window.idbStorage.getTasksSync() : [];
   let filteredTasks = tasks.filter(task => task.title !== undefined);

@@ -6,6 +6,7 @@ const selectedContacts = new Set();
 
 // ------------------ INIT ------------------
 document.addEventListener("DOMContentLoaded", () => {
+  getCokkieCheck();
   populateAssignedContacts();
   initPriorityButtons();
   initSubtasks();

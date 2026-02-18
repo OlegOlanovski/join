@@ -70,7 +70,6 @@
     }
   }
 
-  // Start initializing immediately and expose a ready Promise
   const ready = init();
 
   function getTasksSync(){ return Array.isArray(cache.tasks) ? cache.tasks.slice() : []; }
@@ -100,7 +99,6 @@
     saveTasks: saveTasks,
     getContactsSync: getContactsSync,
     saveContacts: saveContacts,
-    // convenience async loaders
     loadTasks: async function(){ await ready; return getTasksSync(); },
     loadContacts: async function(){ await ready; return getContactsSync(); }
   };

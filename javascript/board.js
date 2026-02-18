@@ -14,6 +14,7 @@ let overlaySelectedPriority = "medium";
 let activeSearchQuery = "";
 
 document.addEventListener("DOMContentLoaded", async function () {
+  getCokkieCheck();
   // Wait for IndexedDB wrapper to be ready (if available)
   await (window.idbStorage && window.idbStorage.ready ? window.idbStorage.ready : Promise.resolve());
   initRedirects();

@@ -5,6 +5,7 @@ let contacts = [];
 let selectedId = null;
 
 async function init() {
+  getCokkieCheck();
   removeModalNow();
   await loadContacts();
 
