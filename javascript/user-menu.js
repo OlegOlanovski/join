@@ -49,9 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return (parts[0][0] || 'G').toUpperCase();
     }
 
-    const user = parseLoggedUser();
-    console.log(user);
-    
+    const user = parseLoggedUser();    
     const rawName = user && (user.namen || user.name || user.fullName || user.mail) || null;
     const displayName = cleanDisplayName(rawName) || (user && (user.namen || user.name) ? cleanDisplayName(user.namen || user.name) : null);
     const initials = displayName ? getInitials(displayName) : 'G';
