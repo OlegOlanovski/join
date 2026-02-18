@@ -11,41 +11,47 @@ document.addEventListener("DOMContentLoaded", function () {
     function parseLoggedUser() {
       try {
         const s = sessionStorage.getItem('loggedInUser');
-        if (s) return JSON.parse(s);
+        if (s) {
+          try { const p = JSON.parse(s); return (p && typeof p === 'object') ? { ...p, namen: p.namen || p.name || p.fullName || p.mail } : { namen: String(p) }; }
+          catch (e) { return { namen: String(s) }; }
+        }
       } catch (e) { /* ignore */ }
+
       const c = cookieToObj();
       if (!c.loggedInUser) return null;
-
-      try { return JSON.parse(c.loggedInUser); }
-      catch (e) {
+      try {
+        const p = JSON.parse(c.loggedInUser);
+        return (p && typeof p === 'object') ? { ...p, namen: p.namen || p.name || p.fullName || p.mail } : { namen: String(p) };
+      } catch (e) {
         return { namen: String(c.loggedInUser || '') };
       }
     }
 
     function cleanDisplayName(val) {
       if (!val) return null;
-      let s = String(val).trim();
+      let s = (typeof val === 'object') ? (val.namen || val.name || val.fullName || val.mail || '') : String(val || '');
+      s = s.trim(); if (!s) return null;
       if (/^\[object\b/i.test(s) || /^\{/.test(s) || /\bobject\b/i.test(s)) return null;
-      if (/^[^@\s]+@[^@\s]+$/.test(s)) {
-        const lp = s.split('@')[0].replace(/[._\-]+/g, ' ');
-        s = lp.split(/\s+/).map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
-      }
+      if (/^[^@\s]+@[^@\s]+$/.test(s)) s = s.split('@')[0].replace(/[._\-]+/g, ' ');
+      s = s.replace(/[._\-]+/g, ' ').replace(/\s+/g, ' ').trim();
+      s = s.split(' ').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
       return s || null;
     }
 
     function getInitials(name) {
       if (!name) return 'G';
-      const n = String(name).trim();
-      if (!n) return 'G';
-      const parts = n.split(/\s+/);
-      const first = parts[0] ? parts[0][0] : '';
-      const last = parts.length > 1 ? (parts[parts.length-1][0] || '') : '';
-      return (first + last).toUpperCase();
+      let s = (typeof name === 'object') ? (name.namen || name.name || name.fullName || name.mail || '') : String(name || '');
+      s = s.trim(); if (!s) return 'G';
+      if (/^[^@\s]+@[^@\s]+$/.test(s)) s = s.split('@')[0];
+      const parts = s.split(/\s+/).filter(Boolean);
+      if (parts.length >= 2) return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+      if (parts[0].length >= 2) return parts[0].slice(0,2).toUpperCase();
+      return (parts[0][0] || 'G').toUpperCase();
     }
 
-    const user = parseLoggedUser();
-    const rawName = user && (user.namen || user.name || user.fullName || user.mail || user.email) || null;
-    const displayName = cleanDisplayName(rawName) || (user && user.mail ? cleanDisplayName(user.mail) : null);
+    const user = parseLoggedUser();    
+    const rawName = user && (user.namen || user.name || user.fullName || user.mail) || null;
+    const displayName = cleanDisplayName(rawName) || (user && (user.namen || user.name) ? cleanDisplayName(user.namen || user.name) : null);
     const initials = displayName ? getInitials(displayName) : 'G';
     const btnLegacy = document.querySelector('.header-guest');
     if (btnLegacy) {

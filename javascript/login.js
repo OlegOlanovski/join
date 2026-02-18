@@ -16,6 +16,16 @@ async function fetchRegisterNode() {
   return null;
 }
 
+function guastLogin() {
+  
+  const payload = encodeURIComponent(JSON.stringify("Guest"));
+  document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
+  try {
+    sessionStorage.setItem("loggedInUser", JSON.stringify({ mail: "Guest", namen: "Guest" }));
+  } catch (e) { /* ignore */ }
+  window.location.href = "./subpages/summary.html";
+}
+
 async function logIn() {
   const loginData = await fetchRegisterNode();
   try {validateEmail(email);validatePassword(password);} catch (e) {console.warn("Validation failed", e);}
@@ -23,9 +33,8 @@ async function logIn() {
   if (!users.length) return alert("No users found in database. Please register first.");
   const foundUser = users.find((u) =>(u.mail || "") === (email.value || "") && (u.passwort || "") === (password.value || ""),);
   if (foundUser) {
-    try {sessionStorage.setItem("loggedInUser", JSON.stringify(foundUser));} catch (e) {/* ignore */}
-    try {sessionStorage.removeItem("guest");} catch (e) { /* ignore */}
-    const payload = encodeURIComponent(JSON.stringify(foundUser.mail));
+    try {sessionStorage.setItem("loggedInUser", JSON.stringify(foundUser.namen));} catch (e) {/* ignore */}
+    const payload = encodeURIComponent(JSON.stringify(foundUser.namen || "Guest"));
     document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
     try {console.debug("login: stored loggedInUser ->", foundUser);} catch (e) {}
     window.location.href = "./subpages/summary.html";
@@ -40,7 +49,6 @@ function logout() {
   clearCookie("accessToken");
   clearCookie("auth");
   clearCookie("token");
-  try {sessionStorage.removeItem("guest");} catch (e) {}
   try {sessionStorage.removeItem("loggedInUser");} catch (e) {}
   try {localStorage.removeItem("loggedInUser");} catch (e) {}
   try {console.debug("logout: cleared loggedInUser, session cookies and guest flags");} catch (e) {}
