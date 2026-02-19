@@ -696,7 +696,9 @@ input::placeholder {
   min-height: 0;
   min-width: 0;
   position: relative;
+  top: 5px;
   left: 20px;
+  bottom: 30px;
 }
 
 .contacts-scroll {
