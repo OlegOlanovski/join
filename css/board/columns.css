@@ -5,8 +5,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 26px;
-  padding: 0 64px 64px;
+  padding: 0 64px 0px 64px;
   width: 100%;
   position: relative;
   height: auto;
