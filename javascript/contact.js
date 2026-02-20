@@ -343,6 +343,7 @@ function handleActionButtons(e) {
   if (a === "edit") { closeMobileMenu(); openModal("edit", contacts.find(function (x) { return x.id === id; })); return true; }
   return false;
 }
+
 function handleModalCloseClicks(e) {
   if (e.target.closest("#closeAddContact")) return closeModal(), true;
   let sec = e.target.closest("#modalSecondaryBtn");
@@ -351,6 +352,7 @@ function handleModalCloseClicks(e) {
   if (back && e.target === back) return closeModal(), true;
   return false;
 }
+
 function handleClick(e) {
   if (e.target.closest("#openAddContact")) return openModal("create", null);
   if (handleMobileNav(e)) return;
