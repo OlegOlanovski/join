@@ -982,7 +982,7 @@ body {
     font-size: 61px !important;
     color: #2a3647;
     line-height: 1.2;
-    margin: 0;
+    margin: 0 0 0 38px;
   }
 
   .summary-divider {
@@ -991,7 +991,7 @@ body {
 
   .summary-subtitle {
     font-size: 16px;
-    margin: 0;
+    margin: 0 0 0 38px;
   }
 
   .summary-subtitle::after {
