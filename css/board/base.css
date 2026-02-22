@@ -204,6 +204,12 @@ body {
   cursor: pointer;
 }
 
+.header-help:hover {
+  color: #A8A8A8;
+  border-color: #A8A8A8;
+  background: transparent;
+}
+
 .header-user {
   width: 56px;
   height: 56px;

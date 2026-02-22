@@ -1,6 +1,5 @@
 *, *::before, *::after {
   box-sizing: border-box;
-  scroll-behavior: none;
 }
 
 .cantainer, .container {
