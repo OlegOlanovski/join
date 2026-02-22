@@ -114,11 +114,20 @@ function removeModalNow() {
 
 function openModal(mode, contact) {
   removeModalNow();
+
   let data = buildModalData(mode, contact);
   document.body.insertAdjacentHTML("beforeend", contactModalTemplate(mode, data));
 
   let m = document.getElementById("addContactModal");
   if (!m) return;
+
+  m.setAttribute("data-mode", mode);
+
+  let form = document.getElementById("addContactForm");
+  if (form) {
+    form.dataset.mode = mode;
+    form.dataset.editId = mode === "edit" && contact ? contact.id : "";
+  }
 
   m.classList.remove("d-none");
   requestAnimationFrame(function () {

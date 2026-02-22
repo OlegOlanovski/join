@@ -32,12 +32,14 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  min-height: 0;
+  height: auto;
+  min-height: calc(100dvh - 100px);
+  align-self: stretch;
   background-color: #ffffff;
   border-right: 1px solid #e0e0e009;
   box-shadow: 4px 0 8px rgba(0, 0, 0, 0.08);
   padding: 32px clamp(16px, 2.5vw, 52px);
+  
 }
 
 .contacts-add-btn {
@@ -85,6 +87,7 @@
   scrollbar-color: rgba(0,0,0,0.28) transparent;
   scrollbar-gutter: stable;
   padding-right: 6px;
+ 
 }
 
 .contacts-scroll::-webkit-scrollbar {
@@ -485,9 +488,8 @@
   opacity: 0.6;
 }
 
-#addContactModal[data-mode="edit"] .modal-subtitle,
-#addContactModal[date-mode="edit"] .modal-line {
-  display: none;
+#addContactModal[data-mode="edit"] .modal-subtitle {
+  display: none !important;
 }
 
 .modal-initials {
@@ -760,5 +762,6 @@ input::placeholder {
   max-width: 400px;
   text-align: center;
 }
+
 
 
