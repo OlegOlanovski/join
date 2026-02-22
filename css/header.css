@@ -7,7 +7,6 @@ html, body{
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background: #F6F7F8;
   scrollbar-width: none;
-  touch-action: pan-y;
   
 }
 
@@ -41,15 +40,11 @@ html, body{
   margin:0 auto;
   padding:32px 24px;
   min-width:0;
-  
 }
 
 .sidebar{
   width:232px;
   flex:0 0 232px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   background-color:#2A3647;
   color:#fff;
   display:flex;
@@ -137,12 +132,12 @@ html, body{
 }
 
 .sidebar-footer{
-  margin-top: auto;
-  margin-left: 52px;
-  display: flex;
+  margin-top:auto;
+  margin-left:52px;
+  display:flex;
   flex-direction:column;
   gap:8px;
-  
+ 
 }
 
 .sidebar-footer a{
@@ -150,7 +145,6 @@ html, body{
   line-height:120%;
   color:#A8A8A8;
   text-decoration:none;
-  
 }
 
 .sidebar-footer a:hover{

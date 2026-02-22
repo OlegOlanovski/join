@@ -45,11 +45,11 @@ function validateEmail() {
     if (!iconImgMail) {
       let newIcon = document.createElement("img");
       newIcon.classList.add("isInvaledMail");
-      newIcon.src = "../assets/icons/check-gray.svg";
+      newIcon.src = "./assets/icons/check-gray.svg";
       email.appendChild(newIcon);
       
     } else {
-      iconImgMail.src = "../assets/icons/check-gray.svg";
+      iconImgMail.src = "./assets/icons/check-gray.svg";
       email.classList.remove("isInvaled");
       
     }
@@ -64,14 +64,14 @@ function validateEmail() {
 function updatePasswordIcon() {
   if (password.value.length === 0) {
     if (!iconImg) return;
-    iconImg.src = "../assets/icons/lock.png";
+    iconImg.src = "./assets/icons/lock.png";
     return;
   }
   if (!iconImg) return;
   iconImg.src =
     password.type === "text"
-      ? "../assets/icons/visibility.svg"
-      : "../assets/icons/visibility_off.svg";
+      ? "./assets/icons/visibility.svg"
+      : "./assets/icons/visibility_off.svg";
 }
 
 // Initial prüfen
@@ -127,7 +127,7 @@ function validatePassword() {
       password.classList.add("isInvaled");
       password.classList.remove("isValidate");
       password.classList.remove("visibility-off");
-      iconImg.src = "../assets/icons/lock.png";
+      iconImg.src = "./assets/icons/lock.png";
   }
   updatePasswordIcon();
 }

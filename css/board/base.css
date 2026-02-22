@@ -9,7 +9,7 @@ body {
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
     sans-serif;
   background: #ffffff;
-  overflow-x: hidden;
+  scrollbar-width: none;
 }
 
 .layout {
@@ -202,6 +202,12 @@ body {
   font-weight: 600;
   line-height: 1;
   cursor: pointer;
+}
+
+.header-help:hover {
+  color: #A8A8A8;
+  border-color: #A8A8A8;
+  background: transparent;
 }
 
 .header-user {
