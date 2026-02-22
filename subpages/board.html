@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg" sizes="32x32" href="/assets/icons/logo.svg">
+    <link rel="icon" type="image/svg" sizes="32x32" href="../assets/icons/logo.svg">
     <link rel="stylesheet" href="../css/board.css" />
     <title>Board</title>
 </head>
@@ -67,7 +67,7 @@
 
                             <nav aria-label="Board Navigation" class="board-nav">
                                 <div class="search-bar">
-                                    <input type="text" placeholder="Find Task" aria-label="Search Tasks"
+                                    <input type="text" placeholder="Find Task" name="search" aria-label="Search Tasks"
                                         class="search-input" />
                                     <div class="separator"></div>
                                     <img src="../assets/icons/search.svg" alt="Search" class="search-icon" />
@@ -168,24 +168,24 @@
 
             <form class="task-overlay-edit" id="taskOverlayEditForm" hidden>
                 <div class="task-edit-field">
-                    <label for="taskEditTitle">Title</label>
+                    <p for="taskEditTitle">Title</p>
                     <input id="taskEditTitle" name="title" type="text" />
                 </div>
 
                 <div class="task-edit-field">
-                    <label for="taskEditDesc">Description</label>
+                    <p for="taskEditDesc">Description</p>
                     <textarea id="taskEditDesc" name="description" rows="4"></textarea>
                 </div>
 
                 <div class="task-edit-row">
                     <div class="task-edit-field">
-                        <label for="taskEditDue">Due date</label>
+                        <p for="taskEditDue">Due date</p>
                         <input id="taskEditDue" name="dueDate" type="date" />
                     </div>
                 </div>
 
                 <div class="task-edit-field">
-                    <label>Priority</label>
+                    <p>Priority</p>
                     <div class="priority-section" id="taskEditPriority">
                         <button type="button" class="priority-btn urgent" data-value="urgent">
                             Urgent <img class="btn-icon" src="../assets/icons/Prio alta.svg" alt="">
@@ -200,7 +200,7 @@
                 </div>
 
                 <div class="task-edit-field">
-                    <label>Assigned to</label>
+                    <p>Assigned to</p>
                     <div class="multi-select">
                         <div class="multi-select-input" id="taskEditAssignedInput">
                             <span id="taskEditAssignedText">Select contacts to assign</span>
@@ -212,7 +212,7 @@
                 </div>
 
                 <div class="task-edit-field">
-                    <label for="taskEditSubtaskInput">Subtasks</label>
+                    <p for="taskEditSubtaskInput">Subtasks</p>
                     <div class="subtasks-input">
                         <input type="text" id="taskEditSubtaskInput" placeholder="Add new subtask">
                         <button type="button" id="taskEditAddSubtaskBtn" class="subtasks-add-btn"
@@ -273,13 +273,13 @@
             <div class="kpi-panel-task">
                 <div class="form_1">
                     <form class="form-details" onsubmit="return false;">
-                        <label for="titel">Title <span class="label-star">*</span></label>
+                        <p for="titel">Title <span class="label-star">*</span></p>
                         <input type="text" id="titel" placeholder="Enter a title">
 
-                        <label for="description">Description</label>
+                        <p for="description">Description</p>
                         <textarea id="description" placeholder="Enter a description"></textarea>
 
-                        <label for="date">Due date <span class="label-star">*</span></label>
+                        <p for="date">Due date <span class="label-star">*</span></p>
                         <input type="date" id="date">
                     </form>
                 </div>
@@ -288,7 +288,7 @@
 
                 <div class="form_2">
                     <form class="form-details" onsubmit="return false;">
-                        <label>Priority</label>
+                        <p>Priority</p>
                         <div class="priority-section">
                             <li class="priority-btn urgent">
                                 Urgent <img class="btn-icon" src="../assets/icons/Prio alta.svg" alt="">
@@ -301,7 +301,7 @@
                             </li>
                         </div>
 
-                        <label for="assigned">Assigned to</label>
+                        <p for="assigned">Assigned to</p>
                         <div class="multi-select">
                             <div class="multi-select-input" id="assignedInput">
                                 <span id="assignedText">Select contacts to assign</span>
@@ -311,14 +311,14 @@
                             <div class="multi-select-dropdown hidden" id="assignedDropdown"></div>
                         </div>
 
-                        <label for="category">Category <span class="label-star">*</span></label>
+                        <p for="category">Category <span class="label-star">*</span></p>
                         <select id="category">
                             <option value="">Select task category</option>
                             <option value="user">User Story</option>
                             <option value="tech">Technical Task</option>
                         </select>
 
-                        <label for="subtasks">Subtasks</label>
+                        <p for="subtasks">Subtasks</p>
                         <div class="subtasks-input">
                             <input type="text" id="subtasks" placeholder="Add new subtask">
                             <button type="button" id="addSubtaskBtn" class="subtasks-add-btn" aria-label="Add subtask">
