@@ -83,6 +83,7 @@ body.loaded .logo_page {
   background-color: #2a3647;
   color: white;
   cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /*MAIN*/
@@ -207,9 +208,33 @@ h1::after {
   color: white;
 }
 
+.login-form .button-group .guest-btn {
+  background-color: transparent;
+  color: #2a3647;
+  border: 1px solid #2a3647;
+}
+
+.login-form .button-group .login-btn:hover {
+  background-color: #5ec0e9;
+}
+
+.signup:hover {
+  background-color: #5ec0e9;
+  color: #ffffff;
+}
+
+.footer-content .links:hover {
+  color: #5ec0e9;
+}
+
 
 .login-form .button-group button:hover {
   opacity: 0.9;
+}
+
+.login-form .button-group .guest-btn:hover {
+  border-color: #5ec0e9;
+  color: #5ec0e9;
 }
 
 /* Email validate */
