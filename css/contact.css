@@ -24,6 +24,7 @@
   display: flex;
   align-items: stretch;
   gap: clamp(12px, 2vw, 24px);
+  height: calc(100vh - 96px);
 }
 
 .contacts-sidebar {
@@ -32,7 +33,8 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
+  align-self: stretch;
   min-height: 0;
   background-color: #ffffff;
   border-right: 1px solid #e0e0e009;
@@ -715,7 +717,8 @@ input::placeholder {
 .contacts-scroll {
   flex: 1 1 auto;
   min-height: 0;
-  max-height: calc(100vh - 260px);
+  max-height: none;
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -772,4 +775,3 @@ input::placeholder {
   max-width: 400px;
   text-align: center;
 }
-

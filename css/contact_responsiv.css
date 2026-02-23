@@ -1,6 +1,7 @@
 @media (max-width: 1024px) {
   .contacts-page {
     gap: 16px;
+    height: calc(100vh - 80px);
   }
 
   .contacts-sidebar {
@@ -46,6 +47,7 @@
     display: block;
     min-height: calc(100vh - 100px);
     background: #f6f7f8;
+    height: calc(100vh - 100px);
   }
 
   .contacts-sidebar {
@@ -656,5 +658,3 @@
     max-height: calc(100vh - 200px);
   }
 }
-
-
