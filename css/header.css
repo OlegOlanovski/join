@@ -42,7 +42,6 @@ html, body{
   margin:0 auto;
   padding:32px 24px;
   min-width:0;
-  
 }
 
 .sidebar{
@@ -53,7 +52,6 @@ html, body{
   display:flex;
   flex-direction:column;
   padding:64px 0 64px 0;
- 
 }
 
 .logo{
@@ -141,8 +139,6 @@ html, body{
   display:flex;
   flex-direction:column;
   gap:8px;
-  
- 
 }
 
 .sidebar-footer a{
