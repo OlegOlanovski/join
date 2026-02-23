@@ -1,114 +1,298 @@
-document.addEventListener("DOMContentLoaded", function () {
-  (function populateHeaderInitials() {
-    function cookieToObj() {
-      return document.cookie.split(";").reduce((acc, cookie) => {
-        const [k, ...rest] = cookie.trim().split("=");
-        acc[k] = rest.length ? decodeURIComponent(rest.join("=")) : "";
-        return acc;
-      }, {});
-    }
+/** @type {string} Base URL for task database */
+const DB_TASK_URL =
+  window.DB_TASK_URL || "https://join-da53b-default-rtdb.firebaseio.com/";
 
-    function parseLoggedUser() {
-      try {
-        const s = sessionStorage.getItem('loggedInUser');
-        if (s) {
-          try { const p = JSON.parse(s); return (p && typeof p === 'object') ? { ...p, namen: p.namen || p.name || p.fullName || p.mail } : { namen: String(p) }; }
-          catch (e) { return { namen: String(s) }; }
+/** @type {string} URL to the board page */
+const BOARD_PAGE_URL = "./board.html";
+
+/** @type {string[]} Month names */
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+/** @type {HTMLElement|null} Element displaying urgent tasks count */
+const urgent_tasks = document.getElementById("todo-status-urgent");
+/** @type {HTMLElement|null} Element displaying month of nearest urgent task */
+let urgent_tasks_months = document.getElementById("months");
+/** @type {HTMLElement|null} Element displaying day of nearest urgent task */
+let urgent_tasks_day = document.getElementById("day");
+/** @type {HTMLElement|null} Element displaying year of nearest urgent task */
+let urgent_tasks_year = document.getElementById("year");
+
+/** @type {string[]} List of urgent task priorities or IDs */
+let Todos_urgent = [];
+/** @type {Date|null} Date of the nearest urgent task */
+let nearestUrgentDate = null;
+
+/**
+ * Navigates to the board page.
+ */
+function goToBoard() {
+  window.location.href = BOARD_PAGE_URL;
+}
+
+/**
+ * Fetches a node from the Firebase database with multiple fallback strategies.
+ * @param {string} nodeName - Name of the node to fetch.
+ * @returns {Promise<Object|Array|null>} Resolves to the node data or null if not found.
+ */
+async function fetchDBNode(nodeName) {
+  try {
+    const resp = await fetch(DB_TASK_URL + nodeName + ".json");
+    const data = await resp.json();
+    if (data != null) return data;
+  } catch (e) {}
+
+  try {
+    const r = await fetch(DB_TASK_URL + ".json");
+    const root = await r.json();
+    if (!root) return null;
+
+    if (Array.isArray(root)) {
+      const entry = root.find((e) => e && e.id === nodeName);
+      if (entry) {
+        const clone = Object.assign({}, entry);
+        delete clone.id;
+        if (clone.hasOwnProperty(nodeName)) return clone[nodeName];
+        const keys = Object.keys(clone);
+        if (keys.length) return clone;
+      }
+    } else if (typeof root === "object") {
+      const vals = Object.values(root);
+      for (let i = 0; i < vals.length; i++) {
+        const e = vals[i];
+        if (e && e.id === nodeName) {
+          const clone = Object.assign({}, e);
+          delete clone.id;
+          if (clone.hasOwnProperty(nodeName)) return clone[nodeName];
+          const keys = Object.keys(clone);
+          if (keys.length) return clone;
         }
-      } catch (e) { /* ignore */ }
+      }
+      if (root[nodeName] !== undefined) return root[nodeName];
+    }
+  } catch (e) {}
+  return null;
+}
 
-      const c = cookieToObj();
-      if (!c.loggedInUser) return null;
+/**
+ * Syncs tasks from Firebase to IndexedDB (if available) and returns the list of tasks.
+ * @returns {Promise<Array<Object>>} List of tasks
+ */
+async function syncTasksFromDB() {
+  try {
+    const data = await fetchDBNode("tasks");
+    let tasks = [];
+    if (!data) tasks = [];
+    else if (Array.isArray(data)) tasks = data.filter(Boolean);
+    else
+      tasks = Object.entries(data).map(([k, v]) => ({
+        ...(v || {}),
+        id: v && v.id ? v.id : k,
+      }));
+
+    if (
+      window.idbStorage &&
+      typeof window.idbStorage.saveTasks === "function"
+    ) {
       try {
-        const p = JSON.parse(c.loggedInUser);
-        return (p && typeof p === 'object') ? { ...p, namen: p.namen || p.name || p.fullName || p.mail } : { namen: String(p) };
-      } catch (e) {
-        return { namen: String(c.loggedInUser || '') };
+        await window.idbStorage.saveTasks(tasks);
+        try {
+          const local = window.idbStorage.getTasksSync
+            ? window.idbStorage.getTasksSync()
+            : null;
+        } catch (readErr) {
+          console.warn(
+            "syncTasksFromDB: saved to IDB but failed to read back:",
+            readErr,
+          );
+        }
+      } catch (err) {
+        console.warn("Failed to save tasks to IDB:", err);
       }
     }
 
-    function cleanDisplayName(val) {
-      if (!val) return null;
-      let s = (typeof val === 'object') ? (val.namen || val.name || val.fullName || val.mail || '') : String(val || '');
-      s = s.trim(); if (!s) return null;
-      if (/^\[object\b/i.test(s) || /^\{/.test(s) || /\bobject\b/i.test(s)) return null;
-      if (/^[^@\s]+@[^@\s]+$/.test(s)) s = s.split('@')[0].replace(/[._\-]+/g, ' ');
-      s = s.replace(/[._\-]+/g, ' ').replace(/\s+/g, ' ').trim();
-      s = s.split(' ').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
-      return s || null;
-    }
+    return tasks;
+  } catch (e) {
+    console.warn("Failed to sync tasks from DB", e);
+    throw e;
+  }
+}
 
-    function getInitials(name) {
-      if (!name) return 'G';
-      let s = (typeof name === 'object') ? (name.namen || name.name || name.fullName || name.mail || '') : String(name || '');
-      s = s.trim(); if (!s) return 'G';
-      if (/^[^@\s]+@[^@\s]+$/.test(s)) s = s.split('@')[0];
-      const parts = s.split(/\s+/).filter(Boolean);
-      if (parts.length >= 2) return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
-      if (parts[0].length >= 2) return parts[0].slice(0,2).toUpperCase();
-      return (parts[0][0] || 'G').toUpperCase();
-    }
-
-    const user = parseLoggedUser();    
-    const rawName = user && (user.namen || user.name || user.fullName || user.mail) || null;
-    const displayName = cleanDisplayName(rawName) || (user && (user.namen || user.name) ? cleanDisplayName(user.namen || user.name) : null);
-    const initials = displayName ? getInitials(displayName) : 'G';
-    const btnLegacy = document.querySelector('.header-guest');
-    if (btnLegacy) {
-      btnLegacy.textContent = initials;
-      if (displayName) btnLegacy.setAttribute('title', displayName);
-    }
-
-    const btn = document.getElementById('headerUserBtn');
-    if (btn) {
-      btn.textContent = initials;
-      if (displayName) btn.setAttribute('title', displayName);
-      if (displayName) btn.setAttribute('aria-label', `User menu — ${displayName}`);
-    }
-  })();
-
-  const btn = document.getElementById("headerUserBtn");
-  const menu = document.getElementById("userMenu");
-
-  if (btn && menu) {
-    function setOpen(open) {
-      menu.classList.toggle("is-open", open);
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-      menu.setAttribute("aria-hidden", open ? "false" : "true");
-    }
-
-    btn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      setOpen(!menu.classList.contains("is-open"));
-    });
-
-    menu.addEventListener("click", function (e) {
-      e.stopPropagation();
-    });
-
-    document.addEventListener("click", function (e) {
-      if (!e.target.closest(".header-user-area")) setOpen(false);
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") setOpen(false);
-    });
+/**
+ * Initializes the dashboard page:
+ * - Waits for IndexedDB to be ready
+ * - Syncs tasks
+ * - Updates greeting and task statistics
+ */
+async function init() {
+  await (window.idbStorage && window.idbStorage.ready
+    ? window.idbStorage.ready
+    : Promise.resolve());
+  try {
+    await syncTasksFromDB();
+  } catch (e) {
+    console.warn("Initial tasks sync failed, continuing with local cache", e);
   }
 
-  const links = document.querySelectorAll(".menu a[href]");
-  if (!links.length) return;
+  getCokkieCheck();
+  greetingText();
+  getTasksTotal();
+  getTasksDone();
+  getTasksProgress();
+  getAwaitFeedback();
+  getUrgrentTodo();
+}
 
-  const current = location.pathname.split("/").pop() || "index.html";
+/**
+ * Updates greeting text based on time of day and logged-in user.
+ */
+function greetingText() {
+  const el = document.getElementById("greeting-text");
+  if (!el) return;
 
-  links.forEach((a) => {
-    const target = new URL(a.getAttribute("href"), location.href).pathname.split("/").pop();
-    a.classList.toggle("active", target === current);
-  });
+  const h = new Date().getHours();
+  const base =
+    h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
 
-  links.forEach((a) => {
-    a.addEventListener("click", () => {
-      links.forEach((x) => x.classList.remove("active"));
-      a.classList.add("active");
-    });
-  });
-});
+  try {
+    let name;
+    const cookieMatch = document.cookie
+      .split(";")
+      .map((c) => c.trim())
+      .find((c) => c.startsWith("loggedInUser="));
+    if (cookieMatch) {
+      const cookieValue = cookieMatch.split("=")[1];
+      name = JSON.parse(decodeURIComponent(cookieValue));
+    } else if (sessionStorage.getItem("loggedInUser")) {
+      name = JSON.parse(sessionStorage.getItem("loggedInUser"));
+    }
+    el.textContent = `${base}, ${name}!`;
+  } catch (e) {
+    el.textContent = base + "!";
+  }
+}
+
+/**
+ * Updates total tasks and "todos" count in the dashboard.
+ */
+function getTasksTotal() {
+  const tasks =
+    window.idbStorage && typeof window.idbStorage.getTasksSync === "function"
+      ? window.idbStorage.getTasksSync()
+      : [];
+  const filteredTasks = tasks.filter((task) => task.title !== undefined);
+
+  const tasks_to_board = document.getElementById("task-in-board");
+  const todo_tasks = document.getElementById("todos-total");
+
+  let Todos = [];
+  for (let i = 0; i < tasks.length; i++) {
+    const status = tasks[i].status;
+    if (status == "todo") Todos.push(status);
+    if (todo_tasks) todo_tasks.innerText = Todos.length;
+  }
+
+  if (tasks_to_board) tasks_to_board.innerText = filteredTasks.length;
+}
+
+/**
+ * Updates "done" tasks count in the dashboard.
+ */
+function getTasksDone() {
+  const tasks =
+    window.idbStorage && typeof window.idbStorage.getTasksSync === "function"
+      ? window.idbStorage.getTasksSync()
+      : [];
+  const done_tasks = document.getElementById("todos-done");
+
+  let Todos_Done = [];
+  for (let i = 0; i < tasks.length; i++) {
+    const status = tasks[i].status;
+    if (status == "done") Todos_Done.push(status);
+    if (done_tasks) done_tasks.innerText = Todos_Done.length;
+  }
+}
+
+/**
+ * Updates "in progress" tasks count in the dashboard.
+ */
+function getTasksProgress() {
+  const tasks =
+    window.idbStorage && typeof window.idbStorage.getTasksSync === "function"
+      ? window.idbStorage.getTasksSync()
+      : [];
+  const progress_tasks = document.getElementById("task-in-pogress");
+
+  let Todos_progress = [];
+  for (let i = 0; i < tasks.length; i++) {
+    const status = tasks[i].status;
+    if (status == "progress") Todos_progress.push(status);
+    if (progress_tasks) progress_tasks.innerText = Todos_progress.length;
+  }
+}
+
+/**
+ * Updates "awaiting feedback" tasks count in the dashboard.
+ */
+function getAwaitFeedback() {
+  const tasks =
+    window.idbStorage && typeof window.idbStorage.getTasksSync === "function"
+      ? window.idbStorage.getTasksSync()
+      : [];
+  const feedback_tasks = document.getElementById("task-in-feedback");
+
+  let Todos_feedback = [];
+  for (let i = 0; i < tasks.length; i++) {
+    const status = tasks[i].status;
+    if (status == "feedback") Todos_feedback.push(status);
+    if (feedback_tasks) feedback_tasks.innerText = Todos_feedback.length;
+  }
+}
+
+/**
+ * Finds all urgent tasks and updates the dashboard section with the nearest urgent task date.
+ */
+function getUrgrentTodo() {
+  const tasks =
+    window.idbStorage && typeof window.idbStorage.getTasksSync === "function"
+      ? window.idbStorage.getTasksSync()
+      : [];
+
+  for (let i = 0; i < tasks.length; i++) {
+    const task = tasks[i];
+    const priority = String(task.priority || "").toLowerCase();
+    const dueDate = task.dueDate || task.due || "";
+    const newDueDate = dueDate ? new Date(dueDate) : null;
+
+    if (priority === "urgent") {
+      Todos_urgent.push(priority);
+      if (newDueDate && !isNaN(newDueDate)) {
+        if (!nearestUrgentDate || newDueDate < nearestUrgentDate) {
+          nearestUrgentDate = newDueDate;
+        }
+      }
+      if (urgent_tasks) urgent_tasks.innerText = Todos_urgent.length;
+    }
+  }
+
+  if (nearestUrgentDate) {
+    if (urgent_tasks_months)
+      urgent_tasks_months.innerText = months[nearestUrgentDate.getMonth()];
+    if (urgent_tasks_day)
+      urgent_tasks_day.innerText = nearestUrgentDate.getDate();
+    if (urgent_tasks_year)
+      urgent_tasks_year.innerText = nearestUrgentDate.getFullYear();
+  }
+}

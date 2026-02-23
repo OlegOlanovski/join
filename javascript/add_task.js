@@ -203,15 +203,10 @@ async function renderSelectedContacts() {
   const text = document.getElementById("assignedText");
   if (!text) return;
 
-  if (!selectedContacts.size) {
-    text.textContent = "Select contacts to assign";
-    return;
-  }
+  if (!selectedContacts.size) {text.textContent = "Select contacts to assign"; return;}
 
   const contactsData = await loadContactsFromStorage();
-  const list = Array.isArray(contactsData)
-    ? contactsData
-    : Object.values(contactsData || {});
+  const list = Array.isArray(contactsData) ? contactsData : Object.values(contactsData || {});
 
   text.innerHTML = [...selectedContacts]
     .map((id) => {
@@ -270,15 +265,7 @@ async function createTask() {
   }
 
   const task = {
-    id,
-    title,
-    description,
-    dueDate,
-    category,
-    priority: selectedPriority,
-    status: getAddTaskStatus(),
-    subtasks: [...pendingSubtasks],
-    assigned: [...selectedContacts],
+    id, title, description, dueDate, category, priority: selectedPriority, status: getAddTaskStatus(), subtasks: [...pendingSubtasks], assigned: [...selectedContacts],
   };
 
   try {
