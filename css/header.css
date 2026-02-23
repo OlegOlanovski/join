@@ -165,8 +165,7 @@ html, body{
   justify-content:center;
   width:100%;
   box-shadow:0 4px 4px rgba(0,0,0,.1);
-  position:relative;
-  z-index:2000;
+  padding: 20px 40px 20px 116px;
 }
 
 .content-wrepper-header{
@@ -176,7 +175,6 @@ html, body{
   width:100%;
   max-width:1920px;
   margin:0 auto;
-  padding:0 64px;
   min-width:0;
   position:relative;
   z-index:2001;
@@ -208,7 +206,6 @@ html, body{
   min-width:0;
   margin:0;
   position:relative;
-  left:20px;
 }
 
 .header-right{
