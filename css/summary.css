@@ -604,7 +604,8 @@ body {
   }
 
   .header {
-    padding: 20px 24px 20px 48px;
+    padding: 24px 40px 20px 25px;
+      height: 80px;
   }
 
   .good-morning {
@@ -626,12 +627,13 @@ body {
 
   .header-right {
     position: relative;
-    right: 40px;
   }
-
-  .header-title {
-    margin-left: 40px;
-  }
+    .header-title {
+      display: block;
+      height: 50px;
+      width: 50px;
+      content: url("../../assets/icons/logo.svg");
+    }
 
   .summary-section {
     margin-left: 75px;

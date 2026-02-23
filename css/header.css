@@ -160,8 +160,9 @@ html, body{
   align-items:center;
   justify-content:center;
   width:100%;
-  box-shadow:0 4px 4px rgba(0,0,0,.1);
+  box-shadow:0 4px 4px rgba(0,0,0, 0.08);
   padding: 20px 40px 20px 116px;
+  z-index: 100;
 }
 
 .content-wrepper-header{
@@ -308,12 +309,10 @@ html, body{
     min-width:0;
   }
 
-  .content-wrepper-header{ padding:0 24px; }
-
   .header-title,
   .header-help{ display:none !important; }
 
-  .header-logo{ display:block !important; }
+  .header-logo{ display:block !important; height: 50px; }
 
   .sidebar{
     width:100%;
