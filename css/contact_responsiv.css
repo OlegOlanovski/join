@@ -3,6 +3,10 @@
     gap: 16px;
   }
 
+  .contacts-sidebar {
+    min-height: calc(100vh - 100px);
+  }
+
   .contacts-main {
     padding: 32px 24px;
   }
@@ -185,6 +189,7 @@
     padding: 0;
     position: relative;
     left: 5px;
+    
 
 
   }
@@ -639,6 +644,7 @@
     border-bottom: 0;
   }
 
+
 }
 
 @media (max-width: 320px) {
@@ -650,3 +656,5 @@
     max-height: calc(100vh - 200px);
   }
 }
+
+
