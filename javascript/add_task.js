@@ -1,10 +1,29 @@
 // ================== ADD TASK → SAVE TO STORAGE ==================
 
+/**
+ * Currently selected priority value.
+ * @type {string|null}
+ */
 let selectedPriority = null;
+
+/**
+ * Temporary list of subtasks before the task is saved.
+ * @type {{title:string, done:boolean}[]}
+ */
 let pendingSubtasks = [];
+
+/**
+ * Stores selected contact IDs.
+ * @type {Set<string>}
+ */
 const selectedContacts = new Set();
 
 // ------------------ INIT ------------------
+
+/**
+ * Initializes the add task page once the DOM is loaded.
+ * Sets up UI, listeners and loads contacts.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   getCokkieCheck();
   populateAssignedContacts();
@@ -22,6 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ------------------ PRIORITY ------------------
+
+/**
+ * Initializes priority buttons and click behavior.
+ * Ensures only one priority can be selected.
+ */
 function initPriorityButtons() {
   const buttons = getAddTaskRoot().querySelectorAll(
     ".priority-section .priority-btn",
@@ -38,18 +62,27 @@ function initPriorityButtons() {
   setDefaultPriority();
 }
 
+/**
+ * Sets the default priority (medium) if available.
+ */
 function setDefaultPriority() {
   const root = getAddTaskRoot();
   const defaultBtn = root.querySelector(".priority-btn.medium");
   if (!defaultBtn) return;
+
   root
     .querySelectorAll(".priority-section .priority-btn")
     .forEach((b) => b.classList.remove("--selected"));
+
   defaultBtn.classList.add("--selected");
   selectedPriority = defaultBtn.textContent.trim();
 }
 
 // ------------------ SUBTASKS ------------------
+
+/**
+ * Initializes subtask input behavior and remove handling.
+ */
 function initSubtasks() {
   const input = document.getElementById("subtasks");
   const btn = document.getElementById("addSubtaskBtn");
@@ -57,6 +90,7 @@ function initSubtasks() {
 
   if (btn && input) {
     btn.onclick = addSubtasksFromInput;
+
     input.onkeydown = (e) => {
       if (e.key !== "Enter") return;
       e.preventDefault();
@@ -68,12 +102,17 @@ function initSubtasks() {
     list.onclick = (e) => {
       const remove = e.target.closest(".subtasks-remove");
       if (!remove) return;
+
       pendingSubtasks.splice(remove.dataset.index, 1);
       renderSubtasks();
     };
   }
 }
 
+/**
+ * Reads subtasks from the input field and adds them to the temporary list.
+ * Supports comma, semicolon, or newline separation.
+ */
 function addSubtasksFromInput() {
   const input = document.getElementById("subtasks");
   if (!input || !input.value.trim()) return;
@@ -91,11 +130,15 @@ function addSubtasksFromInput() {
   renderSubtasks();
 }
 
+/**
+ * Renders the current list of subtasks in the UI.
+ */
 function renderSubtasks() {
   const list = document.getElementById("subtasksList");
   if (!list) return;
 
   list.innerHTML = "";
+
   pendingSubtasks.forEach((s, i) => {
     list.innerHTML += `
       <li class="subtasks-item">
@@ -106,12 +149,17 @@ function renderSubtasks() {
 }
 
 // ------------------ CONTACTS / MULTI SELECT ------------------
+
+/**
+ * Loads contacts and populates the assign dropdown.
+ */
 async function populateAssignedContacts() {
   const dropdown = document.getElementById("assignedDropdown");
   if (!dropdown) return;
 
   dropdown.innerHTML = "";
   const contactsData = await loadContactsFromStorage();
+
   const list = Array.isArray(contactsData)
     ? contactsData
     : Object.values(contactsData || {});
@@ -120,8 +168,10 @@ async function populateAssignedContacts() {
     if (!c?.id || !c?.name) return;
 
     const colorClass = getContactColorClass(c);
+
     const row = document.createElement("div");
     row.className = "contact-option";
+
     row.innerHTML = `
       <div class="contact-avatar ${colorClass}">${getInitials(c.name)}</div>
       <span>${c.name}</span>
@@ -133,6 +183,10 @@ async function populateAssignedContacts() {
   });
 }
 
+/**
+ * Toggles selection state of a contact.
+ * @param {string} id Contact ID
+ */
 function toggleContact(id) {
   selectedContacts.has(id)
     ? selectedContacts.delete(id)
@@ -142,7 +196,9 @@ function toggleContact(id) {
   renderSelectedContacts();
 }
 
-
+/**
+ * Renders selected contacts as avatars.
+ */
 async function renderSelectedContacts() {
   const text = document.getElementById("assignedText");
   if (!text) return;
@@ -166,6 +222,9 @@ async function renderSelectedContacts() {
     .join("");
 }
 
+/**
+ * Initializes dropdown behavior for the contact selector.
+ */
 function initAssignedDropdown() {
   const input = document.getElementById("assignedInput");
   const dropdown = document.getElementById("assignedDropdown");
@@ -186,22 +245,40 @@ function initAssignedDropdown() {
 }
 
 // ------------------ TASK CREATE ------------------
-async function createTask() {
- const titleEl = document.getElementById("titel");
- const descriptionEl = document.getElementById("description");
- const dueDateEl = document.getElementById("date");
- const categoryEl = document.getElementById("category");
- const title = titleEl?.value.trim() || "";
- const description = descriptionEl?.value.trim() || "";
- const dueDate = dueDateEl?.value || "";
- const category = categoryEl?.value || "";
- const dbTask = "https://join-da53b-default-rtdb.firebaseio.com/";
- let id = Date.now().toString();
 
-  if (!title || !dueDate || !category) { openValidationModal(); return;}
+/**
+ * Creates a new task and saves it to Firebase.
+ * Also reloads tasks from the database and updates the board.
+ */
+async function createTask() {
+  const titleEl = document.getElementById("titel");
+  const descriptionEl = document.getElementById("description");
+  const dueDateEl = document.getElementById("date");
+  const categoryEl = document.getElementById("category");
+
+  const title = titleEl?.value.trim() || "";
+  const description = descriptionEl?.value.trim() || "";
+  const dueDate = dueDateEl?.value || "";
+  const category = categoryEl?.value || "";
+
+  const dbTask = "https://join-da53b-default-rtdb.firebaseio.com/";
+  let id = Date.now().toString();
+
+  if (!title || !dueDate || !category) {
+    openValidationModal();
+    return;
+  }
 
   const task = {
-    id, title, description, dueDate, category, priority: selectedPriority, status: getAddTaskStatus(),subtasks: [...pendingSubtasks], assigned: [...selectedContacts],
+    id,
+    title,
+    description,
+    dueDate,
+    category,
+    priority: selectedPriority,
+    status: getAddTaskStatus(),
+    subtasks: [...pendingSubtasks],
+    assigned: [...selectedContacts],
   };
 
   try {
@@ -210,42 +287,72 @@ async function createTask() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(task),
     });
-    await response.json();
-  } catch (e) {console.error("Failed to save task remotely", e);}
 
+    await response.json();
+  } catch (e) {
+    console.error("Failed to save task remotely", e);
+  }
 
   try {
     const resp = await fetch(dbTask + "tasks.json");
     const data = await resp.json();
+
     let tasks = [];
-    if (!data) { tasks = []; } else if (Array.isArray(data)) { tasks = data.filter(Boolean);} else { tasks = Object.entries(data).map(([key, val]) => ({...(val || {}), id: val && val.id ? val.id : key,}));
+
+    if (!data) {
+      tasks = [];
+    } else if (Array.isArray(data)) {
+      tasks = data.filter(Boolean);
+    } else {
+      tasks = Object.entries(data).map(([key, val]) => ({
+        ...(val || {}),
+        id: val && val.id ? val.id : key,
+      }));
     }
-    console.log("Loaded tasks from DB:", tasks.length, tasks.slice(0, 3));
+
     await saveTasks(tasks);
+
     if (typeof renderBoardFromStorage === "function") renderBoardFromStorage();
     if (typeof updateEmptyStates === "function") updateEmptyStates();
 
     const overlay = document.getElementById("addTaskOverlayBackdrop");
+
     if (overlay) {
       if (typeof closeAddTaskOverlay === "function") closeAddTaskOverlay();
-      return; }  location.href = "./board.html";
+      return;
+    }
+
+    location.href = "./board.html";
   } catch (e) {
-    console.error( "Failed to load tasks from remote DB; keeping overlay open for retry",e,);
+    console.error(
+      "Failed to load tasks from remote DB; keeping overlay open for retry",
+      e,
+    );
+
     const overlay = document.getElementById("addTaskOverlayBackdrop");
-    if (!overlay) {location.href = "./board.html";}
+    if (!overlay) {
+      location.href = "./board.html";
+    }
+
     return;
   }
+
   location.href = "./board.html";
 }
 
-
+/**
+ * Loads contacts from Firebase storage.
+ * Includes multiple fallback strategies in case the structure differs.
+ * @returns {Promise<Object[]>}
+ */
 async function loadContactsFromStorage() {
   const dbTask = "https://join-da53b-default-rtdb.firebaseio.com/";
+
   try {
-    // Try direct node first
     try {
       const response = await fetch(dbTask + "contacts.json");
       const data = await response.json();
+
       if (data != null) {
         if (Array.isArray(data)) return data.filter(Boolean);
         return Object.values(data);
@@ -264,27 +371,24 @@ async function loadContactsFromStorage() {
 
       if (root.contacts !== undefined) {
         const data = root.contacts;
-        console.info("loadContactsFromStorage: loaded from root.contacts");
+
         if (Array.isArray(data)) return data.filter(Boolean);
         return Object.values(data);
       }
 
       if (Array.isArray(root)) {
         const entry = root.find((e) => e && e.id === "contacts");
+
         if (entry) {
           const clone = Object.assign({}, entry);
           delete clone.id;
+
           if (clone.contacts !== undefined) {
             const data = clone.contacts;
-            console.info(
-              "loadContactsFromStorage: loaded from root entry.contacts",
-            );
             if (Array.isArray(data)) return data.filter(Boolean);
             return Object.values(data);
           }
-          console.info(
-            "loadContactsFromStorage: loaded from root entry (as map)",
-          );
+
           if (Array.isArray(clone)) return clone.filter(Boolean);
           return Object.values(clone);
         }
@@ -292,27 +396,26 @@ async function loadContactsFromStorage() {
 
       if (typeof root === "object") {
         const vals = Object.values(root);
+
         for (let i = 0; i < vals.length; i++) {
           const e = vals[i];
+
           if (e && e.id === "contacts") {
             const clone = Object.assign({}, e);
             delete clone.id;
+
             if (clone.contacts !== undefined) {
               const data = clone.contacts;
-              console.info(
-                "loadContactsFromStorage: loaded from object value.contacts",
-              );
               if (Array.isArray(data)) return data.filter(Boolean);
               return Object.values(data);
             }
-            console.info(
-              "loadContactsFromStorage: loaded from object value (as map)",
-            );
+
             if (Array.isArray(clone)) return clone.filter(Boolean);
             return Object.values(clone);
           }
         }
       }
+
       return [];
     } catch (e) {
       console.error("Failed to inspect DB root for contacts", e);
@@ -325,6 +428,12 @@ async function loadContactsFromStorage() {
 }
 
 // ------------------ HELPERS ------------------
+
+/**
+ * Creates initials from a full name.
+ * @param {string} name
+ * @returns {string}
+ */
 function getInitials(name) {
   return name
     .split(" ")
@@ -333,71 +442,124 @@ function getInitials(name) {
     .toUpperCase();
 }
 
+/**
+ * Generates a simple numeric hash from a string.
+ * Used to create consistent avatar colors.
+ * @param {string} str
+ * @returns {number}
+ */
 function hashString(str) {
   let h = 0;
   const s = String(str || "");
+
   for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+
   return Math.abs(h);
 }
 
+/**
+ * Returns a color class based on a seed value.
+ * @param {string} seed
+ * @returns {string}
+ */
 function colorClassFor(seed) {
   return "avatar-color-" + (hashString(seed) % 12);
 }
 
+/**
+ * Determines the avatar color class for a contact.
+ * @param {{id?:string,email?:string,name?:string,colorClass?:string}} contact
+ * @returns {string}
+ */
 function getContactColorClass(contact) {
   if (contact && contact.colorClass) return contact.colorClass;
+
   const seed = contact?.id || contact?.email || contact?.name || "";
   return colorClassFor(seed);
 }
 
 // ------------------ CLEAR ------------------
+
+/**
+ * Clears the entire add task form and resets internal state.
+ */
 function clearForm() {
   const root = getAddTaskRoot();
+
   const title = document.getElementById("titel");
   const description = document.getElementById("description");
   const dueDate = document.getElementById("date");
   const category = document.getElementById("category");
   const assigned = document.getElementById("assigned");
   const subtaskInput = document.getElementById("subtasks");
+
   const priorityBtns = root.querySelectorAll(".priority-section li");
+
   if (title) title.value = "";
   if (description) description.value = "";
   if (dueDate) dueDate.value = "";
   if (category) category.value = "";
   if (assigned) assigned.value = "";
   if (subtaskInput) subtaskInput.value = "";
+
   if (selectedContacts) selectedContacts.clear();
+
   pendingSubtasks = [];
+
   renderSubtasks();
+
   priorityBtns.forEach((btn) => btn.classList.remove("--selected"));
+
   selectedPriority = null;
+
   populateAssignedContacts();
   renderSelectedContacts();
   setDefaultPriority();
 }
 
+/**
+ * Resets the add task form.
+ */
 function resetAddTaskForm() {
   clearForm();
 }
 
+/**
+ * Returns the root container for the add task page.
+ * Falls back to the document if the container is not found.
+ * @returns {HTMLElement|Document}
+ */
 function getAddTaskRoot() {
   return document.getElementById("addTaskRoot") || document;
 }
 
 // ------------------ ADD TASK CONTEXT ------------------
+
+/**
+ * Determines the task status based on overlay data
+ * or URL query parameters.
+ * @returns {string}
+ */
 function getAddTaskStatus() {
   const overlay = document.getElementById("addTaskOverlayBackdrop");
+
   if (overlay && overlay.dataset && overlay.dataset.status) {
     return overlay.dataset.status;
   }
+
   return new URLSearchParams(location.search).get("status") || "todo";
 }
 
 // ------------------ VALIDATION MODAL ------------------
+
+/**
+ * Initializes validation modal behavior.
+ */
 function initValidationModal() {
   const modal = document.getElementById("validationModal");
   const closeBtn = document.getElementById("validationClose");
   const okBtn = document.getElementById("validationOk");
+
   if (!modal) return;
 
   if (closeBtn) closeBtn.addEventListener("click", closeValidationModal);
@@ -408,16 +570,24 @@ function initValidationModal() {
   });
 }
 
+/**
+ * Opens the validation modal.
+ */
 function openValidationModal() {
   const modal = document.getElementById("validationModal");
   if (!modal) return;
+
   modal.classList.add("is-open");
   modal.setAttribute("aria-hidden", "false");
 }
 
+/**
+ * Closes the validation modal.
+ */
 function closeValidationModal() {
   const modal = document.getElementById("validationModal");
   if (!modal) return;
+
   modal.classList.remove("is-open");
   modal.setAttribute("aria-hidden", "true");
 }
