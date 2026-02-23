@@ -1145,7 +1145,7 @@ body {
   .summary-section,
   .kpi-panel {
     max-width: 390px;
-    padding-left: 0px;
+    padding-left: 14px;
     padding-right: 14px;
   }
 
@@ -1225,7 +1225,8 @@ body {
   }
 
   .summary-title {
-    font-size: 34px;
+    width: 100%;
+    margin: 0 auto;
   }
 
   .kpi-number {
