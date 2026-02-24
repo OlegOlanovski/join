@@ -45,12 +45,9 @@ html, body{
   margin:0 auto;
   padding:32px 24px;
   min-width:0;
-<<<<<<< HEAD
-  
 
-  
-=======
->>>>>>> a22a737a5c96c8bd0ea188abe097a52c38c597a3
+
+ 
 }
 
 .sidebar{
@@ -60,13 +57,9 @@ html, body{
   color:#fff;
   display:flex;
   flex-direction:column;
-<<<<<<< HEAD
-  padding: 64px 0 40px 0;
-  
- 
-=======
   padding:64px 0 64px 0;
->>>>>>> a22a737a5c96c8bd0ea188abe097a52c38c597a3
+ 
+ 
 }
 
 .logo{
