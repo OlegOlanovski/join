@@ -4,44 +4,15 @@ const dbTask = "https://join-da53b-default-rtdb.firebaseio.com/";
 let contacts = [];
 let selectedId = null;
 
-/**
- * Checks whether the current view is mobile.
- * Uses a global helper if it exists.
- * @returns {boolean}
- */
-function isMobile() {
-  return window.isMobile && window.isMobile();
-}
-
-/**
- * Shows the contacts list in the mobile layout.
- */
-function showMobileList() {
-  window.showMobileList && window.showMobileList();
-}
-
-/**
- * Shows the contact details view in the mobile layout.
- */
-function showMobileDetails() {
-  window.showMobileDetails && window.showMobileDetails();
-}
+function isMobile() { return window.isMobile && window.isMobile(); }
+function showMobileList() { window.showMobileList && window.showMobileList(); }
+function showMobileDetails() { window.showMobileDetails && window.showMobileDetails(); }
 
 document.addEventListener("DOMContentLoaded", async function () {
-  await (window.idbStorage && window.idbStorage.ready
-    ? window.idbStorage.ready
-    : Promise.resolve());
+  await (window.idbStorage && window.idbStorage.ready ? window.idbStorage.ready : Promise.resolve());
   await init();
 });
 
-/**
- * Initializes the application.
- * - Runs cookie check
- * - Removes any existing modal
- * - Loads contacts
- * - Renders UI
- * - Registers event listeners
- */
 async function init() {
   getCokkieCheck();
   removeModalNow();
@@ -53,55 +24,25 @@ async function init() {
   document.addEventListener("submit", handleSubmit);
 }
 
-/**
- * Normalizes a string:
- * - Trims whitespace
- * - Collapses multiple spaces into one
- * @param {string} str
- * @returns {string}
- */
 function normalize(str) {
   return (str || "").trim().replace(/\s+/g, " ");
 }
 
-/**
- * Generates a unique ID for contacts.
- * Uses crypto.randomUUID if available.
- * @returns {string}
- */
 function generateId() {
   if (crypto && crypto.randomUUID) return crypto.randomUUID();
   return Date.now() + "_" + Math.random().toString(16).slice(2);
 }
 
-/**
- * Creates a simple hash value from a string.
- * Used for color assignment.
- * @param {string} str
- * @returns {number}
- */
 function hashString(str) {
-  let h = 0,
-    s = String(str || "");
+  let h = 0, s = String(str || "");
   for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
   return Math.abs(h);
 }
 
-/**
- * Returns an avatar color class based on a seed.
- * @param {string} seed
- * @returns {string}
- */
 function colorClassFor(seed) {
   return "avatar-color-" + (hashString(seed) % 12);
 }
 
-/**
- * Picks a unique color class that has not been used yet.
- * @param {string} seed
- * @param {Set<string>} usedSet
- * @returns {string}
- */
 function pickUniqueColorClass(seed, usedSet) {
   let start = hashString(seed) % 12;
   for (let i = 0; i < 12; i++) {
@@ -111,11 +52,6 @@ function pickUniqueColorClass(seed, usedSet) {
   return "avatar-color-" + start;
 }
 
-/**
- * Generates initials from a full name.
- * @param {string} fullName
- * @returns {string}
- */
 function getInitials(fullName) {
   let n = normalize(fullName);
   if (!n) return "";
@@ -125,31 +61,14 @@ function getInitials(fullName) {
   return (f + l).toUpperCase();
 }
 
-/**
- * Sort function for contacts by name.
- * @param {Object} a
- * @param {Object} b
- * @returns {number}
- */
 function sortContacts(a, b) {
-  return (a.name || "")
-    .toLowerCase()
-    .localeCompare((b.name || "").toLowerCase());
+  return (a.name || "").toLowerCase().localeCompare((b.name || "").toLowerCase());
 }
 
-/**
- * Returns the alphabetical group key for a name.
- * Used for contact list grouping.
- * @param {string} name
- * @returns {string}
- */
 function groupKey(name) {
   return (normalize(name)[0] || "").toUpperCase();
 }
 
-/**
- * Loads contacts from Firebase Realtime Database.
- */
 async function loadContacts() {
   let data = null;
   try {
@@ -159,18 +78,11 @@ async function loadContacts() {
 
   if (!data) contacts = [];
   else if (Array.isArray(data)) contacts = data.filter(Boolean);
-  else
-    contacts = Object.entries(data).map(([k, v]) => ({
-      ...(v || {}),
-      id: v?.id || k,
-    }));
+  else contacts = Object.entries(data).map(([k, v]) => ({ ...(v || {}), id: v?.id || k }));
 
   ensureUniqueColors();
 }
 
-/**
- * Saves all contacts to the database.
- */
 async function saveContacts() {
   const map = {};
   for (let c of contacts) {
@@ -185,9 +97,6 @@ async function saveContacts() {
   });
 }
 
-/**
- * Ensures each contact has a unique color class.
- */
 function ensureUniqueColors() {
   let used = new Set();
   for (let c of contacts) {
@@ -198,27 +107,16 @@ function ensureUniqueColors() {
   }
 }
 
-/**
- * Immediately removes the contact modal from the DOM.
- */
 function removeModalNow() {
   let m = document.getElementById("addContactModal");
   if (m) m.remove();
 }
 
-/**
- * Opens the contact modal.
- * @param {"create"|"edit"} mode
- * @param {Object|null} contact
- */
 function openModal(mode, contact) {
   removeModalNow();
 
   let data = buildModalData(mode, contact);
-  document.body.insertAdjacentHTML(
-    "beforeend",
-    contactModalTemplate(mode, data),
-  );
+  document.body.insertAdjacentHTML("beforeend", contactModalTemplate(mode, data));
 
   let m = document.getElementById("addContactModal");
   if (!m) return;
@@ -237,9 +135,6 @@ function openModal(mode, contact) {
   });
 }
 
-/**
- * Closes the modal with animation.
- */
 function closeModal() {
   let m = document.getElementById("addContactModal");
   if (!m) return;
@@ -251,12 +146,6 @@ function closeModal() {
   }, 300);
 }
 
-/**
- * Builds the data object used by the modal template.
- * @param {string} mode
- * @param {Object} contact
- * @returns {Object}
- */
 function buildModalData(mode, contact) {
   if (!contact) return {};
   return {
@@ -265,20 +154,16 @@ function buildModalData(mode, contact) {
     email: contact.email || "",
     phone: contact.phone || "",
     initials: getInitials(contact.name),
-    colorClass: contact.colorClass,
+    colorClass: contact.colorClass
   };
 }
 
-/**
- * Renders the contacts list in the sidebar.
- */
 function renderContactsList() {
   let list = document.getElementById("contactsList");
   if (!list) return;
 
   let sorted = [...contacts].sort(sortContacts);
-  let html = "",
-    current = "";
+  let html = "", current = "";
 
   for (let c of sorted) {
     let g = groupKey(c.name);
@@ -287,24 +172,18 @@ function renderContactsList() {
       html += letterGroupTemplate(current);
     }
 
-    html += contactListItemTemplate(
-      {
-        id: c.id,
-        name: c.name,
-        email: c.email,
-        initials: getInitials(c.name),
-        colorClass: c.colorClass,
-      },
-      c.id === selectedId,
-    );
+    html += contactListItemTemplate({
+      id: c.id,
+      name: c.name,
+      email: c.email,
+      initials: getInitials(c.name),
+      colorClass: c.colorClass
+    }, c.id === selectedId);
   }
 
   list.innerHTML = html;
 }
 
-/**
- * Renders the selected contact details.
- */
 function renderDetails() {
   let d = document.getElementById("contactDetails");
   if (!d) return;
@@ -314,7 +193,7 @@ function renderDetails() {
     return;
   }
 
-  let c = contacts.find((x) => x.id === selectedId);
+  let c = contacts.find(x => x.id === selectedId);
   if (!c) return;
 
   d.innerHTML = contactDetailsTemplate({
@@ -323,20 +202,15 @@ function renderDetails() {
     email: c.email,
     phone: c.phone || "-",
     initials: getInitials(c.name),
-    colorClass: c.colorClass,
+    colorClass: c.colorClass
   });
 
   if (isMobile()) showMobileDetails();
 }
 
-/**
- * Creates a new contact from the form input.
- */
 function createFromForm() {
   let name = normalize(document.getElementById("contactName")?.value);
-  let email = normalize(
-    document.getElementById("contactEmail")?.value,
-  ).toLowerCase();
+  let email = normalize(document.getElementById("contactEmail")?.value).toLowerCase();
   let phone = normalize(document.getElementById("contactPhone")?.value);
 
   if (!name || !email) return;
@@ -348,7 +222,7 @@ function createFromForm() {
     name,
     email,
     phone,
-    colorClass: colorClassFor(id),
+    colorClass: colorClassFor(id)
   });
 
   selectedId = id;
@@ -359,18 +233,12 @@ function createFromForm() {
   closeModal();
 }
 
-/**
- * Saves edits made to an existing contact.
- * @param {string} editId
- */
 function saveEdit(editId) {
-  let idx = contacts.findIndex((c) => c.id === editId);
+  let idx = contacts.findIndex(c => c.id === editId);
   if (idx === -1) return;
 
   let name = normalize(document.getElementById("contactName")?.value);
-  let email = normalize(
-    document.getElementById("contactEmail")?.value,
-  ).toLowerCase();
+  let email = normalize(document.getElementById("contactEmail")?.value).toLowerCase();
   let phone = normalize(document.getElementById("contactPhone")?.value);
 
   if (!name || !email) return;
@@ -384,22 +252,14 @@ function saveEdit(editId) {
   closeModal();
 }
 
-/**
- * Deletes a contact by ID.
- * @param {string} id
- */
 function deleteContact(id) {
-  contacts = contacts.filter((c) => c.id !== id);
+  contacts = contacts.filter(c => c.id !== id);
   selectedId = null;
   saveContacts();
   renderContactsList();
   renderDetails();
 }
 
-/**
- * Global click handler for UI actions.
- * @param {MouseEvent} e
- */
 function handleClick(e) {
   if (e.target.closest("#openAddContact")) return openModal("create", null);
 
@@ -415,7 +275,7 @@ function handleClick(e) {
   if (act?.dataset.action === "delete") return deleteContact(act.dataset.id);
 
   if (act?.dataset.action === "edit") {
-    let contact = contacts.find((c) => c.id === act.dataset.id);
+    let contact = contacts.find(c => c.id === act.dataset.id);
     return openModal("edit", contact);
   }
 
@@ -425,11 +285,6 @@ function handleClick(e) {
   if (back && e.target === back) closeModal();
 }
 
-/**
- * Global form submit handler.
- * Handles both creating and editing contacts.
- * @param {SubmitEvent} e
- */
 function handleSubmit(e) {
   if (e.target.id !== "addContactForm") return;
   e.preventDefault();

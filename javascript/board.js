@@ -1,71 +1,38 @@
-/** Storage key used for persisting tasks locally */
 const STORAGE_KEY = "tasks";
-
-/** Storage key used for persisting contacts */
 const CONTACTS_STORAGE_KEY = "join_contacts_v1";
-
-/** Base URL of the Firebase Realtime Database */
 const DB_TASK_URL = "https://join-da53b-default-rtdb.firebaseio.com/";
-
-/** Expose DB URL globally so other modules can access it */
+// Expose for other modules that need to call the DB
 window.DB_TASK_URL = DB_TASK_URL;
 
-/** ID of the currently opened task in the overlay */
 let openedTaskId = null;
-
-/** Indicates if a card is currently being dragged */
 let isDragging = false;
-
-/** ID of a task waiting for deletion confirmation */
 let pendingDeleteId = null;
-
-/** Indicates if the overlay is currently in edit mode */
 let isEditingOverlay = false;
-
-/** Set of selected contacts in the task overlay */
 let overlaySelectedContacts = new Set();
-
-/** Temporary subtasks stored while editing/creating a task */
 let overlayPendingSubtasks = [];
-
-/** Currently selected task priority inside the overlay */
 let overlaySelectedPriority = "medium";
-
-/** Current search query used to filter tasks */
 let activeSearchQuery = "";
 
-/**
- * Initializes the board after the DOM has finished loading.
- * Handles storage initialization, syncing data, and UI setup.
- */
 document.addEventListener("DOMContentLoaded", async function () {
   getCokkieCheck();
-
-  // Wait until IndexedDB wrapper is ready
-  await (window.idbStorage && window.idbStorage.ready
-    ? window.idbStorage.ready
-    : Promise.resolve());
-
+  // Wait for IndexedDB wrapper to be ready (if available)
+  await (window.idbStorage && window.idbStorage.ready ? window.idbStorage.ready : Promise.resolve());
   initRedirects();
   initAddTaskOverlay();
   initSearch();
 
-  // Try to sync tasks from the remote database
-  try {
-    await syncTasksFromDB();
-  } catch (e) {
-    console.error("Initial sync failed, falling back to local storage", e);
-  }
+    // Try to sync tasks from remote DB first (DB = source of truth)
+    try {
+      await syncTasksFromDB();
+    } catch (e) {
+      console.error("Initial sync failed, falling back to local storage", e);
+    }
 
-  // Try to sync contacts
-  try {
-    await syncContactsFromDB();
-  } catch (e) {
-    console.warn(
-      "Initial contacts sync failed, continuing with local cache",
-      e,
-    );
-  }
+    try {
+      await syncContactsFromDB();
+    } catch (e) {
+      console.warn("Initial contacts sync failed, continuing with local cache", e);
+    }
 
   renderBoardFromStorage();
   initDragAndDrop();
@@ -75,18 +42,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 // ---------------- Redirects ----------------
-
-/**
- * Initializes UI elements that redirect to the task creation overlay.
- */
 function initRedirects() {
   bindAddCardIcons();
   bindTopAddButton();
 }
 
-/**
- * Adds click listeners to column "+" icons.
- */
 function bindAddCardIcons() {
   const icons = document.querySelectorAll(".add-card-icon");
   for (let i = 0; i < icons.length; i++) {
@@ -97,47 +57,27 @@ function bindAddCardIcons() {
   }
 }
 
-/**
- * Adds click listener to the main "Add task" button.
- */
 function bindTopAddButton() {
   const topBtn = document.querySelector(".add-task-button");
   if (!topBtn) return;
-
   topBtn.addEventListener("click", function () {
     goToAddTask("todo");
   });
 }
 
-/**
- * Returns the status of the column where the add button was clicked.
- *
- * @param {HTMLElement} icon
- * @returns {string}
- */
 function getColumnStatus(icon) {
   const col = icon.closest(".column");
   return col && col.dataset ? col.dataset.status : "todo";
 }
 
-/**
- * Opens the task creation overlay.
- *
- * @param {string} status
- */
 function goToAddTask(status) {
   openAddTaskOverlay(status);
 }
 
 // ---------------- Search ----------------
-
-/**
- * Initializes the task search input.
- */
 function initSearch() {
   const input = document.querySelector(".search-input");
   if (!input) return;
-
   const icon = document.querySelector(".search-icon");
 
   input.addEventListener("input", function () {
@@ -146,7 +86,6 @@ function initSearch() {
 
   input.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
-
     input.value = "";
     applySearchQuery("");
   });
@@ -159,33 +98,16 @@ function initSearch() {
   }
 }
 
-/**
- * Applies the search filter and re-renders the board.
- *
- * @param {string} value
- */
 function applySearchQuery(value) {
   activeSearchQuery = normalizeSearchQuery(value);
   renderBoardFromStorage();
 }
 
-/**
- * Normalizes the search string.
- *
- * @param {string} value
- * @returns {string}
- */
 function normalizeSearchQuery(value) {
-  return String(value || "")
-    .trim()
-    .toLowerCase();
+  return String(value || "").trim().toLowerCase();
 }
 
 // ---------------- Add task overlay ----------------
-
-/**
- * Initializes the add-task overlay and related events.
- */
 function initAddTaskOverlay() {
   const backdrop = document.getElementById("addTaskOverlayBackdrop");
   if (!backdrop) return;
@@ -203,18 +125,11 @@ function initAddTaskOverlay() {
   });
 }
 
-/**
- * Opens the add task overlay.
- *
- * @param {string} status
- */
 function openAddTaskOverlay(status) {
   const backdrop = document.getElementById("addTaskOverlayBackdrop");
   if (!backdrop) return;
-
   backdrop.dataset.status = status || "todo";
   backdrop.hidden = false;
-
   updateBodyScrollLock();
 
   if (typeof resetAddTaskForm === "function") resetAddTaskForm();
@@ -224,43 +139,26 @@ function openAddTaskOverlay(status) {
   if (titleInput) titleInput.focus();
 }
 
-/**
- * Closes the add task overlay.
- */
 function closeAddTaskOverlay() {
   const backdrop = document.getElementById("addTaskOverlayBackdrop");
   if (!backdrop) return;
-
   backdrop.hidden = true;
   updateBodyScrollLock();
-
   if (typeof clearForm === "function") clearForm();
 }
 
 // ---------------- Storage ----------------
-
-/**
- * Retrieves all tasks from IndexedDB.
- *
- * @returns {Array}
- */
 function getTasks() {
   try {
-    return window.idbStorage &&
-      typeof window.idbStorage.getTasksSync === "function"
-      ? window.idbStorage.getTasksSync()
-      : [];
+    
+    return (window.idbStorage && typeof window.idbStorage.getTasksSync === "function") ? window.idbStorage.getTasksSync() : [];
+    
   } catch (e) {
     console.error("Storage access error:", e);
     return [];
   }
 }
 
-/**
- * Saves tasks locally and syncs them with the remote database.
- *
- * @param {Array} tasks
- */
 async function saveTasks(tasks) {
   if (window.idbStorage && typeof window.idbStorage.saveTasks === "function") {
     try {
@@ -272,28 +170,19 @@ async function saveTasks(tasks) {
     console.warn("idbStorage not available - tasks not persisted");
   }
 
-  // Sync with Firebase
   (async function () {
     try {
-      const url =
-        (window.DB_TASK_URL || "https://join-da53b-default-rtdb.firebaseio.com/") + "tasks.json";
-
+      const url = (window.DB_TASK_URL || "https://join-da53b-default-rtdb.firebaseio.com/") + "tasks.json";
       const map = {};
-      for (const t of tasks || []) {
-        const id =
-          t && t.id
-            ? String(t.id)
-            : "tmp_" + Date.now() + "_" + Math.random().toString(16).slice(2);
-
+      for (const t of (tasks || [])) {
+        const id = (t && t.id) ? String(t.id) : ("tmp_" + Date.now() + "_" + Math.random().toString(16).slice(2));
         map[id] = t;
       }
-
       await fetch(url, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(map),
       });
-
       renderBoardFromStorage();
     } catch (err) {
       console.warn("Failed to sync tasks to remote DB:", err);
@@ -301,27 +190,16 @@ async function saveTasks(tasks) {
   })();
 }
 
-// ---------------- Remote sync (Firebase <-> IndexedDB) ----------------
-
-/**
- * Fetches a node from the Firebase database.
- * Mirrors the logic used on the summary page so the
- * board can handle different backend data shapes.
- *
- * @param {string} nodeName
- * @returns {Promise<Object|Array|null>}
- */
+// Sync tasks from Firebase RTDB and save to persistent storage (IndexedDB)
 async function fetchDBNode(nodeName) {
-  const baseUrl = window.DB_TASK_URL || DB_TASK_URL;
-
   try {
-    const resp = await fetch(baseUrl + nodeName + ".json");
+    const resp = await fetch(DB_TASK_URL + nodeName + ".json");
     const data = await resp.json();
     if (data != null) return data;
   } catch (e) {}
 
   try {
-    const r = await fetch(baseUrl + ".json");
+    const r = await fetch(DB_TASK_URL + ".json");
     const root = await r.json();
     if (!root) return null;
 
@@ -330,8 +208,7 @@ async function fetchDBNode(nodeName) {
       if (entry) {
         const clone = Object.assign({}, entry);
         delete clone.id;
-        if (Object.prototype.hasOwnProperty.call(clone, nodeName))
-          return clone[nodeName];
+        if (clone.hasOwnProperty(nodeName)) return clone[nodeName];
         const keys = Object.keys(clone);
         if (keys.length) return clone;
       }
@@ -342,121 +219,97 @@ async function fetchDBNode(nodeName) {
         if (e && e.id === nodeName) {
           const clone = Object.assign({}, e);
           delete clone.id;
-          if (Object.prototype.hasOwnProperty.call(clone, nodeName))
-            return clone[nodeName];
+          if (clone.hasOwnProperty(nodeName)) return clone[nodeName];
           const keys = Object.keys(clone);
           if (keys.length) return clone;
         }
       }
-      if (Object.prototype.hasOwnProperty.call(root, nodeName))
-        return root[nodeName];
+      if (root[nodeName] !== undefined) return root[nodeName];
     }
   } catch (e) {}
-
   return null;
 }
 
-/**
- * Syncs tasks from Firebase into IndexedDB (if available)
- * and returns the loaded task list.
- *
- * @returns {Promise<Array<Object>>}
- */
+
 async function syncTasksFromDB() {
   try {
     const data = await fetchDBNode("tasks");
     let tasks = [];
-
     if (!data) tasks = [];
     else if (Array.isArray(data)) tasks = data.filter(Boolean);
-    else
-      tasks = Object.entries(data).map(([k, v]) => ({
-        ...(v || {}),
-        id: v && v.id ? v.id : k,
-      }));
-
-    if (
-      window.idbStorage &&
-      typeof window.idbStorage.saveTasks === "function"
-    ) {
-      try {
-        await window.idbStorage.saveTasks(tasks);
-        try {
-          if (window.idbStorage.getTasksSync)
-            window.idbStorage.getTasksSync();
-        } catch (readErr) {
-          console.warn(
-            "syncTasksFromDB: saved to IDB but failed to read back:",
-            readErr,
-          );
-        }
-      } catch (err) {
-        console.warn("Failed to save tasks to IDB:", err);
-      }
-    }
-
+    else tasks = Object.entries(data).map(([k, v]) => ({ ...(v || {}), id: v && v.id ? v.id : k }));
+    await saveTasks(tasks);
     return tasks;
   } catch (e) {
-    console.warn("Failed to sync tasks from DB", e);
+    console.error("Failed to sync tasks from DB", e);
     throw e;
   }
 }
 
-/**
- * Syncs contacts from Firebase into IndexedDB (if available)
- * and returns the loaded contact list.
- *
- * @returns {Promise<Array<Object>>}
- */
+
 async function syncContactsFromDB() {
   try {
     const data = await fetchDBNode("contacts");
-    let list = [];
 
-    if (!data) list = [];
-    else if (Array.isArray(data)) list = data.filter(Boolean);
-    else
-      list = Object.entries(data).map(([k, v]) => ({
-        ...(v || {}),
-        id: v && v.id ? v.id : k,
-      }));
+    let contacts = [];
+    if (!data) contacts = [];
+    else if (Array.isArray(data)) contacts = data.filter(Boolean);
+    else contacts = Object.entries(data).map(([k, v]) => ({ ...(v || {}), id: v && v.id ? v.id : k }));
 
-    if (
-      window.idbStorage &&
-      typeof window.idbStorage.saveContacts === "function"
-    ) {
+    if (window.idbStorage && typeof window.idbStorage.saveContacts === "function") {
       try {
-        await window.idbStorage.saveContacts(list);
+        await window.idbStorage.saveContacts(contacts);
+        try {
+          const local = window.idbStorage.getContactsSync ? window.idbStorage.getContactsSync() : null;
+          return local || contacts;
+        } catch (readErr) {
+          console.warn("syncContactsFromDB: saved to IDB but failed to read back:", readErr);
+        }
       } catch (err) {
         console.warn("Failed to save contacts to IDB:", err);
       }
     }
 
-    return list;
+    return contacts;
   } catch (e) {
-    console.warn("Failed to sync contacts from DB", e);
+    console.error("Failed to sync contacts from DB", e);
     throw e;
   }
 }
 
-/**
- * Returns contacts for the board / templates from
- * the local IndexedDB cache. This provides a
- * synchronous API expected by board.templates.js.
- *
- * @returns {Array<Object>}
- */
 function loadContacts() {
   try {
-    if (
-      window.idbStorage &&
-      typeof window.idbStorage.getContactsSync === "function"
-    ) {
-      return window.idbStorage.getContactsSync();
-    }
+    return (window.idbStorage && typeof window.idbStorage.getContactsSync === "function")
+      ? window.idbStorage.getContactsSync()
+      : [];
   } catch (e) {
-    console.warn("Failed to read contacts from IDB:", e);
+    console.error("Contacts access error:", e);
+    return [];
   }
+}
 
-  return [];
+function buildContactsById(contacts) {
+  const map = new Map();
+  for (let i = 0; i < contacts.length; i++) {
+    const c = contacts[i];
+    if (c && c.id) map.set(String(c.id), c);
+  }
+  return map;
+}
+
+function resolveAssignedList(task) {
+  let assignedArr = [];
+  if (Array.isArray(task.assigned)) assignedArr = task.assigned;
+  else if (task.assigned) assignedArr = [task.assigned];
+  if (!assignedArr.length) return [];
+  const contactsById = buildContactsById(loadContacts());
+  const result = [];
+  for (let i = 0; i < assignedArr.length; i++) {
+    const value = assignedArr[i];
+    const key = String(value || "");
+    if (!key) continue;
+    const contact = contactsById.get(key);
+    result.push(contact && contact.name ? contact.name : key);
+  }
+  return result;
 }

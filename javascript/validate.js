@@ -10,7 +10,7 @@ let singupButton = document.getElementById("singup-button");
 let iconImgMail = document.getElementById("email-icon");
 let iconImg = document.getElementById("lock-icon");
 /**
- * Input Name prüfen
+ * Input  Name prüfen
  */
 function validateFullname() {
   switch (true) {
@@ -60,7 +60,6 @@ function validateEmail() {
 }
 /**
  * Password prüfen
- * returna true/false
  */
 function updatePasswordIcon() {
   if (password.value.length === 0) {
@@ -75,6 +74,7 @@ function updatePasswordIcon() {
       : "./assets/icons/visibility_off.svg";
 }
 
+// Initial prüfen
 toggleIconState();
 
 password.addEventListener("input", toggleIconState);
@@ -92,6 +92,7 @@ if (!confirmPassword) {
 } else {
   confirmPassword.addEventListener("input", toggleIconState);
   confirmPassword.addEventListener("click", (e) => {
+    // nur reagieren, wenn rechts geklickt wird (Icon-Bereich)
     if (!confirmPassword.value) return;
 
     const clickOnIcon = e.offsetX > confirmPassword.offsetWidth - 35;
