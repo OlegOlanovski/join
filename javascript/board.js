@@ -276,8 +276,7 @@ async function saveTasks(tasks) {
   (async function () {
     try {
       const url =
-        (window.DB_TASK_URL ||
-          "https://join-da53b-default-rtdb.firebaseio.com/") + "tasks.json";
+        (window.DB_TASK_URL || "https://join-da53b-default-rtdb.firebaseio.com/") + "tasks.json";
 
       const map = {};
       for (const t of tasks || []) {
@@ -300,4 +299,164 @@ async function saveTasks(tasks) {
       console.warn("Failed to sync tasks to remote DB:", err);
     }
   })();
+}
+
+// ---------------- Remote sync (Firebase <-> IndexedDB) ----------------
+
+/**
+ * Fetches a node from the Firebase database.
+ * Mirrors the logic used on the summary page so the
+ * board can handle different backend data shapes.
+ *
+ * @param {string} nodeName
+ * @returns {Promise<Object|Array|null>}
+ */
+async function fetchDBNode(nodeName) {
+  const baseUrl = window.DB_TASK_URL || DB_TASK_URL;
+
+  try {
+    const resp = await fetch(baseUrl + nodeName + ".json");
+    const data = await resp.json();
+    if (data != null) return data;
+  } catch (e) {}
+
+  try {
+    const r = await fetch(baseUrl + ".json");
+    const root = await r.json();
+    if (!root) return null;
+
+    if (Array.isArray(root)) {
+      const entry = root.find((e) => e && e.id === nodeName);
+      if (entry) {
+        const clone = Object.assign({}, entry);
+        delete clone.id;
+        if (Object.prototype.hasOwnProperty.call(clone, nodeName))
+          return clone[nodeName];
+        const keys = Object.keys(clone);
+        if (keys.length) return clone;
+      }
+    } else if (typeof root === "object") {
+      const vals = Object.values(root);
+      for (let i = 0; i < vals.length; i++) {
+        const e = vals[i];
+        if (e && e.id === nodeName) {
+          const clone = Object.assign({}, e);
+          delete clone.id;
+          if (Object.prototype.hasOwnProperty.call(clone, nodeName))
+            return clone[nodeName];
+          const keys = Object.keys(clone);
+          if (keys.length) return clone;
+        }
+      }
+      if (Object.prototype.hasOwnProperty.call(root, nodeName))
+        return root[nodeName];
+    }
+  } catch (e) {}
+
+  return null;
+}
+
+/**
+ * Syncs tasks from Firebase into IndexedDB (if available)
+ * and returns the loaded task list.
+ *
+ * @returns {Promise<Array<Object>>}
+ */
+async function syncTasksFromDB() {
+  try {
+    const data = await fetchDBNode("tasks");
+    let tasks = [];
+
+    if (!data) tasks = [];
+    else if (Array.isArray(data)) tasks = data.filter(Boolean);
+    else
+      tasks = Object.entries(data).map(([k, v]) => ({
+        ...(v || {}),
+        id: v && v.id ? v.id : k,
+      }));
+
+    if (
+      window.idbStorage &&
+      typeof window.idbStorage.saveTasks === "function"
+    ) {
+      try {
+        await window.idbStorage.saveTasks(tasks);
+        try {
+          if (window.idbStorage.getTasksSync)
+            window.idbStorage.getTasksSync();
+        } catch (readErr) {
+          console.warn(
+            "syncTasksFromDB: saved to IDB but failed to read back:",
+            readErr,
+          );
+        }
+      } catch (err) {
+        console.warn("Failed to save tasks to IDB:", err);
+      }
+    }
+
+    return tasks;
+  } catch (e) {
+    console.warn("Failed to sync tasks from DB", e);
+    throw e;
+  }
+}
+
+/**
+ * Syncs contacts from Firebase into IndexedDB (if available)
+ * and returns the loaded contact list.
+ *
+ * @returns {Promise<Array<Object>>}
+ */
+async function syncContactsFromDB() {
+  try {
+    const data = await fetchDBNode("contacts");
+    let list = [];
+
+    if (!data) list = [];
+    else if (Array.isArray(data)) list = data.filter(Boolean);
+    else
+      list = Object.entries(data).map(([k, v]) => ({
+        ...(v || {}),
+        id: v && v.id ? v.id : k,
+      }));
+
+    if (
+      window.idbStorage &&
+      typeof window.idbStorage.saveContacts === "function"
+    ) {
+      try {
+        await window.idbStorage.saveContacts(list);
+      } catch (err) {
+        console.warn("Failed to save contacts to IDB:", err);
+      }
+    }
+
+    return list;
+  } catch (e) {
+    console.warn("Failed to sync contacts from DB", e);
+    throw e;
+  }
+}
+
+/**
+ * Returns contacts for the board / templates from
+ * the local IndexedDB cache. This provides a
+ * synchronous API expected by board.templates.js.
+ *
+ * @returns {Array<Object>}
+ */
+function loadContacts() {
+  try {
+    if (
+      window.idbStorage &&
+      typeof window.idbStorage.getContactsSync === "function"
+    ) {
+      return window.idbStorage.getContactsSync();
+    }
+  } catch (e) {
+    console.warn("Failed to read contacts from IDB:", e);
+  }
+
+  return [];
 }

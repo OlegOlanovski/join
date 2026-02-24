@@ -121,9 +121,8 @@ function addSubtasksFromInput() {
     .split(/[,\n;]+/)
     .map((t) => t.trim())
     .forEach((title) => {
-      if (pendingSubtasks.length < 3) {
-        pendingSubtasks.push({ title, done: false });
-      }
+      if (!title) return;
+      pendingSubtasks.push({ title, done: false });
     });
 
   input.value = "";
@@ -250,6 +249,11 @@ async function createTask() {
   const descriptionEl = document.getElementById("description");
   const dueDateEl = document.getElementById("date");
   const categoryEl = document.getElementById("category");
+
+  // Ensure any text currently in the subtask input
+  // is converted into pendingSubtasks before saving.
+  const subInput = document.getElementById("subtasks");
+  if (subInput && subInput.value.trim()) addSubtasksFromInput();
 
   const title = titleEl?.value.trim() || "";
   const description = descriptionEl?.value.trim() || "";
