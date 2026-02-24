@@ -36,7 +36,7 @@ function taskMatchesQuery(task, query) {
 
 function buildTaskSearchText(task) {
   const assigned = resolveAssignedList(task);
-  const subs = Array.isArray(task.subtasks) ? task.subtasks : [];
+  const subs = getTaskSubtasks(task);
   const subtaskTitles = [];
   for (let i = 0; i < subs.length; i++) {
     if (subs[i] && subs[i].title) subtaskTitles.push(subs[i].title);
@@ -101,7 +101,7 @@ function getLabelClass(task) {
 }
 
 function buildCardSubtaskProgressHtml(task) {
-  const subs = Array.isArray(task.subtasks) ? task.subtasks : [];
+  const subs = getTaskSubtasks(task);
   const total = subs.length;
   if (!total) return "";
   const done = countDoneSubtasks(subs);
@@ -221,6 +221,44 @@ function getContactColorClass(contact) {
   if (contact && contact.colorClass) return contact.colorClass;
   const seed = contact?.id || contact?.email || contact?.name || "";
   return colorClassForSeed(seed);
+}
+
+/**
+ * Returns a normalized subtasks array for a task.
+ * Supports both array and object map shapes and
+ * also falls back to possible legacy keys.
+ *
+ * @param {Object} task
+ * @returns {Array<{title:string, done:boolean}>}
+ */
+function getTaskSubtasks(task) {
+  if (!task) return [];
+
+  let subs = [];
+
+  if (Array.isArray(task.subtasks)) subs = task.subtasks;
+  else if (task.subtasks && typeof task.subtasks === "object")
+    subs = Object.values(task.subtasks);
+  else if (Array.isArray(task.subtask)) subs = task.subtask;
+  else if (task.subtask && typeof task.subtask === "object")
+    subs = Object.values(task.subtask);
+
+  if (!Array.isArray(subs)) return [];
+
+  return subs
+    .filter(Boolean)
+    .map(function (s) {
+      if (typeof s === "string") {
+        return { title: s, done: false };
+      }
+      return {
+        title: s && s.title ? String(s.title) : "",
+        done: !!(s && s.done),
+      };
+    })
+    .filter(function (s) {
+      return !!s.title;
+    });
 }
 
 function countDoneSubtasks(subs) {

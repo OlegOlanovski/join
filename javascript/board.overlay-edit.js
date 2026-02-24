@@ -318,19 +318,27 @@ function initOverlaySubtasks() {
   const input = document.getElementById("taskEditSubtaskInput");
   const btn = document.getElementById("taskEditAddSubtaskBtn");
   const list = document.getElementById("taskEditSubtasksList");
+
   if (btn && input) {
-    btn.onclick = addOverlaySubtasksFromInput;
-    input.onkeydown = function (e) {
-      if (e.key === "Enter") addOverlaySubtasksFromInput();
-    };
+    btn.addEventListener("click", addOverlaySubtasksFromInput);
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter") return;
+      e.preventDefault();
+      addOverlaySubtasksFromInput();
+    });
   }
+
   if (list) {
-    list.onclick = function (e) {
+    list.addEventListener("click", function (e) {
       const remove = e.target.closest(".subtasks-remove");
       if (!remove) return;
-      overlayPendingSubtasks.splice(remove.dataset.index, 1);
-      renderOverlaySubtasksList();
-    };
+      const index = parseInt(remove.dataset.index, 10);
+      if (!isNaN(index)) {
+        overlayPendingSubtasks.splice(index, 1);
+        renderOverlaySubtasksEdit();
+      }
+    });
   }
 }
 

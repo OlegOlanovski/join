@@ -403,7 +403,7 @@ label .label-star {
 @media (max-width: 376px) {
   .priority-section {
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
     gap: 15px;
   }
 

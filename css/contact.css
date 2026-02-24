@@ -26,11 +26,15 @@
   display: flex;
   align-items: stretch;
   gap: clamp(12px, 2vw, 24px);
+<<<<<<< HEAD
   height: 720px;
  
   
     
 
+=======
+  height: calc(100vh - 96px);
+>>>>>>> a22a737a5c96c8bd0ea188abe097a52c38c597a3
 }
 
 .contacts-sidebar {
@@ -781,4 +785,7 @@ input::placeholder {
   max-width: 400px;
   text-align: center;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a22a737a5c96c8bd0ea188abe097a52c38c597a3

@@ -1,5 +1,31 @@
 document.addEventListener("DOMContentLoaded", function () {
-  (function populateHeaderInitials() {
+  const btn = document.getElementById("headerUserBtn");
+  const menu = document.getElementById("userMenu");
+  if (!btn || !menu) return;
+
+  function setOpen(open) {
+    menu.classList.toggle("is-open", open);
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    menu.setAttribute("aria-hidden", open ? "false" : "true");
+  }
+
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    setOpen(!menu.classList.contains("is-open"));
+  });
+
+  menu.addEventListener("click", function (e) {
+    e.stopPropagation();
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".header-user-area")) setOpen(false);
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") setOpen(false);
+  });
+  function populateHeaderInitials() {
     function cookieToObj() {
       return document.cookie.split(";").reduce((acc, cookie) => {
         const [k, ...rest] = cookie.trim().split("=");
@@ -44,12 +70,12 @@ document.addEventListener("DOMContentLoaded", function () {
       s = s.trim(); if (!s) return 'G';
       if (/^[^@\s]+@[^@\s]+$/.test(s)) s = s.split('@')[0];
       const parts = s.split(/\s+/).filter(Boolean);
-      if (parts.length >= 2) return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
-      if (parts[0].length >= 2) return parts[0].slice(0,2).toUpperCase();
+      if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      if (parts[0].length >= 2) return parts[0].slice(0, 2).toUpperCase();
       return (parts[0][0] || 'G').toUpperCase();
     }
 
-    const user = parseLoggedUser();    
+    const user = parseLoggedUser();
     const rawName = user && (user.namen || user.name || user.fullName || user.mail) || null;
     const displayName = cleanDisplayName(rawName) || (user && (user.namen || user.name) ? cleanDisplayName(user.namen || user.name) : null);
     const initials = displayName ? getInitials(displayName) : 'G';
@@ -65,35 +91,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (displayName) btn.setAttribute('title', displayName);
       if (displayName) btn.setAttribute('aria-label', `User menu — ${displayName}`);
     }
-  })();
-
-  const btn = document.getElementById("headerUserBtn");
-  const menu = document.getElementById("userMenu");
-
-  if (btn && menu) {
-    function setOpen(open) {
-      menu.classList.toggle("is-open", open);
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-      menu.setAttribute("aria-hidden", open ? "false" : "true");
-    }
-
-    btn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      setOpen(!menu.classList.contains("is-open"));
-    });
-
-    menu.addEventListener("click", function (e) {
-      e.stopPropagation();
-    });
-
-    document.addEventListener("click", function (e) {
-      if (!e.target.closest(".header-user-area")) setOpen(false);
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") setOpen(false);
-    });
   }
+
+  populateHeaderInitials();
 
   const links = document.querySelectorAll(".menu a[href]");
   if (!links.length) return;
@@ -111,4 +111,5 @@ document.addEventListener("DOMContentLoaded", function () {
       a.classList.add("active");
     });
   });
+
 });

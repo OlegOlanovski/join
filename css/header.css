@@ -45,9 +45,12 @@ html, body{
   margin:0 auto;
   padding:32px 24px;
   min-width:0;
+<<<<<<< HEAD
   
 
   
+=======
+>>>>>>> a22a737a5c96c8bd0ea188abe097a52c38c597a3
 }
 
 .sidebar{
@@ -57,9 +60,13 @@ html, body{
   color:#fff;
   display:flex;
   flex-direction:column;
+<<<<<<< HEAD
   padding: 64px 0 40px 0;
   
  
+=======
+  padding:64px 0 64px 0;
+>>>>>>> a22a737a5c96c8bd0ea188abe097a52c38c597a3
 }
 
 .logo{
@@ -147,8 +154,6 @@ html, body{
   display:flex;
   flex-direction:column;
   gap:8px;
-  
- 
 }
 
 .sidebar-footer a{
@@ -170,9 +175,9 @@ html, body{
   align-items:center;
   justify-content:center;
   width:100%;
-  box-shadow:0 4px 4px rgba(0,0,0,.1);
-  position:relative;
-  z-index:2000;
+  box-shadow:0 4px 4px rgba(0,0,0, 0.08);
+  padding: 20px 40px 20px 116px;
+  z-index: 100;
 }
 
 .content-wrepper-header{
@@ -182,7 +187,6 @@ html, body{
   width:100%;
   max-width:1920px;
   margin:0 auto;
-  padding:0 64px;
   min-width:0;
   position:relative;
   z-index:2001;
@@ -214,7 +218,6 @@ html, body{
   min-width:0;
   margin:0;
   position:relative;
-  left:20px;
 }
 
 .header-right{
@@ -321,12 +324,10 @@ html, body{
     min-width:0;
   }
 
-  .content-wrepper-header{ padding:0 24px; }
-
   .header-title,
   .header-help{ display:none !important; }
 
-  .header-logo{ display:block !important; }
+  .header-logo{ display:block !important; height: 50px; }
 
   .sidebar{
     width:100%;
