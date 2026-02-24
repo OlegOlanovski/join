@@ -2,6 +2,8 @@
   color: red;
 }
 
+.label-star{color: rgb(255, 13, 13);}
+
 .add-task-overlay select {
   box-sizing: border-box;
   height: 42px;
