@@ -1,6 +1,6 @@
 *, *::before, *::after {
   box-sizing: border-box;
-  scroll-behavior: none;
+  scroll-behavior: auto;
 }
 
 .cantainer, .container {
@@ -24,7 +24,7 @@
   display: flex;
   align-items: stretch;
   gap: clamp(12px, 2vw, 24px);
-  height: calc(100vh - 96px);
+  height: 720px;
 }
 
 .contacts-sidebar {
@@ -40,7 +40,6 @@
   border-right: 1px solid #e0e0e009;
   box-shadow: 4px 0 8px rgba(0, 0, 0, 0.08);
   padding: 32px clamp(16px, 2.5vw, 52px);
-  
 }
 
 .contacts-add-btn {
@@ -75,6 +74,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  left: 0;
 }
 
 .contacts-scroll {
@@ -122,14 +122,14 @@
   line-height: 1.2;
   color: #000000;
   position: relative;
-  right: 5px;
+  right: 0;
   border-bottom: 0;
 }
 
 .letter-group::after {
   content: "";
   position: absolute;
-  left: -5px;
+  left: 0;
   right: 20px;
   bottom: 0;
   height: 1px;
@@ -149,11 +149,9 @@
   border-radius: 6px;
 }
 
-
 .contact-item:hover {
   background: #f5f5f5;
-  border-radius: 6px; 
- 
+  border-radius: 6px;
 }
 
 .avatar {
@@ -168,7 +166,7 @@
   color: #ffffff;
   flex: 0 0 auto;
   position: relative;
-  right: 10px;
+  right: 0;
 }
 
 .contact-text {
@@ -189,7 +187,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   position: relative;
-  left: 10px;
+  left: 0;
 }
 
 .contact-mail {
@@ -202,7 +200,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   position: relative;
-  left: 10px;
+  left: 0;
 }
 
 .contacts-main {
@@ -391,7 +389,7 @@
   margin-top: 130px;
   background: transparent;
   position: relative;
-  right: 8px;
+  right: 0;
   z-index: 1;
   transform: translate3d(200%, 18px, 0) scale(0.97);
   will-change: transform;
@@ -484,7 +482,6 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  
 }
 
 .modal-person img {
@@ -686,7 +683,6 @@ input::placeholder {
   transition: background-color 0.2s ease;
 }
 
-
 .contact-item:hover {
   background-color: #f0f2f5;
 }
@@ -694,7 +690,6 @@ input::placeholder {
 .contact-item.active {
   background-color: #2A3647;
   color: white;
- 
 }
 
 .contact-item.active .avatar {
@@ -703,15 +698,6 @@ input::placeholder {
 
 .contact-item.active .contact-name {
   color: white;
-}
-/*später oben bringen */
-
-.contacts-scroll-wrap {
-  flex: 1 1 auto;
-  min-height: 0;
-  min-width: 0;
-  position: relative;
-  left: 20px;
 }
 
 .contacts-scroll {
@@ -750,14 +736,11 @@ input::placeholder {
   cursor: pointer;
   transition: background 120ms ease;
   min-width: 0;
-  position: relative;
   right: 0;
-  top: 0;
+  top: 5px;
   border-radius: 6px;
   position: relative;
-  top: 5px;
 }
-
 
 .contact-successbox {
   position: fixed;
