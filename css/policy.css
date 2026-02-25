@@ -1,7 +1,34 @@
 @import url("./board/base.css");
 @import url("./board/responsive.css");
 
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.layout {
+  height: 100vh;
+}
+
+.cantainer,
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.main {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 .policy-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   padding: 72px 96px 96px;
 }
 
