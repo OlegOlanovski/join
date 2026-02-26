@@ -181,6 +181,38 @@ function getCokkieCheck() {
 }
 
 /**
+ * Checks whether a login cookie exists.
+ * changes the navigation and login button visibility based on the login state.
+ *
+ * @returns {string|null} The stored username or null.
+ */
+function getCokkieCheckHelper() {
+  const cookies = document.cookie.split(";").reduce((acc, cookie) => {
+    const [key, value] = cookie.trim().split("=");
+    acc[key] = decodeURIComponent(value || "");
+    return acc;
+  }, {});
+
+  if (!cookies.loggedInUser) {
+    const hidenNav = document.querySelectorAll("#nav_li");
+    const loginBtn = document.getElementById("login-btn");
+    const buttoMenu = document.getElementById("headerUserBtn");
+    if (hidenNav) hidenNav.forEach(el => el.style.display = "none");  
+    if (loginBtn) loginBtn.style.display = "block";
+    if (buttoMenu) buttoMenu.style.display = "none";
+  }else {
+    const hidenNav = document.querySelectorAll("#nav_li");
+    const loginBtn = document.getElementById("login-btn");
+
+    if (hidenNav) hidenNav.forEach(el => el.style.display = "block");
+    if (loginBtn) loginBtn.style.display = "none";
+  }
+   
+  return cookies.loggedInUser || null;
+}getCokkieCheckHelper();
+
+
+/**
  * Displays a login reminder message if the URL contains
  * the query parameter ?notice=pleaseLogin.
  *
