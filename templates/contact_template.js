@@ -176,4 +176,4 @@ function contactModalTemplate(mode, data) {
       ${contactModalInnerTemplate(mode, data || {})}
     </div>
   `;
-} 
+}  
