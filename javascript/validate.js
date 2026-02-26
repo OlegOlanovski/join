@@ -34,8 +34,7 @@ function validateEmailRegEx(emailInput) {
     typeof emailInput === "string"
       ? emailInput
       : (emailInput && emailInput.value) || "";
-  const pattern =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const pattern =  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return pattern.test(String(value).toLowerCase());
 }
 /**
@@ -67,7 +66,7 @@ function validateEmail() {
 function updatePasswordIcon() {
   if (password.value.length === 0) {
     if (!iconImg) return;
-    iconImg.src = "../assets/icons/lock.png";
+    iconImg.src = "./assets/icons/lock.png";
     return;
   }
   if (!iconImg) return;
