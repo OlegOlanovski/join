@@ -120,9 +120,9 @@ function validatePassword() {
     password.classList.add("isValidate");
     password.classList.add("visibility-off");
     password.classList.remove("isInvaled");
-    infoPassword.style.display = "none";
+    infoPassword.style.visibility = "hidden";
   } else {
-    infoPassword.style.display = "block";
+    infoPassword.style.visibility = "visible";
     password.classList.add("isInvaled");
     password.classList.remove("isValidate");
     password.classList.remove("visibility-off");
@@ -146,11 +146,11 @@ function validateConfirmPassword() {
   if (ok) {
     confirmPassword.classList.add("isValidate");
     confirmPassword.classList.remove("isInvaled");
-    infoPassword.style.display = "none";
-    infoConfirmPassword.style.display = "none";
+    infoPassword.style.visibility = "hidden";
+    infoConfirmPassword.style.visibility = "hidden";
   } else {
-    infoPassword.style.display = "block";
-    infoConfirmPassword.style.display = "block";
+    infoPassword.style.visibility = "visible";
+    infoConfirmPassword.style.visibility = "visible";
     confirmPassword.classList.add("isInvaled");
     confirmPassword.classList.remove("isValidate");
   }
