@@ -121,8 +121,7 @@ async function logIn() {
       }
     }
   }
-
-  alert("Check your email and password. Please try again");
+  document.getElementById("info-password").style.display = "block";
 }
 
 /**
