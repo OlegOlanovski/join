@@ -6,6 +6,7 @@ let confirmPassword = document.getElementById("confirm-password");
 let infoConfirmPassword = document.getElementById("info-confirm-password");
 let isAccept = document.getElementById("accept-id");
 let isAcceptPolice = document.getElementById("accept-police");
+let acceptTooltipTimer = null;
 let singupButton = document.getElementById("singup-button");
 let iconImgMail = document.getElementById("email-icon");
 let iconImg = document.getElementById("lock-icon");
@@ -162,14 +163,25 @@ function validateCheckbox() {
   const ok = isAccept.checked;
 
   if (ok) {
-    isAcceptPolice.classList.add("accept-police");
+    isAcceptPolice.classList.remove("show");
     document.getElementById("singup-button").classList.remove("disebles-singup-button");
   document.getElementById("singup-button").disabled = false;
   } else {
-    isAcceptPolice.classList.remove("accept-police");
+    showAcceptTooltip();
   }
 
   return ok;
+}
+
+function showAcceptTooltip() {
+  if (!isAcceptPolice) return;
+  isAcceptPolice.classList.add("show");
+  if (acceptTooltipTimer) {
+    clearTimeout(acceptTooltipTimer);
+  }
+  acceptTooltipTimer = setTimeout(() => {
+    isAcceptPolice.classList.remove("show");
+  }, 2000);
 }
 /**
  *  Formular Validierung - Alle Felder prüfen

@@ -73,8 +73,9 @@ function showRegNotice(message, type = "info", duration = 4000) {
   if (!el) return;
   el.textContent = message;
   el.style.display = "flex";
-  el.style.backgroundColor = type === "error" ? "rgb(42, 54, 71)" : "#d4edda";
+  el.style.backgroundColor = type === "error" ? "#ffffff" : "#d4edda";
   el.style.borderRadius = "8px";
+  el.style.border = type === "error" ? "1px solid #d32828" : "1px solid transparent";
   el.style.color = type === "error" ? "#d32828" : "#ffffff";
   el.style.transition = "opacity 0.4s ease";
   el.style.opacity = "1";
