@@ -227,6 +227,11 @@ function showPleaseLoginMessageFromQuery(duration = 4000) {
   const el = document.getElementById("login-message");
   if (!el) return;
 
+  const wrapper = el.closest(".login-message");
+  if (wrapper) {
+    wrapper.classList.add("is-visible");
+  }
+
   el.textContent = "Bitte melden Sie sich an, um fortzufahren.";
 
   Object.assign(el.style, {
@@ -268,6 +273,11 @@ function showRegistrationMessageFromQuery(duration = 4000) {
 
   const el = document.getElementById("reg-msg");
   if (!el) return;
+
+  const wrapper = el.closest(".login-message");
+  if (wrapper) {
+    wrapper.classList.add("is-visible");
+  }
 
   el.textContent = decodeURIComponent(msg);
 

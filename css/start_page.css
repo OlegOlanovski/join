@@ -98,6 +98,24 @@ main {
 
 .login-message {
   display: none;
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+.login-message.is-visible {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 500px) {
+  .login-message {
+    top: -58px;
+  }
 }
 
 .login-form {
