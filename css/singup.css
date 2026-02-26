@@ -1,9 +1,14 @@
 /* styling logo sing up pages */
 .logo {
-  margin: 0 0 0 24px;
+  margin: 0 0 0 81px;
   position: relative;
-  top: 20px;
+  top: 81px;
   transform: translate(0, 0);
+}
+
+.logo-img {
+  width: 100px;
+  height: 120px;
 }
 
 .sing_up_page .logo_signup_page {
@@ -87,8 +92,9 @@
   grid-template-rows: auto 1fr;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 194px);
+  min-height: calc(100vh - 380px);
   position: relative;
+  padding-top: 8px;
 }
 
 .reg-notice {
@@ -113,12 +119,10 @@
 
 .main-form {
   width: 598px;
-  min-height: 630px;
   border-radius: 30px;
   background: #ffffff;
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.04);
-  padding: 22px 0 28px;
-  gap: 16px;
+  padding: 22px 0 22px;
   justify-content: flex-start;
 }
 
@@ -303,12 +307,130 @@
     padding: 18px 0 24px;
   }
 
+  .back-link {
+    left: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo {
+    margin-left: 12px;
+    top: 8px;
+  }
+
+  .logo-img {
+    width: 56px;
+    height: 70px;
+  }
+
+  .main-content {
+    min-height: auto;
+  }
+
+  .main-form {
+    width: 92vw;
+    border-radius: 20px;
+  }
+
+  .form-header {
+    height: auto;
+    margin-bottom: 20px;
+    padding-top: 8px;
+  }
+
+  .form-header h1 {
+    font-size: 44px;
+    width: auto;
+    height: auto;
+    line-height: 1.1;
+  }
+
+  .form-header h1::after {
+    width: 110px;
+  }
+
+  .form-fields {
+    width: 100%;
+    height: auto;
+    gap: 12px;
+  }
+
+  .field-group {
+    width: 90%;
+  }
+
   .main-form input {
-    width: min(80vw, 421px);
+    width: 100%;
+  }
+
+  .info-password,
+  .info-confirm-password {
+    font-size: 10px;
+  }
+
+  .form-check-content {
+    flex-wrap: wrap;
+    gap: 8px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 420px) {
+  html,
+  body {
+    overflow-y: auto;
+  }
+
+  main {
+    height: auto;
+  }
+
+  .content-wrepper {
+    min-height: 100vh;
+  }
+
+  footer {
+    margin-top: 34px;
+    padding-bottom: 16px;
+  }
+
+  .main-content {
+    padding-top: 48px;
+  }
+
+  .main-form {
+    margin-top: 28px;
+  }
+
+  .logo {
+    margin-left: 26px;
+    top: 26px;
+  }
+
+  .logo-img {
+    width: 48px;
+    height: 60px;
+  }
+
+  .form-header h1 {
+    font-size: 36px;
+  }
+
+  .form-header h1::after {
+    width: 90px;
   }
 
   .back-link {
-    left: 20px;
+    left: 12px;
+  }
+
+  .reg-notice {
+    font-size: 10px !important;
+  }
+
+  #singup-button {
+    width: 120px;
+    height: 48px;
   }
 }
 
