@@ -57,8 +57,8 @@
 
 .disebles-singup-button {
   background-color: #2a3647;
-  opacity: 1;
-  cursor: pointer;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .accept-tooltip {
@@ -122,7 +122,7 @@
   border-radius: 30px;
   background: #ffffff;
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.04);
-  padding: 22px 0 22px;
+  padding: 22px 0 38px;
   justify-content: flex-start;
 }
 
@@ -133,7 +133,6 @@
   padding: 0;
   gap: 16px;
   width: 422px;
-  height: 326px;
 }
 
 .field-group {
@@ -286,6 +285,15 @@
 
 #singup-button:hover {
   background-color: #29abe2;
+}
+
+#singup-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#singup-button:disabled:hover {
+  background-color: #2a3647;
 }
 
 .links:hover {

@@ -166,6 +166,8 @@ function validateCheckbox() {
     document.getElementById("singup-button").classList.remove("disebles-singup-button");
   document.getElementById("singup-button").disabled = false;
   } else {
+    document.getElementById("singup-button").disabled = true;
+    document.getElementById("singup-button").classList.add("disebles-singup-button");
     showAcceptTooltip();
   }
 
