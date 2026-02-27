@@ -199,7 +199,8 @@ function getCokkieCheckHelper() {
     const buttoMenu = document.getElementById("headerUserBtn");
     if (hidenNav) hidenNav.forEach(el => el.style.display = "none");  
     if (loginBtn) loginBtn.style.display = "block";
-    if (buttoMenu) buttoMenu.style.display = "none";
+    if (buttoMenu) buttoMenu.style.opacity = "0";
+     if (buttoMenu) buttoMenu.style.cursor = "none";
   }else {
     const hidenNav = document.querySelectorAll("#nav_li");
     const loginBtn = document.getElementById("login-btn");

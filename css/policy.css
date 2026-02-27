@@ -18,6 +18,12 @@ body {
   min-height: 0;
 }
 
+.content-wrepper-header2 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 1920px;
+}
 .main {
   flex: 1;
   min-height: 0;
