@@ -1,104 +1,108 @@
 <!DOCTYPE html>
 <html lang="de">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg" sizes="32x32" href="../assets/icons/logo.svg" />
-   
+
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/contact.css" />
     <link rel="stylesheet" href="../css/contact_responsiv.css" />
     <title>Contact</title>
   </head>
- <body>
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="logo">
-        <img src="../assets/icons/logo-white.svg" alt="Join" />
-      </div>
 
-      <nav class="menu">
-        <ul>
-          <li><a href="./summary.html"><img src="../assets/icons/summary-gray.svg" alt="">Summary</a></li>
-          <li><a href="./add_task.html"><img src="../assets/icons/addTask-gray.svg" alt="">Add Task</a></li>
-          <li><a href="./board.html"><img src="../assets/icons/board-gray.svg" alt="">Board</a></li>
-          <li><a href="./contact.html"><img src="../assets/icons/contacts-gray.svg" alt="">Contacts</a></li>
-        </ul>
-      </nav>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="logo">
+          <img src="../assets/icons/logo-white.svg" alt="Join" />
+        </div>
 
-      <div class="sidebar-footer">
-        <a href="./privacy_policy.html">Privacy Policy</a>
-        <a href="./legal_notice.html">Legal notice</a>
-      </div>
-    </aside>
+        <nav class="menu">
+          <ul>
+            <li><a href="./summary.html"><img src="../assets/icons/summary-gray.svg" alt="">Summary</a></li>
+            <li><a href="./add_task.html"><img src="../assets/icons/addTask-gray.svg" alt="">Add Task</a></li>
+            <li><a href="./board.html"><img src="../assets/icons/board-gray.svg" alt="">Board</a></li>
+            <li><a href="./contact.html"><img src="../assets/icons/contacts-gray.svg" alt="">Contacts</a></li>
+          </ul>
+        </nav>
 
-    <div class="cantainer">
-      <div class="main">
-        <header class="header">
-          <div class="content-wrepper-header">
-            <div class="header-left">
-              <img src="../assets/icons/logo.svg" class="header-logo" alt="Join Logo">
-              <span class="header-title">Kanban Project Management Tool</span>
-            </div>
+        <div class="sidebar-footer">
+          <a href="./privacy_policy.html">Privacy Policy</a>
+          <a href="./legal_notice.html">Legal notice</a>
+        </div>
+      </aside>
 
-            <div class="header-right">
-              <div class="header-help">?</div>
-
-              <button class="header-guest" id="headerUserBtn" type="button" aria-label="User menu" aria-expanded="false">
-                
-              </button>
-
-              <div class="header-dropdown d-none" id="userMenu" role="menu" aria-labelledby="headerUserBtn">
-                <a class="userMenuItem" href="./help.html" role="menuitem">Help</a>
-                <a class="userMenuItem" href="./legal_notice.html" role="menuitem">Legal notice</a>
-                <a class="userMenuItem" href="./privacy_policy.html" role="menuitem">Privacy Policy</a>
-                <a class="userMenuItem" href="#" onclick="logout()" role="menuitem">Log out</a> 
+      <div class="cantainer">
+        <div class="main">
+          <header class="header">
+            <div class="content-wrepper-header">
+              <div class="header-left">
+                <img src="../assets/icons/logo.svg" class="header-logo" alt="Join Logo">
+                <span class="header-title">Kanban Project Management Tool</span>
               </div>
-            </div>
-          </div>
-        </header>
 
-  
-          <div class="contacts-page">
-            <aside class="contacts-sidebar">
-              <button class="contacts-add-btn" id="openAddContact" type="button">
-                Add new contact
-                <img src="../assets/icons/personAdd-white.svg" class="contacts-add-icon" alt="">
-              </button>
+              <div class="header-right">
+                <div class="header-help">?</div>
 
-              <div class="contacts-scroll-wrap">
-                <div class="contacts-scroll" id="contactsScroll">
-                  <div class="contacts-list" id="contactsList"></div>
+                <button class="header-guest" id="headerUserBtn" type="button" aria-label="User menu"
+                  aria-expanded="false">
+
+                </button>
+
+                <div class="header-dropdown d-none" id="userMenu" role="menu" aria-labelledby="headerUserBtn">
+                  <a class="userMenuItem" href="./help.html" role="menuitem">Help</a>
+                  <a class="userMenuItem" href="./legal_notice.html" role="menuitem">Legal notice</a>
+                  <a class="userMenuItem" href="./privacy_policy.html" role="menuitem">Privacy Policy</a>
+                  <a class="userMenuItem" href="#" onclick="logout()" role="menuitem">Log out</a>
                 </div>
               </div>
-            </aside>
-
-            <main class="contacts-main">
-              <div class="contacts-header">
-                <h1>Contacts</h1>
-                <div class="header-line"></div>
-                <span>Better with a team</span>
-
-                <button class="contacts-back-btn" id="mobileBackBtn" type="button" aria-label="Back">
-                  <img src="../assets/icons/pfeil-links-blue.png" alt="Back">
+            </div>
+          </header>
+          
+          <div class="contacts-page">
+              <div class="content-wrepper">
+              <aside class="contacts-sidebar">
+                <button class="contacts-add-btn" id="openAddContact" type="button">
+                  Add new contact
+                  <img src="../assets/icons/personAdd-white.svg" class="contacts-add-icon" alt="">
                 </button>
-              </div>
 
-              <div class="contact-details" id="contactDetails"></div>
+                <div class="contacts-scroll-wrap">
+                  <div class="contacts-scroll" id="contactsScroll">
+                    <div class="contacts-list" id="contactsList"></div>
+                  </div>
+                </div>
+              </aside>
 
-              <button class="contacts-more-btn d-none" id="mobileMenuBtn" type="button" aria-label="More">
-                <span class="dots">⋮</span>
-              </button>
+              <main class="contacts-main">
+                <div class="contacts-header">
+                  <h1>Contacts</h1>
+                  <div class="header-line"></div>
+                  <span>Better with a team</span>
 
-              <div class="contacts-more-menu d-none" id="mobileActionsMenu">
-                <button class="contacts-more-item contact-action" data-action="edit" data-id="" type="button">
-                  <img src="../assets/icons/edit.svg" alt=""> Edit
+                  <button class="contacts-back-btn" id="mobileBackBtn" type="button" aria-label="Back">
+                    <img src="../assets/icons/pfeil-links-blue.png" alt="Back">
+                  </button>
+                </div>
+
+                <div class="contact-details" id="contactDetails"></div>
+
+                <button class="contacts-more-btn d-none" id="mobileMenuBtn" type="button" aria-label="More">
+                  <span class="dots">⋮</span>
                 </button>
-                <button class="contacts-more-item contact-action" data-action="delete" data-id="" type="button">
-                  <img src="../assets/icons/delete.svg" alt=""> Delete
-                </button>
-              </div>
-            </main>
+
+                <div class="contacts-more-menu d-none" id="mobileActionsMenu">
+                  <button class="contacts-more-item contact-action" data-action="edit" data-id="" type="button">
+                    <img src="../assets/icons/edit.svg" alt=""> Edit
+                  </button>
+                  <button class="contacts-more-item contact-action" data-action="delete" data-id="" type="button">
+                    <img src="../assets/icons/delete.svg" alt=""> Delete
+                  </button>
+                </div>
+              </main>
+            </div>
           </div>
         </div>
       </div>
@@ -159,4 +163,5 @@
     <script src="../javascript/mobile.js"></script>
     <script src="../javascript/login.js"></script>
   </body>
+
 </html>

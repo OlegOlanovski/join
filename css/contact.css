@@ -211,6 +211,13 @@
   padding: 48px clamp(16px, 3vw, 64px);
 }
 
+.content-wrepper {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  max-width: 1920px;
+}
+
 .contacts-header {
   display: flex;
   align-items: center;
@@ -225,6 +232,7 @@
   margin: 0;
   min-width: 0;
   max-width: 100%;
+  color: #2a3647;
 }
 
 .contacts-header span {

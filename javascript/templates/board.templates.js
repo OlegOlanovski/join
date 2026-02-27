@@ -1,7 +1,9 @@
 // ---------------- Render board ----------------
 function renderBoardFromStorage() {
   clearAllCards();
-  renderAllTasks(getFilteredTasks());
+  const filtered = getFilteredTasks();
+  renderAllTasks(filtered);
+  updateSearchEmptyState(filtered);
   updateEmptyStates();
 }
 
@@ -27,6 +29,14 @@ function getFilteredTasks() {
     if (taskMatchesQuery(tasks[i], activeSearchQuery)) filtered.push(tasks[i]);
   }
   return filtered;
+}
+
+function updateSearchEmptyState(tasks) {
+  const el = document.getElementById("boardSearchEmpty");
+  if (!el) return;
+  const list = Array.isArray(tasks) ? tasks : [];
+  const show = !!activeSearchQuery && list.length === 0;
+  el.style.display = show ? "block" : "none";
 }
 
 function taskMatchesQuery(task, query) {

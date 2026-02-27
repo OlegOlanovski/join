@@ -40,7 +40,7 @@ async function regData(saltArray) {
 
       if (!resp.ok) {
         showRegNotice(
-          "Registrierung fehlgeschlagen. Bitte versuche es später.",
+          "Registration failed. Please try again later.",
           "error",
           4000,
         );
@@ -50,13 +50,13 @@ async function regData(saltArray) {
       registrationSuccessRedirect();
       return result;
     } else {
-      showRegNotice("Bitte fülle alle Felder korrekt aus.", "error", 4000);
+      showRegNotice("Please fill in all fields correctly.", "error", 4000);
       return null;
     }
   } catch (err) {
     console.warn("regData error:", err);
     showRegNotice(
-      "Netzwerkfehler. Bitte überprüfe deine Verbindung.",
+      "Network error. Please check your connection.",
       "error",
       4000,
     );
@@ -73,12 +73,9 @@ function showRegNotice(message, type = "info", duration = 4000) {
   if (!el) return;
   el.textContent = message;
   el.style.display = "flex";
-  el.style.backgroundColor = type === "error" ? "rgb(42, 54, 71)" : "#d4edda";
-  el.style.width = "100%";
-  el.style.height = "80px";
-  el.style.justifyContent = "center";
-  el.style.alignItems = "center";
+  el.style.backgroundColor = type === "error" ? "#ffffff" : "#d4edda";
   el.style.borderRadius = "8px";
+  el.style.border = type === "error" ? "1px solid #d32828" : "1px solid transparent";
   el.style.color = type === "error" ? "#d32828" : "#ffffff";
   el.style.transition = "opacity 0.4s ease";
   el.style.opacity = "1";
@@ -86,7 +83,7 @@ function showRegNotice(message, type = "info", duration = 4000) {
     setTimeout(() => {
       el.style.opacity = "0";
       setTimeout(() => {
-        el.style.display = "block";
+        el.style.display = "none";
         el.textContent = "";
       }, 400);
     }, duration);

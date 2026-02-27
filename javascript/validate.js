@@ -6,6 +6,7 @@ let confirmPassword = document.getElementById("confirm-password");
 let infoConfirmPassword = document.getElementById("info-confirm-password");
 let isAccept = document.getElementById("accept-id");
 let isAcceptPolice = document.getElementById("accept-police");
+let acceptTooltipTimer = null;
 let singupButton = document.getElementById("singup-button");
 let iconImgMail = document.getElementById("email-icon");
 let iconImg = document.getElementById("lock-icon");
@@ -33,8 +34,7 @@ function validateEmailRegEx(emailInput) {
     typeof emailInput === "string"
       ? emailInput
       : (emailInput && emailInput.value) || "";
-  const pattern =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const pattern =  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return pattern.test(String(value).toLowerCase());
 }
 /**
@@ -66,7 +66,7 @@ function validateEmail() {
 function updatePasswordIcon() {
   if (password.value.length === 0) {
     if (!iconImg) return;
-    iconImg.src = "../assets/icons/lock.png";
+    iconImg.src = "./assets/icons/lock.png";
     return;
   }
   if (!iconImg) return;
@@ -120,9 +120,9 @@ function validatePassword() {
     password.classList.add("isValidate");
     password.classList.add("visibility-off");
     password.classList.remove("isInvaled");
-    infoPassword.style.display = "none";
+    infoPassword.style.visibility = "hidden";
   } else {
-    infoPassword.style.display = "block";
+    infoPassword.style.visibility = "visible";
     password.classList.add("isInvaled");
     password.classList.remove("isValidate");
     password.classList.remove("visibility-off");
@@ -146,11 +146,11 @@ function validateConfirmPassword() {
   if (ok) {
     confirmPassword.classList.add("isValidate");
     confirmPassword.classList.remove("isInvaled");
-    infoPassword.style.display = "none";
-    infoConfirmPassword.style.display = "none";
+    infoPassword.style.visibility = "hidden";
+    infoConfirmPassword.style.visibility = "hidden";
   } else {
-    infoPassword.style.display = "block";
-    infoConfirmPassword.style.display = "block";
+    infoPassword.style.visibility = "visible";
+    infoConfirmPassword.style.visibility = "visible";
     confirmPassword.classList.add("isInvaled");
     confirmPassword.classList.remove("isValidate");
   }
@@ -162,14 +162,27 @@ function validateCheckbox() {
   const ok = isAccept.checked;
 
   if (ok) {
-    isAcceptPolice.classList.add("accept-police");
+    isAcceptPolice.classList.remove("show");
     document.getElementById("singup-button").classList.remove("disebles-singup-button");
   document.getElementById("singup-button").disabled = false;
   } else {
-    isAcceptPolice.classList.remove("accept-police");
+    document.getElementById("singup-button").disabled = true;
+    document.getElementById("singup-button").classList.add("disebles-singup-button");
+    showAcceptTooltip();
   }
 
   return ok;
+}
+
+function showAcceptTooltip() {
+  if (!isAcceptPolice) return;
+  isAcceptPolice.classList.add("show");
+  if (acceptTooltipTimer) {
+    clearTimeout(acceptTooltipTimer);
+  }
+  acceptTooltipTimer = setTimeout(() => {
+    isAcceptPolice.classList.remove("show");
+  }, 2000);
 }
 /**
  *  Formular Validierung - Alle Felder prüfen
