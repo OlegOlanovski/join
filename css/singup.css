@@ -441,11 +441,3 @@
     height: 48px;
   }
 }
-
-.isValidate {
-  border: 1px solid greenyellow !important;
-}
-
-.isInvaled {
-  border: 1px solid rgb(255, 47, 47) !important;
-}

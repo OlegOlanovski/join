@@ -31,9 +31,7 @@ function validateFullname() {
  */
 function validateEmailRegEx(emailInput) {
   const value =
-    typeof emailInput === "string"
-      ? emailInput
-      : (emailInput && emailInput.value) || "";
+    typeof emailInput === "string" ? emailInput : (emailInput && emailInput.value) || "";
   const pattern =  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return pattern.test(String(value).toLowerCase());
 }
@@ -51,6 +49,7 @@ function validateEmail() {
 
   if (isValid) {
     iconImgMail.src = "../assets/icons/check-gray.svg";
+    
     email.classList.remove("isInvaled");
     email.classList.add("isValidate");
   } else {
@@ -71,9 +70,7 @@ function updatePasswordIcon() {
   }
   if (!iconImg) return;
   iconImg.src =
-    password.type === "text"
-      ? "../assets/icons/visibility.svg"
-      : "../assets/icons/visibility_off.svg";
+    password.type === "text" ? "./assets/icons/visibility.svg" : "./assets/icons/visibility_off.svg";
 }
 
 // Initial prüfen
@@ -127,7 +124,7 @@ function validatePassword() {
     password.classList.remove("isValidate");
     password.classList.remove("visibility-off");
     if (iconImg) {
-      iconImg.src = "../assets/icons/lock.png";
+      iconImg.src = "./assets/icons/lock.png";
     }
 
     updatePasswordIcon();
