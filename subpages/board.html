@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/summary.css">
     <title>Board</title>
 </head>
+
 <body>
     <div class="layout">
 
@@ -66,6 +67,10 @@
                             <h1 class="board-title">Board</h1>
 
                             <nav aria-label="Board Navigation" class="board-nav">
+                                <div class="board-search-empty" id="boardSearchEmpty" style="display:none;">
+                                    No results found
+                                </div>
+
                                 <div class="search-bar">
                                     <input type="text" placeholder="Find Task" name="search" aria-label="Search Tasks"
                                         class="search-input" />
@@ -331,7 +336,7 @@
             </div>
 
             <div class="kpi-panel-task-footer">
-                <span>*This field is required</span>
+                <span><span class="label-star">*</span>This field is required</span>
 
                 <div class="create-task-button">
                     <button type="button" class="primary-btn --primary-btn-cancel">
