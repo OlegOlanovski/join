@@ -96,6 +96,19 @@
   margin-top: 50px;
 }
 
+.board-search-empty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border: 1px solid #a8a8a8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #a8a8a8;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
 /* Drag over */
 .column.drag-over .cards {
   background: rgba(41, 171, 226, 0.08);
