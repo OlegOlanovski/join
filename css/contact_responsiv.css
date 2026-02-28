@@ -51,7 +51,8 @@
   }
 
   .contacts-sidebar {
-    max-width: 100%;
+    max-width: none !important;
+    width: 100% !important;
     min-width: 0;
     height: calc(100vh - 100px);
     padding: 16px 16px 0px;
@@ -59,6 +60,8 @@
     box-shadow: none;
     border: 0;
     flex: none;
+    margin: 0 !important;
+    box-sizing: border-box;
   }
 
   .contacts-scroll-wrap {
@@ -191,8 +194,6 @@
     padding: 0;
     position: relative;
     left: 5px;
-    
-
 
   }
 
@@ -658,5 +659,4 @@
     max-height: calc(100vh - 200px);
   }
 }
-
 
