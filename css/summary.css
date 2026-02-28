@@ -358,7 +358,7 @@ body {
 .kpi-bottom {
   display: grid;
   grid-template-columns: repeat(3, 156px);
-  gap: 16px;
+  gap: 26px;
 }
 
 .kpi-card {
@@ -575,7 +575,7 @@ body {
 
   .kpi-bottom {
     grid-template-columns: repeat(3, 145px);
-    gap: 14px;
+    gap: 21px;
   }
 
   .kpi-number {
