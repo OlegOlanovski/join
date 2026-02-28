@@ -299,6 +299,10 @@
   color: #29abe2;
 }
 
+footer .links {
+  color: rgba(42, 54, 71, 0.45);
+}
+
 .button-text {
   display: inline-block;
   width: 78px;
