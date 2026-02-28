@@ -213,6 +213,7 @@ body {
   display: grid;
   place-items: center;
   font: inherit;
+  font-size: 20px;
   font-weight: 700;
   color: #29ABE2;
   background: #ffffff;
