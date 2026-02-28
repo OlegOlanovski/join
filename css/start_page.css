@@ -204,7 +204,14 @@ body.loaded .login-form {
   justify-content: center;
   gap: 35px;
   opacity: 1;
-  margin-top: 25px;
+<<<<<<< ours
+<<<<<<< ours
+=======
+  margin-top: 16px;
+>>>>>>> theirs
+=======
+  margin-top: 8px;
+>>>>>>> theirs
 }
 
 .login-form .button-group button {
