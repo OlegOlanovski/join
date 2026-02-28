@@ -89,34 +89,52 @@ async function verifyPassword(inputPassword, storedHash, storedSalt) {
  */
 async function logIn() {
   const loginData = await fetchRegisterNode();
-
   try {
     validateEmail(email);
     validatePassword(password);
   } catch (e) {
     console.warn("Validation failed", e);
   }
-
   const users = loginData ? Object.values(loginData) : [];
-
-  if (!users.length) {
-    alert("No users found in database. Please register first.");
-    return;
-  }
-
+  if (!users.length) { alert("No users found in database. Please register first."); return;}
+  const infoPasswordElement = document.getElementById("info-password");
+  let emailFound = false;
   for (const user of users) {
     if ((user.mail || "") === (email.value || "")) {
+      emailFound = true;
       const hash = await hashPasswordWithSalt(password.value, user.salt);
       if (hash === user.passwort) {
         sessionStorage.setItem("loggedInUser", JSON.stringify(user.namen));
-        const payload = encodeURIComponent(JSON.stringify(user.namen || "Guest"),);
+        const payload = encodeURIComponent(JSON.stringify(user.namen || "Guest"));
         document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
+        if (infoPasswordElement) {
+          infoPasswordElement.style.display = "none";
+          infoPasswordElement.style.visibility = "hidden";
+        }
         window.location.href = "./subpages/summary.html";
         return;
       }
+
+      if (infoPasswordElement) {
+        infoPasswordElement.style.display = "block";
+        infoPasswordElement.style.visibility = "visible";
+      }
+      
+      if (typeof password !== "undefined" && password) {
+        password.classList.add("isInvaled");
+        password.classList.remove("isValidate");
+      }
+      return;
     }
   }
-  document.getElementById("info-password").style.display = "block";
+  if (infoPasswordElement) {
+    infoPasswordElement.style.display = "block";
+    infoPasswordElement.style.visibility = "visible";
+  }
+  if (typeof email !== "undefined" && email) {
+    email.classList.add("isInvaled");
+    email.classList.remove("isValidate");
+  }
 }
 
 /**
