@@ -116,10 +116,10 @@ async function logIn() {
       }
 
       if (infoPasswordElement) {
-        infoPasswordElement.style.display = "block";
+        infoPasswordElement.style.opacity = "1";
         infoPasswordElement.style.visibility = "visible";
       }
-      
+
       if (typeof password !== "undefined" && password) {
         password.classList.add("isInvaled");
         password.classList.remove("isValidate");
@@ -128,7 +128,7 @@ async function logIn() {
     }
   }
   if (infoPasswordElement) {
-    infoPasswordElement.style.display = "block";
+    infoPasswordElement.style.opacity = "1";
     infoPasswordElement.style.visibility = "visible";
   }
   if (typeof email !== "undefined" && email) {

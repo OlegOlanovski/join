@@ -204,7 +204,7 @@ body.loaded .login-form {
   justify-content: center;
   gap: 35px;
   opacity: 1;
-  margin-top: 40px;
+  margin-top: 25px;
 }
 
 .login-form .button-group button {
@@ -251,7 +251,8 @@ body.loaded .login-form {
 }
 
 .info-password {
-  display: none;
+  opacity: 0;
+  height: 30px;
   color: rgb(255, 47, 47);
   font-size: 14px;
   text-align: center;
