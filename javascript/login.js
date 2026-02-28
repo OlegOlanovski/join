@@ -89,39 +89,52 @@ async function verifyPassword(inputPassword, storedHash, storedSalt) {
  */
 async function logIn() {
   const loginData = await fetchRegisterNode();
-
   try {
     validateEmail(email);
     validatePassword(password);
   } catch (e) {
     console.warn("Validation failed", e);
   }
-
   const users = loginData ? Object.values(loginData) : [];
-
-  if (!users.length) {
-    alert("No users found in database. Please register first.");
-    return;
-  }
-
+  if (!users.length) { alert("No users found in database. Please register first."); return;}
+  const infoPasswordElement = document.getElementById("info-password");
+  let emailFound = false;
   for (const user of users) {
     if ((user.mail || "") === (email.value || "")) {
+      emailFound = true;
       const hash = await hashPasswordWithSalt(password.value, user.salt);
-
       if (hash === user.passwort) {
         sessionStorage.setItem("loggedInUser", JSON.stringify(user.namen));
-
-        const payload = encodeURIComponent(
-          JSON.stringify(user.namen || "Guest"),
-        );
+        const payload = encodeURIComponent(JSON.stringify(user.namen || "Guest"));
         document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
-
+        if (infoPasswordElement) {
+          infoPasswordElement.style.opacity = "0";
+          infoPasswordElement.style.visibility = "hidden";
+        }
         window.location.href = "./subpages/summary.html";
         return;
       }
+
+      if (infoPasswordElement) {
+        infoPasswordElement.style.opacity = "1";
+        infoPasswordElement.style.visibility = "visible";
+      }
+
+      if (typeof password !== "undefined" && password) {
+        password.classList.add("isInvaled");
+        password.classList.remove("isValidate");
+      }
+      return;
     }
   }
-  document.getElementById("info-password").style.display = "block";
+  if (infoPasswordElement) {
+    infoPasswordElement.style.opacity = "1";
+    infoPasswordElement.style.visibility = "visible";
+  }
+  if (typeof email !== "undefined" && email) {
+    email.classList.add("isInvaled");
+    email.classList.remove("isValidate");
+  }
 }
 
 /**
@@ -131,30 +144,14 @@ async function logIn() {
  * @returns {void}
  */
 function logout() {
-  const clearCookie = (name) => {
-    document.cookie = `${name}=; path=/; max-age=0`;
-  };
+  const clearCookie = (name) => { document.cookie = `${name}=; path=/; max-age=0`;};
+  clearCookie("loggedInUser"); clearCookie("session"); clearCookie("sessionId"); clearCookie("accessToken"); clearCookie("auth"); clearCookie("token");
 
-  clearCookie("loggedInUser");
-  clearCookie("session");
-  clearCookie("sessionId");
-  clearCookie("accessToken");
-  clearCookie("auth");
-  clearCookie("token");
+  try { sessionStorage.removeItem("loggedInUser");} catch (e) {}
 
-  try {
-    sessionStorage.removeItem("loggedInUser");
-  } catch (e) {}
+  try {localStorage.removeItem("loggedInUser");} catch (e) {}
 
-  try {
-    localStorage.removeItem("loggedInUser");
-  } catch (e) {}
-
-  try {
-    console.debug(
-      "logout: cleared loggedInUser, session cookies and guest flags",
-    );
-  } catch (e) {}
+  try {console.debug("logout: cleared loggedInUser, session cookies and guest flags",);} catch (e) {}
 
   window.location.href = "../index.html";
 }
@@ -187,11 +184,7 @@ function getCokkieCheck() {
  * @returns {string|null} The stored username or null.
  */
 function getCokkieCheckHelper() {
-  const cookies = document.cookie.split(";").reduce((acc, cookie) => {
-    const [key, value] = cookie.trim().split("=");
-    acc[key] = decodeURIComponent(value || "");
-    return acc;
-  }, {});
+  const cookies = document.cookie.split(";").reduce((acc, cookie) => { const [key, value] = cookie.trim().split("="); acc[key] = decodeURIComponent(value || ""); return acc;}, {});
 
   if (!cookies.loggedInUser) {
     const hidenNav = document.querySelectorAll("#nav_li");
@@ -201,14 +194,12 @@ function getCokkieCheckHelper() {
     if (loginBtn) loginBtn.style.display = "block";
     if (buttoMenu) buttoMenu.style.opacity = "0";
      if (buttoMenu) buttoMenu.style.cursor = "none";
-  }else {
+  } else {
     const hidenNav = document.querySelectorAll("#nav_li");
     const loginBtn = document.getElementById("login-btn");
-
     if (hidenNav) hidenNav.forEach(el => el.style.display = "block");
     if (loginBtn) loginBtn.style.display = "none";
   }
-   
   return cookies.loggedInUser || null;
 }getCokkieCheckHelper();
 
@@ -223,40 +214,24 @@ function getCokkieCheckHelper() {
 function showPleaseLoginMessageFromQuery(duration = 4000) {
   const params = new URLSearchParams(window.location.search);
   const notice = params.get("notice");
+  
   if (notice !== "pleaseLogin") return;
-
+  
   const el = document.getElementById("login-message");
+  
   if (!el) return;
-
+  
   const wrapper = el.closest(".login-message");
-  if (wrapper) {
-    wrapper.classList.add("is-visible");
-  }
-
+  
+  if (wrapper) { wrapper.classList.add("is-visible"); }
+  
   el.textContent = "Bitte melden Sie sich an, um fortzufahren.";
 
-  Object.assign(el.style, {
-    display: "block",
-    position: "relative",
-    top: "20%",
-    color: "#d32828",
-    transition: "opacity 0.5s ease",
-    opacity: "1",
-  });
+  Object.assign(el.style, { display: "block", position: "relative", top: "20%", color: "#d32828", transition: "opacity 0.5s ease", opacity: "1",});
 
-  setTimeout(() => {
-    el.style.opacity = "0";
-    setTimeout(() => {
-      el.style.display = "none";
-      el.textContent = "";
-    }, 500);
-  }, duration);
-
-  window.history.replaceState(
-    {},
-    "",
-    window.location.pathname + window.location.hash,
-  );
+  setTimeout(() => { el.style.opacity = "0";
+  setTimeout(() => { el.style.display = "none"; el.textContent = "";}, 500); }, duration);
+  window.history.replaceState({}, "", window.location.pathname + window.location.hash,);
 }
 showPleaseLoginMessageFromQuery();
 
@@ -276,38 +251,15 @@ function showRegistrationMessageFromQuery(duration = 4000) {
   if (!el) return;
 
   const wrapper = el.closest(".login-message");
-  if (wrapper) {
-    wrapper.classList.add("is-visible");
-  }
+  if (wrapper) {wrapper.classList.add("is-visible");}
 
   el.textContent = decodeURIComponent(msg);
 
-  Object.assign(el.style, {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    margin: "0 auto",
-    color: "#ffffff",
-    height: "55px",
-    width: "320px",
-    borderRadius: "8px",
-    backgroundColor: "rgb(26, 26, 26)",
-    transition: "opacity 0.5s ease",
-    opacity: "1",
-  });
+  Object.assign(el.style, {display: "flex",alignItems: "center",justifyContent: "center",margin: "0 auto",color: "#ffffff",height: "55px",width: "320px",borderRadius: "8px",backgroundColor: "rgb(26, 26, 26)",transition: "opacity 0.5s ease",opacity: "1",});
 
-  setTimeout(() => {
-    el.style.opacity = "0";
-    setTimeout(() => {
-      el.style.display = "none";
-      el.textContent = "";
-    }, 500);
-  }, duration);
+  setTimeout(() => {el.style.opacity = "0";
+  setTimeout(() => {el.style.display = "none"; el.textContent = "";}, 500);}, duration);
 
-  window.history.replaceState(
-    {},
-    "",
-    window.location.pathname + window.location.hash,
-  );
+  window.history.replaceState({},"", window.location.pathname + window.location.hash,);
 }
 showRegistrationMessageFromQuery();

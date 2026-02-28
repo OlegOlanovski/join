@@ -317,7 +317,7 @@ html, body{
   .header-title,
   .header-help{ display:none !important; }
 
-  .header-logo{ display:block !important; height: 50px; }
+  .header-logo{ display:block !important; height: 50px; margin-left: 5px;}
 
   .sidebar{
     width:100%;

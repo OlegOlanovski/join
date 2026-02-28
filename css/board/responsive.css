@@ -97,11 +97,11 @@
     display: block;
     height: 50px;
     width: 50px;
-    content: url("../../assets/icons/logo.svg");
+    content: url("../assets/icons/logo.svg");
   }
 
   .header-help {
-    display: none;
+    display: none !important;
   }
 
   .menu-item--mobile {
@@ -148,7 +148,7 @@
   }
 
   .add-task-button {
-    background-image: url("../../assets/icons/addPlus-white.svg");
+    background-image: url("../assets/icons/addPlus-white.svg");
     background-repeat: no-repeat;
     background-position: center;
     font-size: 0;
@@ -159,7 +159,7 @@
   }
 
   .add-task-button:hover {
-    background-image: url("../../assets/icons/addPlus-white.svg");
+    background-image: url("../assets/icons/addPlus-white.svg");
     background-repeat: no-repeat;
     background-position: center;
     font-size: 0;
