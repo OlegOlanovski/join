@@ -734,7 +734,6 @@ body {
     padding: 20px 40px 20px 27px;
   }
 
-  .header-title,
   .header-help {
     display: none !important;
   }
@@ -924,8 +923,7 @@ body {
     width: 100%;
     height: 80px;
   }
-
-  .header-title,
+  
   .header-help {
     display: none !important;
   }

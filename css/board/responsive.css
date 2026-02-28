@@ -101,7 +101,7 @@
   }
 
   .header-help {
-    display: none;
+    display: none !important;
   }
 
   .menu-item--mobile {
