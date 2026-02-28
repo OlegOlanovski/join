@@ -207,7 +207,7 @@ body.loaded .login-form {
 
 .login-form .button-group button {
   height: 48px;
-  font-size: 16px;
+  font-size: 21px;
   font-family: Inter, Arial, sans-serif;
   font-weight: 700;
   line-height: 120%;
@@ -228,7 +228,7 @@ body.loaded .login-form {
 }
 
 .guest-btn {
-  width: 150px;
+  width: 177px;
   background-color: transparent;
   color: #2a3647;
   border: 1px solid #2a3647;
