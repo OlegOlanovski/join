@@ -19,6 +19,7 @@ body {
   flex-direction: column;
   margin: 0 auto;
   max-width: 1920px;
+  position: relative;
 }
 
 header {
@@ -27,32 +28,34 @@ header {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  position: relative;
+  position: static;
   z-index: 5;
 }
 
 .logo {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
-  transition: all 1.2s ease-in-out;
+  transition: all 0.6s ease-in-out;
   z-index: 10;
 }
 
 .logo_page {
-  width: 260px;
-  transition: width 1.2s ease-in-out;
+  width: 100px;
+  height: 120px;
+  transition: width 0.8s ease-in-out, height 0.8s ease-in-out;
 }
 
 body.loaded .logo {
-  top: 20px;
-  left: 24px;
+  top: 81px;
+  left: 81px;
   transform: translate(0, 0);
 }
 
 body.loaded .logo_page {
-  width: 80px;
+  width: 100px;
+  height: 120px;
 }
 
 .button-section {
@@ -124,14 +127,14 @@ main {
   background: #ffffff;
   padding: 48px 115px;
   border-radius: 30px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 32px;
   opacity: 0;
   transform: translateY(40px);
-  transition: all 0.8s ease;
+  transition: all 0.6s ease;
   position: relative;
 }
 
@@ -195,15 +198,22 @@ body.loaded .login-form {
 }
 
 .login-form .button-group {
-  width: 422px;
+  width: 322px;
+  height: 48px;
   display: flex;
   justify-content: center;
   gap: 35px;
+  opacity: 1;
+  margin-top: 40px;
 }
 
 .login-form .button-group button {
   height: 48px;
-  font-weight: bold;
+  font-size: 16px;
+  font-family: Inter, Arial, sans-serif;
+  font-weight: 700;
+  line-height: 120%;
+  letter-spacing: 0;
   border-radius: 8px;
   cursor: pointer;
 }
@@ -215,11 +225,21 @@ body.loaded .login-form {
   border: none;
 }
 
+.login-btn:hover {
+  background-color: #29abe2;
+}
+
 .guest-btn {
   width: 150px;
   background-color: transparent;
   color: #2a3647;
   border: 1px solid #2a3647;
+}
+
+.guest-btn:hover {
+  background-color: transparent;
+  color: #29abe2;
+  border-color: #29abe2;
 }
 
 .isValidate {
@@ -254,7 +274,9 @@ footer .links {
   color: rgba(42, 54, 71, 0.45);
 }
 
-
+footer .links:hover {
+  color: #29abe2;
+}
 
 @media (max-width: 1024px) {
   main {
@@ -282,7 +304,6 @@ footer .links {
     overflow-y: auto;
   }
 
-
   main {
     display: flex;
     justify-content: center;
@@ -306,7 +327,6 @@ footer .links {
     margin: 0 auto;
   }
 
-
   .content-wrepper {
     min-height: 100svh;
   }
@@ -329,7 +349,7 @@ footer .links {
   }
 
   .logo {
-    position: fixed;
+    position: absolute;
     top: 37px;
     left: 38px;
     transform: none;
@@ -339,6 +359,7 @@ footer .links {
 
   .logo_page {
     width: 64px;
+    height: 78px;
     transition: none;
   }
 
@@ -350,12 +371,13 @@ footer .links {
 
   body.loaded .logo_page {
     width: 64px;
+    height: 78px;
   }
 
   main {
     justify-content: flex-start;
     align-items: center;
-    padding: 116px 16px 170px;
+    padding: 43px 16px 170px;
   }
 
   .login-form {
@@ -377,17 +399,18 @@ footer .links {
   }
 
   .login-form .button-group {
-    width: 364px;
+    width: 180px;
+    height: 123px;
     max-width: 100%;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 21px;
   }
 
   .login-btn,
   .guest-btn {
     width: 180px;
-    height: 44px;
+    height: 48px;
   }
 
   footer {
@@ -426,12 +449,15 @@ footer .links {
   }
 
   .login-form .button-group {
-    width: 100%;
+    width: 180px;
+    height: 123px;
+    gap: 21px;
   }
 
   .login-btn,
   .guest-btn {
-    width: 170px;
+    width: 180px;
+    height: 48px;
   }
 
   .button-section--mobile {
