@@ -108,7 +108,7 @@ async function logIn() {
         const payload = encodeURIComponent(JSON.stringify(user.namen || "Guest"));
         document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
         if (infoPasswordElement) {
-          infoPasswordElement.style.display = "none";
+          infoPasswordElement.style.opacity = "0";
           infoPasswordElement.style.visibility = "hidden";
         }
         window.location.href = "./subpages/summary.html";
@@ -147,17 +147,11 @@ function logout() {
   const clearCookie = (name) => { document.cookie = `${name}=; path=/; max-age=0`;};
   clearCookie("loggedInUser"); clearCookie("session"); clearCookie("sessionId"); clearCookie("accessToken"); clearCookie("auth"); clearCookie("token");
 
-  try {
-    sessionStorage.removeItem("loggedInUser");
-  } catch (e) {}
+  try { sessionStorage.removeItem("loggedInUser");} catch (e) {}
 
-  try {
-    localStorage.removeItem("loggedInUser");
-  } catch (e) {}
+  try {localStorage.removeItem("loggedInUser");} catch (e) {}
 
-  try {
-    console.debug("logout: cleared loggedInUser, session cookies and guest flags",);
-  } catch (e) {}
+  try {console.debug("logout: cleared loggedInUser, session cookies and guest flags",);} catch (e) {}
 
   window.location.href = "../index.html";
 }
