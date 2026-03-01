@@ -10,6 +10,7 @@
 
 .modal-overlay.is-open {
   display: flex;
+  z-index: 1000;
 }
 
 .modal-card {
