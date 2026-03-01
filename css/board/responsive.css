@@ -234,7 +234,7 @@
 
   .task-overlay {
     height: auto;
-    padding: 28px 22px;
+    padding: 28px 5px;
   }
 
   .task-overlay-title {
@@ -263,5 +263,22 @@
   .search-input {
     width: 217px;
     max-width: 220px;
+  }
+
+
+  .task-overlay-edit .priority-btn {
+    flex: 1 1 0;
+    height: 46px;
+    border: 1px solid #d0d0d0;
+    background: #ffffff;
+    border-radius: 8px;
+    color: #000;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
   }
 }
