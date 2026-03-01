@@ -34,7 +34,7 @@
 
   .add-task-overlay-title {
     margin: 0;
-    font-size: 46px;
+    font-size: 32px;
     font-weight: 700;
     color: #2a3647;
   }
@@ -92,13 +92,6 @@
   .add-task-overlay-backdrop {
     padding: 8px;
 
-  }
-
-  .add-task-overlay-title {
-    margin: 0;
-    font-size: 32px;
-    font-weight: 700;
-    color: #2a3647;
   }
 
   .add-task-overlay .create-task-button .primary-btn {
