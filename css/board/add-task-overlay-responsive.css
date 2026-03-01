@@ -52,17 +52,28 @@
     width: 100%;
     gap: 15px;
   }
- .content-footer-buttons{
-  margin-top: 15px;
- }
+
+  .content-footer-buttons {
+    margin-top: 15px;
+  }
+
   .add-task-overlay .create-task-button {
     display: flex;
     flex-direction: row;
     gap: 15px;
   }
 
+  .add-task-overlay .primary-btn-cancel {
+    width: auto;
+    background-color: #fffefe;
+    border: 1px solid grey;
+    color: #000;
+    font-weight: 400;
+    width: 110px;
+  }
+
   .add-task-overlay .create-task-button .primary-btn {
-    width: 150px;
+    width: auto;
     font-weight: 500;
     font-size: 16px;
   }
@@ -78,30 +89,31 @@
 }
 
 @media (max-width: 320px) {
-.add-task-overlay-backdrop {
+  .add-task-overlay-backdrop {
     padding: 8px;
-    
+
   }
 
-.add-task-overlay-title {
+  .add-task-overlay-title {
     margin: 0;
     font-size: 32px;
     font-weight: 700;
     color: #2a3647;
   }
-.add-task-overlay .create-task-button .primary-btn {
-  width: auto;
-  font-weight: 500;
-  font-size: 16px;
-}
 
-.add-task-overlay .primary-btn-cancel {
-  width: auto;
-  background-color: #fffefe;
-  border: 1px solid grey;
-  color: #000;
-  font-weight: 300;
-  width:auto;
-}
+  .add-task-overlay .create-task-button .primary-btn {
+    width: auto;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .add-task-overlay .primary-btn-cancel {
+    width: auto;
+    background-color: #fffefe;
+    border: 1px solid grey;
+    color: #000;
+    font-weight: 300;
+    width: auto;
+  }
 
 }
