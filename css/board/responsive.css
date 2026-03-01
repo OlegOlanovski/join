@@ -234,7 +234,7 @@
 
   .task-overlay {
     height: auto;
-    padding: 28px 5px;
+    padding: 28px 25px;
   }
 
   .task-overlay-title {
@@ -265,7 +265,10 @@
     max-width: 220px;
   }
 
-
+.task-overlay {
+  height: auto;
+  padding: 28px 5px;
+}
   .task-overlay-edit .priority-btn {
     flex: 1 1 0;
     height: 46px;
