@@ -70,7 +70,6 @@ border: 1px solid #5ec0e9;
 }
 
 .add-task-overlay .primary-btn .btn-icon {
-  margin: 0 auto;
   height: 24px;
   width: 24px;
 }
@@ -86,6 +85,7 @@ border: 1px solid #5ec0e9;
   border: 1px solid grey;
   color: #000;
   font-weight: 400;
+  width: 110px;
 }
 
 .add-task-overlay .create-task-button .primary-btn-cancel:hover {
