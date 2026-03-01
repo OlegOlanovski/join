@@ -242,6 +242,9 @@ body.loaded .login-form {
 
 .isValidate {
   border: 1px solid greenyellow !important;
+  background-image: url("../assets/icons/check-gray.svg");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
 }
 
 .isInvaled {

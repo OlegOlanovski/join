@@ -48,7 +48,7 @@ function validateEmail() {
   }
 
   if (isValid) {
-    iconImgMail.src = "../assets/icons/check-gray.svg";
+    iconImgMail.src = "./assets/icons/check-gray.svg";
     
     email.classList.remove("isInvaled");
     email.classList.add("isValidate");
