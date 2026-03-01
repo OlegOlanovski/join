@@ -48,7 +48,7 @@ header {
 }
 
 body.loaded .logo {
-  top: 81px;
+  top: 37px;
   left: 81px;
   transform: translate(0, 0);
 }
