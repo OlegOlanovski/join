@@ -5,12 +5,11 @@
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1001;
 }
 
 .modal-overlay.is-open {
   display: flex;
-  z-index: 1000;
 }
 
 .modal-card {
