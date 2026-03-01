@@ -1,20 +1,25 @@
 .primary-btn {
   display: flex;
-  height: 53px;
-  width: 135px;
-  font-size: large;
+  height: 56px;
+  width: 183px;
+  font-size: 21px;
   border: unset;
   color: white;
+  font-family: Inter, Arial, sans-serif;
+  font-weight: 700;
+  line-height: 120%;
+  letter-spacing: 0;
   background-color: rgb(42, 54, 71);
   border-radius: 8px;
   align-items: center;
   justify-content: center;
   text-align: center;
   cursor: pointer;
+  padding-right: 0;
 }
 
 .primary-btn .btn-icon {
-  margin: 0 auto;
+  margin: 0 0 0 8px;
   height: 24px;
   width: 24px;
 }
@@ -27,7 +32,7 @@
   border-radius: 8px;
   color: #000;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 21px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -40,8 +45,7 @@
 }
 
 .priority-btn.medium .btn-icon {
-  filter: brightness(0) saturate(100%) invert(57%) sepia(88%) saturate(749%)
-    hue-rotate(1deg) brightness(103%) contrast(103%);
+  filter: brightness(0) saturate(100%) invert(57%) sepia(88%) saturate(749%) hue-rotate(1deg) brightness(103%) contrast(103%);
 }
 
 .priority-btn.--selected {
@@ -71,8 +75,15 @@
 }
 
 .--primary-btn-cancel {
-  width: auto;
+  height: 56px;
+  width: 110px;
   background-color: #fffefe;
   border: 1px solid grey;
   color: black;
+  font-size: 21px;
+  font-family: Inter, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 120%;
+  letter-spacing: 0;
+  border-radius: 8px;
 }
