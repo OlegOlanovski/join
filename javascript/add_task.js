@@ -595,3 +595,10 @@ function closeValidationModal() {
   modal.classList.remove("is-open");
   modal.setAttribute("aria-hidden", "true");
 }
+
+
+// addTasks.html Select fild Aniemation
+function selectAnimate() {
+  const wrapper = document.querySelector(".select-wrapper");
+  wrapper.classList.toggle("open");
+}

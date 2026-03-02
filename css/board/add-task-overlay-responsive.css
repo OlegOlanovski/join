@@ -23,16 +23,20 @@
   }
 }
 
-@media (max-width: 350px) {
-  .add-task-overlay .priority-section {
-    justify-content: center;
+@media (max-width: 425px) {
+
+  .add-task-overlay .form-details {
+    display: flex;
     flex-direction: column;
-    gap: 5px;
+    height: auto;
+    width: 100%;
   }
 
-  .add-task-overlay .priority-section li {
-    width: 100%;
-    height: 46px;
+  .add-task-overlay-title {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: #2a3647;
   }
 
   .add-task-overlay .kpi-panel-task-footer {
@@ -42,8 +46,67 @@
     margin-top: 0;
   }
 
+  .add-task-overlay .priority-section {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 15px;
+  }
+
+  .content-footer-buttons {
+    margin-top: 15px;
+  }
+
   .add-task-overlay .create-task-button {
-    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .add-task-overlay .primary-btn-cancel {
+    width: auto;
+    background-color: #fffefe;
+    border: 1px solid grey;
+    color: #000;
+    font-weight: 400;
+    width: 110px;
+  }
+
+  .add-task-overlay .create-task-button .primary-btn {
+    width: auto;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .add-task-overlay .primary-btn-cancel {
+    width: auto;
+    background-color: #fffefe;
+    border: 1px solid grey;
+    color: #000;
+    font-weight: 300;
+    width: 100px;
   }
 }
 
+@media (max-width: 320px) {
+  .add-task-overlay-backdrop {
+    padding: 8px;
+
+  }
+
+  .add-task-overlay .create-task-button .primary-btn {
+    width: auto;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .add-task-overlay .primary-btn-cancel {
+    width: auto;
+    background-color: #fffefe;
+    border: 1px solid grey;
+    color: #000;
+    font-weight: 300;
+    width: auto;
+  }
+
+}
